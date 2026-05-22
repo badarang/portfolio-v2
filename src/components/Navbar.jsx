@@ -53,8 +53,8 @@ export default function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-line bg-ink/80 backdrop-blur-md"
+        scrolled || open
+          ? "border-b border-line bg-surface shadow-card"
           : "border-b border-transparent"
       }`}
     >
@@ -212,16 +212,16 @@ export default function Navbar() {
           onClick={() => setOpen((v) => !v)}
         >
           <div className="space-y-1.5">
-            <span className="block h-0.5 w-6 bg-white" />
-            <span className="block h-0.5 w-6 bg-white" />
-            <span className="block h-0.5 w-4 bg-white" />
+            <span className="block h-0.5 w-6 bg-strong" />
+            <span className="block h-0.5 w-6 bg-strong" />
+            <span className="block h-0.5 w-4 bg-strong" />
           </div>
         </button>
       </nav>
 
       {open && (
-        <div className="border-t border-line bg-ink/95 px-6 py-4 lg:hidden">
-          <ul className="flex flex-col gap-4">
+        <div className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface px-6 py-5 shadow-card lg:hidden">
+          <ul className="flex flex-col gap-4 text-base font-semibold">
             {links.map((l) => (
               <li key={l.id || l.path}>
                 {l.path ? (
@@ -230,14 +230,14 @@ export default function Navbar() {
                       setOpen(false);
                       navigate(l.path);
                     }}
-                    className="text-soft hover:text-white"
+                    className="text-strong hover:text-simple"
                   >
                     {l.label}
                   </button>
                 ) : (
                   <button
                     onClick={() => goToSection(l.id)}
-                    className="text-soft hover:text-white"
+                    className="text-strong hover:text-simple"
                   >
                     {l.label}
                   </button>
@@ -250,7 +250,7 @@ export default function Navbar() {
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setOpen(false)}
-                className="inline-flex items-center gap-2 text-soft hover:text-white"
+                className="inline-flex items-center gap-2 text-strong hover:text-simple"
               >
                 <span
                   aria-hidden="true"
@@ -267,7 +267,7 @@ export default function Navbar() {
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => setOpen(false)}
-                className="inline-flex items-center gap-2 text-soft hover:text-white"
+                className="inline-flex items-center gap-2 text-strong hover:text-simple"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -282,7 +282,7 @@ export default function Navbar() {
             <li>
               <button
                 onClick={toggleTheme}
-                className="inline-flex items-center gap-2 text-soft hover:text-white"
+                className="inline-flex items-center gap-2 text-strong hover:text-simple"
               >
                 {theme === "dark" ? (
                   <svg
@@ -337,7 +337,7 @@ export default function Navbar() {
             <li>
               <button
                 onClick={() => goToSection("contact")}
-                className="text-soft hover:text-white"
+                className="text-strong hover:text-simple"
               >
                 {ui.nav.contact}
               </button>
