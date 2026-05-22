@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useI18n } from "../i18n";
 import Waves from "./Waves";
 import FloatingIcons from "./FloatingIcons";
-import heroPreview from "../assets/project/project21.png";
 
 // 3D 캔버스는 무거우니 lazy-load — 첫 페인트를 막지 않게.
 const Computers3D = lazy(() => import("./canvas/Computers3D"));
@@ -186,13 +185,9 @@ export default function Hero() {
         <div className="hero-model-shell pointer-events-none absolute bottom-[10%] right-[2%] z-10 h-[38vh] w-[88%] sm:pointer-events-auto sm:relative sm:bottom-auto sm:right-auto sm:h-[460px] sm:w-full lg:h-[600px]">
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[78%] w-[88%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-simple/[0.14] blur-[90px]" />
           <div className="pointer-events-none absolute bottom-[14%] left-[10%] h-20 w-[78%] rounded-full bg-hook/[0.16] blur-[55px]" />
-          {!showHero3D ? (
-            <MobileHeroScene image={heroPreview} />
-          ) : (
+          {showHero3D && (
             <Suspense
-              fallback={
-                <MobileHeroScene image={heroPreview} />
-              }
+              fallback={null}
             >
               <Computers3D />
             </Suspense>
@@ -215,26 +210,5 @@ export default function Hero() {
         </div>
       </button>
     </section>
-  );
-}
-
-function MobileHeroScene({ image }) {
-  return (
-    <div className="mobile-hero-scene" aria-hidden="true">
-      <div className="mobile-hero-desk">
-        <div className="mobile-hero-monitor">
-          <img src={image} alt="" loading="eager" decoding="async" />
-        </div>
-        <div className="mobile-hero-keyboard" />
-        <div className="mobile-hero-pad" />
-        <img
-          src="/icons/badarang-runner.png"
-          alt=""
-          className="mobile-hero-character"
-          loading="eager"
-          decoding="async"
-        />
-      </div>
-    </div>
   );
 }
