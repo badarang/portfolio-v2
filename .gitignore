@@ -1,0 +1,9 @@
+node_modules
+dist
+.vercel
+.media-originals
+.env
+.env.local
+.env.publish
+*.log
+.DS_Store

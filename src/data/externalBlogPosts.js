@@ -1,0 +1,26 @@
+export const externalBlogPosts = [
+  {
+    id: "ray-sphere-intersection",
+    slug: "ray-sphere-intersection",
+    title: "광선과 구의 충돌 판정 — Ray-Sphere Intersection 완전 정복",
+    excerpt: "이차방정식부터 법선벡터까지, 레이트레이싱의 핵심을 시각적으로 이해하기.",
+    tags: ["Raytracing", "Graphics"],
+    published_at: "2026-05-01T00:00:00+09:00",
+    cover_url: "/blog/ray-sphere-intersection/ray_sphere_structure.png",
+    thumbnail_url: "/blog/ray-sphere-intersection/ray_sweep_animation.gif",
+    content_url: "/blog/ray-sphere-intersection/post.txt",
+    asset_base: "/blog/ray-sphere-intersection",
+  },
+  {
+    id: "phong-reflection-model-color-material-3",
+    slug: "phong-reflection-model-color-material-3",
+    title: "Phong Reflection Model — color에서 material로, 입체감을 만드는 3가지 빛",
+    excerpt: "75년에 만들어진 조명 모델로 구에 음영을 입혀보기.",
+    tags: ["Shading", "Graphics"],
+    published_at: "2026-05-02T00:00:00+09:00",
+    cover_url: "/blog/phong-reflection-model-color-material-3/cover.png",
+    thumbnail_url: "/blog/phong-reflection-model-color-material-3/sun_angle_animation.gif",
+    content_url: "/blog/phong-reflection-model-color-material-3/post.txt",
+    asset_base: "/blog/phong-reflection-model-color-material-3",
+  },
+];

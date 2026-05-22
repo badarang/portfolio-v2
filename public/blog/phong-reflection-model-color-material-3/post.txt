@@ -1,0 +1,271 @@
+TITLE: Phong Reflection Model — color에서 material로, 입체감을 만드는 3가지 빛
+SUBTITLE: 75년에 만들어진 조명 모델로 구에 음영을 입혀보기 (Ambient + Diffuse + Specular)
+TAGS: raytracing, graphics, shading, phong, cpp, glm, computer-graphics
+COVER_IMAGE: cover.png
+---
+
+지난 글에서 Ray-Sphere Intersection을 구현하면서 충돌점까지의 거리 `hit.d`를 색으로 바꿔 단색 구를 그려봤다. 그 결과는 "구라기보다는 동그란 원"에 가까웠다. 입체감이 없었기 때문이다.
+
+이번에는 그 동그라미에 **음영**을 입혀서 진짜 구처럼 보이게 만든다. 1975년 Bui Tuong Phong이 발표한 **Phong Reflection Model**을 구현해보자.
+
+[IMAGE: before_after.png]
+[IMAGE_CAPTION: 왼쪽: hit.d만 사용한 단색 구. 오른쪽: Phong Reflection Model을 적용한 구. 같은 구인데 입체감이 완전히 다르다.]
+
+---
+
+## 1. color에서 material로
+
+기존 코드에서 구는 단순히 `color` 하나만 가지고 있었다.
+
+```cpp
+sphere->color = vec3(0.0f, 0.0f, 1.0f); // 그냥 파란색
+```
+
+그런데 현실의 물체는 단순히 "파란색"이 아니다. 같은 파란색 공이라도 **플라스틱 공과 금속 공은 빛에 다르게 반응한다**. 플라스틱은 부드럽게 빛을 흩뿌리고, 금속은 한 점에 강한 하이라이트가 생긴다.
+
+이 차이를 표현하기 위해 단순한 `color` 대신 **material(재질)** 개념으로 확장한다. material은 빛을 받았을 때 어떻게 반사하는지에 대한 여러 속성을 묶어둔 것이다.
+
+```cpp
+sphere->amb  = vec3(0.0f, 0.0f, 0.0f); // 환경광 색
+sphere->diff = vec3(0.0f, 0.0f, 1.0f); // 난반사 색 (파란색)
+sphere->spec = vec3(1.0f, 1.0f, 1.0f); // 정반사 색 (흰색 하이라이트)
+sphere->alpha = 9.0f;                  // 하이라이트의 날카로움
+sphere->ks   = 0.8f;                   // 정반사 강도
+```
+
+`color` → `material`. 한 줄에서 다섯 줄로 늘어났지만, 이 다섯 줄이 입체감의 모든 비밀이다.
+
+---
+
+## 2. 쉐이딩(Shading)이란
+
+화면에 그림자가 지고 밝은 면이 생기면서 **입체감**이 표현되는 것을 그래픽스에서는 **쉐이딩(Shading)** 이라고 부른다. "음영을 준다"는 말과 같다.
+
+쉐이딩 기법 중에서 가장 유명한 것이 **Phong**의 작품이다. 1975년에 발표된 논문인데, 50년이 지난 지금까지도 학교에서 처음 배우는 조명 모델로 쓰일 정도로 영향력이 크다.
+
+### Phong Shading vs Phong Reflection Model
+
+이 두 용어가 자주 헷갈린다. 비슷해 보이지만 다른 개념이다.
+
+| 용어 | 무엇을 정의하는가 |
+|------|-----------------|
+| **Phong Reflection Model** | 한 점에서 빛이 어떻게 반사되는지의 **계산식** (조명 모델) |
+| **Phong Shading** | 메쉬의 각 픽셀마다 법선을 보간해서 위 모델을 적용하는 **쉐이딩 기법** |
+
+이번 글에서 다루는 것은 **Phong Reflection Model**이다. 우리는 광선과 구의 교점에서 직접 법선을 구할 수 있으니, 보간이 필요 없다. 즉, 픽셀마다 정확한 법선을 가지고 Phong Reflection Model을 그대로 적용하면 된다.
+
+---
+
+## 3. Reflection: 우리가 물체를 본다는 것
+
+생각해보면, 우리는 **물체를 직접 보는 것이 아니다**. 광원(태양, 전구)에서 빛이 나와서 물체 표면에 부딪히고, 그 **반사된 빛**이 우리 눈에 들어와야 비로소 물체가 보인다. 어두운 방에서는 아무것도 안 보이는 이유가 이것이다.
+
+[IMAGE: reflection_concept.png]
+[IMAGE_CAPTION: 광원 → 물체 → 눈으로 이어지는 빛의 경로. Phong은 이 반사된 빛을 어떻게 그럴듯하게 흉내낼지 고민했다.]
+
+Phong은 이 **반사**의 느낌을 최대한 사실적으로 보이게 하면서도 **계산이 빨라야 한다**는 1975년의 제약 안에서 모델을 만들었다. 핵심 아이디어는 단순하다:
+
+> 표면에서 일어나는 반사를 **3가지 종류**로 나눠서 각각 계산하고, 마지막에 더한다.
+
+세 가지는 각각 **Ambient**(환경광), **Diffuse**(난반사), **Specular**(정반사)다. 완벽하게 물리법칙을 따르는 게 아니라 그냥 "그럴듯하게" 보이게 만드는 트릭에 가깝다. 하지만 이 단순한 모델로도 놀라울 만큼 입체감 있는 결과가 나온다.
+
+---
+
+## 4. Ambient — 어둠 속에서도 보이는 색
+
+**Ambient(환경광)** 는 사실 물리적으로는 말이 안 된다. 빛이 없는데 물체가 보일 리가 없다. 그런데 Phong 모델에서는 **빛이 닿지 않는 면도 완전히 새까맣게는 만들지 않는다**. 약간의 색을 깔아준다. 이게 ambient다.
+
+현실에서도 직접광이 닿지 않는 그림자 속이 완전한 암흑은 아니다. 주변 벽이나 바닥에서 튕긴 간접광이 들어오기 때문이다. ambient는 그 간접광의 효과를 **하나의 상수**로 대충 흉내내는 것이다.
+
+```cpp
+vec3 ambient = sphere->amb;
+```
+
+수식이라고 할 것도 없다. 그냥 상수 색이다. 어떻게 보면 이전 글에서 사용했던 `color * hit.d`와 비슷한 역할이다 — 빛 계산 없이 일단 어떤 색을 깔아주는 것.
+
+---
+
+## 5. Diffuse — 입체감의 핵심
+
+ambient만으로는 평면 그림밖에 안 나온다. **Diffuse(난반사)** 가 들어가야 비로소 구가 진짜 구처럼 보인다.
+
+### 직관: 정오와 오후 6시의 햇살
+
+여름철에 정오와 오후 6시 중 어느 쪽이 더 더울까? 당연히 **정오**다. 왜냐하면 정오에는 태양이 거의 머리 위에서 **수직으로** 빛을 내리쬐기 때문이다. 같은 면적에 더 많은 빛이 모인다.
+
+[IMAGE: sun_angle_animation.gif]
+[IMAGE_CAPTION: 태양이 동쪽에서 서쪽으로 이동하면서 표면 법선 n과 빛 방향 l 사이의 각도 θ가 바뀐다. θ가 작을수록(수직에 가까울수록) 받는 빛의 양이 많다.]
+
+이걸 그래픽스 용어로 옮기면:
+
+- **n** — 표면의 법선 벡터 (구의 표면이 향하는 방향)
+- **l** — 표면에서 광원을 향하는 벡터
+- **θ** — n과 l 사이의 각도
+
+θ가 0이면 빛이 표면에 정확히 수직으로 들어오고, θ가 90도에 가까우면 빛이 표면을 스쳐 지나간다. 받는 빛의 양은 **cos θ**에 비례한다 (Lambert의 코사인 법칙).
+
+### 코드로 옮기기
+
+n과 l이 모두 단위벡터면 `cos θ = dot(n, l)`이다. 단, 광원이 표면 뒤쪽에 있어서 음수가 나오면 빛을 받지 않는 것이므로 0으로 잘라준다.
+
+```cpp
+vec3 N = normalize(hit.point - sphere->center); // 표면 법선
+vec3 L = normalize(light.pos - hit.point);      // 표면에서 광원으로
+float diff = max(dot(N, L), 0.0f);              // 음수는 0으로
+vec3 diffuse = sphere->diff * diff;
+```
+
+`max(dot(N, L), 0.0f)`. 이 한 줄이 동그라미를 구로 바꿔주는 마법이다.
+
+---
+
+## 6. Specular — 금속의 하이라이트
+
+**Specular(정반사)** 는 금속이나 광택 있는 플라스틱에서 보이는 **반짝이는 점**이다. 거울처럼 빛이 한 방향으로 정확하게 반사될 때 우리 눈이 그 방향에 있으면 강한 하이라이트가 보인다.
+
+이걸 계산하려면 두 가지가 필요하다:
+1. **R** — 빛이 표면에서 완전 반사되어 나가는 방향
+2. **E** — 표면에서 우리 눈을 향하는 방향
+
+R과 E의 각도가 작을수록(같은 방향일수록) 하이라이트가 강하다. 즉, `dot(R, E)`가 1에 가까울수록 밝다.
+
+### 완전반사 벡터 R 구하기
+
+이 부분이 처음에 좀 헷갈리는 곳이다. 입사광 L과 법선 N으로부터 반사 방향 R을 어떻게 구할까?
+
+[IMAGE: reflection_vector.png]
+[IMAGE_CAPTION: 완전반사 벡터 R의 기하학적 유도. L을 법선 N에 사영한 벡터를 b라 하면, R = 2b - L 로 구할 수 있다.]
+
+기하학적으로 보면 이렇다:
+
+1. L 벡터를 N 방향으로 **사영(projection)** 시킨 벡터를 **b**라고 하자. N이 단위벡터라면 b의 길이는 `dot(L, N)`이고, 방향은 N이다. 따라서 `b = dot(L, N) * N`.
+2. 그림에서 보면 L과 R은 b를 기준으로 **거울 대칭**이다. 즉, L에서 b까지의 차이를 두 배 빼주면 R이 된다.
+3. 식으로 쓰면 `R = 2b - L = 2 * dot(L, N) * N - L`.
+
+코드:
+
+```cpp
+vec3 R = normalize(2.0f * dot(N, L) * N - L);
+```
+
+### 시점 벡터 E
+
+표면에서 눈(카메라)을 향하는 벡터 E는 어떻게 구할까? 답은 단순하다: **광선의 반대 방향**이다.
+
+왜냐하면 `ray.dir`는 카메라(혹은 픽셀)에서 출발해 표면을 향해 날아간 방향이니까, 그 반대로 가면 표면에서 카메라로 돌아가는 방향이 된다.
+
+```cpp
+vec3 E = normalize(-ray.dir);
+```
+
+여기서 `normalize`는 안전장치다. `ray.dir`가 이미 단위벡터라면 굳이 필요 없지만, **혹시라도 길이가 1이 아니면 dot 결과가 1을 넘어버려서 그 뒤의 `pow` 계산이 폭주할 수 있다**. 안전을 위해 일단 정규화한다.
+
+### Shininess: 하이라이트의 날카로움
+
+`dot(R, E)`만 쓰면 하이라이트가 너무 부드럽게 퍼진다. 금속처럼 **빛이 한 점에 집중되는 느낌**을 내려면 어떻게 할까?
+
+답은 의외로 단순하다. **거듭제곱**을 한다.
+
+```cpp
+float specular = pow(max(dot(R, E), 0.0f), sphere->alpha);
+```
+
+`alpha`(shininess) 값이 클수록 하이라이트가 작고 날카로워진다. 1에 가까운 값을 여러 번 곱하면 빠르게 0에 가까워지기 때문이다. 예를 들어 `0.9^9 ≈ 0.39`지만 `0.9^100 ≈ 0.000027`이다. 그래서 `R·E`가 거의 1인 좁은 영역만 살아남고 나머지는 빠르게 어두워진다.
+
+[IMAGE: shininess_compare.png]
+[IMAGE_CAPTION: alpha(shininess) 값에 따른 하이라이트의 변화. alpha가 클수록 하이라이트가 작고 강해져 금속 같은 느낌이 난다.]
+
+마지막으로 정반사 강도 계수 `ks`를 곱해 최종 specular 색을 얻는다.
+
+```cpp
+vec3 spec = sphere->spec * specular * sphere->ks;
+```
+
+---
+
+## 7. 다 더하면 끝
+
+세 가지를 모두 더한 것이 최종 색이다.
+
+```
+final = ambient + diffuse + specular
+```
+
+코드 전체를 합치면 이렇다.
+
+```cpp
+vec3 traceRay(Ray &ray)
+{
+    auto hit = sphere->IntersectRayCollision(ray);
+
+    if (hit.d < 0.0f) return vec3(0.0f);
+
+    // 표면 법선과 광원 방향
+    vec3 N = normalize(hit.point - sphere->center);
+    vec3 L = light.pos - hit.point;
+    float lenL = length(L);
+    if (lenL < 0.00001f) return sphere->amb; // 광원이 표면에 너무 가까우면 안전 탈출
+    L /= lenL;
+
+    // 시점 방향
+    vec3 E = normalize(-ray.dir);
+
+    // Diffuse
+    float diff = max(dot(N, L), 0.0f);
+
+    // Specular: 완전반사 R = 2(N·L)N - L
+    vec3 R = normalize(2.0f * dot(N, L) * N - L);
+    float specular = 0.0f;
+    if (diff > 0.0f) // 빛을 받지 않는 면에는 하이라이트 없음
+    {
+        float rdot = max(dot(R, E), 0.0f);
+        specular = pow(rdot, sphere->alpha);
+    }
+
+    vec3 ambient = sphere->amb;
+    vec3 diffuse = sphere->diff * diff;
+    vec3 spec    = sphere->spec * specular * sphere->ks;
+
+    return ambient + diffuse + spec;
+}
+```
+
+`diff > 0.0f` 조건이 들어간 이유는, 빛이 닿지 않는 면(법선이 광원 반대쪽을 향하는 면)에 하이라이트가 생기는 비현실적인 결과를 막기 위해서다. 표면이 빛을 못 받는데 그 위에서 정반사가 생기면 안 되니까.
+
+---
+
+## 8. 결과: 동그라미가 구가 되는 순간
+
+`color` 한 줄이 `material` 다섯 줄로 바뀌고, `traceRay`의 한 줄짜리 반환값이 20여 줄의 조명 계산으로 바뀌었다. 그 대가로 우리는 **입체감**을 얻었다.
+
+[IMAGE: result_phong.png]
+[IMAGE_CAPTION: Phong Reflection Model로 렌더링한 파란 구. 광원 쪽은 밝게, 반대쪽은 어둡게, 한가운데에는 하얀 하이라이트가 보인다.]
+
+세 가지 항을 따로따로 본 결과는 더 흥미롭다.
+
+[IMAGE: ambient_diffuse_specular_breakdown.png]
+[IMAGE_CAPTION: 좌→우: Ambient만 / Diffuse 추가 / Specular 추가. ambient는 평면 같지만, diffuse가 들어가는 순간 구가 되고, specular가 들어가면 광택이 생긴다.]
+
+Phong이 1975년에 만든 이 단순한 더하기 모델이 50년이 지난 지금도 게임 셰이더의 기초로 쓰인다. 물론 현대의 PBR(Physically Based Rendering)은 훨씬 정교하지만, 그것들도 출발점은 결국 "빛을 몇 가지 종류로 나눠서 더한다"는 Phong의 아이디어다.
+
+---
+
+## 마무리
+
+이번 글의 핵심을 정리하면:
+
+1. **color → material**: 단일 색이 ambient/diffuse/specular + alpha + ks로 확장된다.
+2. **Ambient**: 빛이 없는 곳도 완전히 검지 않게 깔아주는 상수.
+3. **Diffuse**: `max(dot(N, L), 0)`. 표면 법선과 광원 방향의 각도로 입체감을 만든다.
+4. **Specular**: 완전반사 벡터 R = `2(N·L)N - L`. `pow(dot(R, E), alpha)`로 날카로움을 조절.
+5. **Phong Shading ≠ Phong Reflection Model**: 우리가 구현한 건 후자다.
+
+다음에는 광원을 여러 개 두거나, 그림자를 추가하거나, 평면을 바닥에 깔아서 본격적인 장면을 만들어볼 수 있다. 동그라미 하나에 음영을 입혔을 뿐인데, 이미 화면이 3D처럼 보이기 시작한다.
+
+---
+
+### 참고자료
+
+- [Wikipedia: Phong Reflection Model](https://en.wikipedia.org/wiki/Phong_reflection_model)
+- [Scratchapixel: Phong Shader / BRDF](https://www.scratchapixel.com/lessons/3d-basic-rendering/phong-shader-BRDF)
+- Bui Tuong Phong, *Illumination for Computer Generated Pictures*, 1975

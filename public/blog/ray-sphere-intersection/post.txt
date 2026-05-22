@@ -1,0 +1,263 @@
+TITLE: 광선과 구의 충돌 판정 — Ray-Sphere Intersection 완전 정복
+SUBTITLE: 이차방정식부터 법선벡터까지, 레이트레이싱의 핵심을 시각적으로 이해하기
+TAGS: raytracing, graphics, glm, cpp, 3d-math, computer-graphics
+COVER_IMAGE: cover.png
+---
+
+레이트레이싱을 공부하다 보면 가장 먼저 만나는 관문이 있다. 바로 **"광선이 구에 부딪혔는가?"**를 판별하는 것이다.
+
+이 글에서는 Ray-Sphere Intersection의 수학적 원리를 시각적으로 풀어보고, C++ 코드로 직접 구현하는 과정까지 다룬다. 고등학교 수학 시간에 배운 이차방정식의 근의 공식이 3D 그래픽스에서 어떻게 쓰이는지 체감할 수 있을 것이다.
+
+---
+
+## 1. 전체 그림부터 보자
+
+코드에 들어가기 전에, 우리가 구하려는 것이 무엇인지 먼저 시각적으로 파악하자.
+
+[IMAGE: ray_sphere_structure.png]
+[IMAGE_CAPTION: Ray-Sphere Intersection의 전체 구조. 광선(빨간색)이 구(파란색)와 만나는 두 점 t₁, t₂를 구하고, 충돌점에서의 법선벡터(초록색)를 계산한다.]
+
+우리가 알고 싶은 것은 딱 세 가지다:
+
+1. **hit.d** — 광선의 시작점(O)에서 충돌 지점까지의 거리 t
+2. **hit.point** — 광선과 구가 실제로 부딪힌 3D 좌표
+3. **hit.normal** — 충돌 지점에서 구 표면의 법선벡터 (조명 계산에 필수)
+
+---
+
+## 2. 수식 유도: 구의 방정식 + 광선의 방정식
+
+### 출발점: 두 개의 방정식
+
+**구의 방정식:** 3D 공간에서 중심이 C이고 반지름이 r인 구 위의 모든 점 P는 다음을 만족한다.
+
+```
+|P - C|² = r²
+```
+
+직관적으로 생각하면, "중심에서 표면까지의 거리가 항상 r"이라는 뜻이다.
+
+**광선의 매개변수 방정식:** 시작점 O에서 방향 D로 뻗어나가는 광선 위의 점은 매개변수 t로 표현된다.
+
+```
+P = O + t·D
+```
+
+t가 0이면 시작점, t가 커질수록 광선의 방향으로 더 멀리 간다.
+
+### 대입해서 이차방정식 만들기
+
+구 위의 점이면서 동시에 광선 위의 점, 즉 **교차점**을 찾고 싶다. P = O + tD를 구의 방정식에 대입한다.
+
+[IMAGE: formula_derivation.png]
+[IMAGE_CAPTION: 수식 유도 8단계. 구의 방정식에 광선의 매개변수 방정식을 대입하면 t에 대한 이차방정식이 된다.]
+
+핵심 과정을 정리하면:
+
+```
+|O + tD - C|² = r²
+```
+
+여기서 `oc = O - C` (광선 시작점에서 구 중심까지의 벡터)로 치환하면:
+
+```
+|oc + tD|² = r²
+```
+
+내적(dot product)으로 전개하면:
+
+```
+(D·D)t² + 2(oc·D)t + (oc·oc - r²) = 0
+```
+
+이것은 t에 대한 **이차방정식** `at² + bt + c = 0` 형태다!
+
+```
+a = dot(D, D)        // 방향벡터의 크기 제곱 (단위벡터면 1)
+b = 2 * dot(oc, D)   // 광선 방향과 oc의 관계
+c = dot(oc, oc) - r² // 구 중심까지 거리² - 반지름²
+```
+
+---
+
+## 3. 판별식 D: 충돌 여부를 결정하는 핵심
+
+이차방정식의 근의 공식에서 **판별식** `D = b² - 4ac`가 모든 것을 결정한다.
+
+[IMAGE: discriminant_cases.png]
+[IMAGE_CAPTION: 판별식 D의 세 가지 경우. D < 0이면 빗나감, D = 0이면 접선, D > 0이면 관통(두 교차점).]
+
+| 판별식 | 의미 | 교차점 수 |
+|--------|------|-----------|
+| D < 0 | 광선이 구를 완전히 빗나감 | 0개 |
+| D = 0 | 광선이 구에 딱 접함 | 1개 (t₁ = t₂) |
+| D > 0 | 광선이 구를 관통 | 2개 (t₁, t₂) |
+
+아래 애니메이션에서 광선의 각도가 바뀔 때 판별식 D의 값이 어떻게 변하는지 확인해보자.
+
+[IMAGE: ray_sweep_animation.gif]
+[IMAGE_CAPTION: 광선 각도에 따른 충돌 상태 변화. 빨간색=MISS, 초록색=HIT. 판별식 D의 값이 실시간으로 바뀐다.]
+
+D가 0 이상이면 근의 공식으로 t를 구한다:
+
+```
+t = (-b ± √D) / 2a
+```
+
+여기서 두 개의 근이 나온다:
+- `t₁ = (-b - √D) / 2a` — 광선 시작점에 가까운 교차점
+- `t₂ = (-b + √D) / 2a` — 멀리 있는 교차점
+
+---
+
+## 4. t값 선택 로직: 어떤 교차점을 사용할 것인가?
+
+t₁과 t₂를 구했다고 끝이 아니다. **음수인 t는 카메라 뒤쪽에 있는 교차점**이므로 무시해야 한다. 왜냐하면 광선은 시작점에서 방향으로만 진행하기 때문이다.
+
+[IMAGE: t_selection_logic.png]
+[IMAGE_CAPTION: t값 선택의 4가지 경우. 카메라 위치에 따라 어떤 t를 선택할지, 혹은 충돌을 무시할지 결정한다.]
+
+정리하면:
+
+| 조건 | 선택 | 상황 |
+|------|------|------|
+| t₁ > 0 AND t₂ > 0 | min(t₁, t₂) | 카메라가 구 바깥 — 가까운 점 선택 |
+| t₁ > 0 AND t₂ < 0 | t₁ | 카메라가 구 내부 |
+| t₁ < 0 AND t₂ > 0 | t₂ | 카메라가 구 내부 |
+| t₁ < 0 AND t₂ < 0 | 충돌 없음 | 구가 카메라 뒤에 있음 |
+
+---
+
+## 5. 충돌점과 법선벡터 계산
+
+### hit.point: 어디에 부딪혔는가
+
+t를 구했으면 충돌점은 간단하다. 광선의 매개변수 방정식에 t를 대입하면 된다.
+
+```
+hit.point = ray.start + t * ray.dir
+```
+
+### hit.normal: 표면의 방향
+
+구의 법선벡터는 사실 아주 직관적이다. 처음에는 "접평면을 구하고 외적을 해야 하나?" 싶었지만, **구의 중심에서 충돌점까지의 벡터가 곧 법선**이다. 생각해보면 당연한 것이, 구의 표면은 항상 중심에서 바깥쪽으로 향하니까.
+
+[IMAGE: normal_vectors.png]
+[IMAGE_CAPTION: 구의 법선벡터. 모든 표면 점에서 법선은 항상 중심→표면 방향이다. normalize(P - C)로 단위벡터를 만든다.]
+
+```
+hit.normal = normalize(hit.point - center)
+```
+
+이게 전부다. 외적이나 복잡한 미분 같은 것은 필요 없다.
+
+아래 애니메이션에서 광선이 구에 도달하고, 충돌점에서 법선벡터가 나타나는 전체 과정을 볼 수 있다.
+
+[IMAGE: hit_animation.gif]
+[IMAGE_CAPTION: 광선이 구에 충돌하는 전체 과정. 광선이 진행 → 충돌점 발생 → 법선벡터가 나타난다.]
+
+---
+
+## 6. C++ 코드: IntersectRayCollision
+
+이제 위의 수학을 코드로 옮겨보자. GLM 라이브러리를 사용한 전체 구현이다.
+
+```cpp
+Hit IntersectRayCollision(Ray &ray)
+{
+    Hit hit = Hit{-1.0f, vec3(0.0f), vec3(0.0f)};
+
+    // oc = 광선 시작점 - 구 중심
+    vec3 oc = ray.start - center;
+
+    // 이차방정식 계수
+    float a = dot(ray.dir, ray.dir);
+    float b = 2.0f * dot(oc, ray.dir);
+    float c = dot(oc, oc) - radius * radius;
+
+    // 판별식
+    float d = b * b - 4.0f * a * c;
+
+    // D < 0 이면 충돌 없음
+    if (d < 0.0f) return hit;
+
+    float sqrtD = sqrt(d);
+
+    // 두 근 계산
+    float t1 = (-b - sqrtD) / (2.0f * a);
+    float t2 = (-b + sqrtD) / (2.0f * a);
+
+    // 양수인 t 중 가장 작은 값 선택
+    float t = -1.0f;
+
+    if (t1 > 0.0f && t2 > 0.0f)
+        t = std::min(t1, t2);
+    else if (t1 > 0.0f)
+        t = t1;
+    else if (t2 > 0.0f)
+        t = t2;
+    else
+        return hit;  // 둘 다 음수 → 구가 카메라 뒤에 있음
+
+    // 결과 저장
+    hit.d = t;
+    hit.point = ray.start + t * ray.dir;
+    hit.normal = normalize(hit.point - center);
+
+    return hit;
+}
+```
+
+코드의 흐름을 요약하면:
+
+1. `oc` 벡터 계산 (광선 시작점 → 구 중심)
+2. 이차방정식 계수 a, b, c 계산
+3. 판별식 d로 충돌 여부 확인
+4. t₁, t₂ 구한 뒤 양수이면서 가장 가까운 값 선택
+5. 충돌점과 법선벡터 저장
+
+---
+
+## 7. 정투영 vs 원근투영
+
+코드의 주석에 "정투영(Orthographic) vs 원근투영(Perspective)"에 대한 메모가 있었다. 이 차이를 시각적으로 비교해보자.
+
+[IMAGE: ortho_vs_perspective.png]
+[IMAGE_CAPTION: 왼쪽: 정투영(모든 광선이 평행, 원근감 없음). 오른쪽: 원근투영(한 점에서 퍼져나감, 원근감 있음).]
+
+- **정투영(Orthographic):** 모든 광선이 같은 방향(예: z축)으로 평행하게 발사된다. 멀리 있어도 가까이 있어도 크기가 같다. CAD나 설계도에서 주로 사용.
+- **원근투영(Perspective):** 광선이 카메라(시점) 한 점에서 부채꼴로 퍼져나간다. 멀리 있는 물체는 작게, 가까운 물체는 크게 보인다. 우리 눈이 보는 방식과 같다.
+
+레이트레이서에서 `ray.dir`을 모두 `vec3(0, 0, 1)`로 고정하면 정투영, 각 픽셀마다 카메라에서 해당 픽셀 방향으로 설정하면 원근투영이 된다.
+
+---
+
+## 8. 직접 만져보기: 인터랙티브 시뮬레이션
+
+아래 GeoGebra 인터랙티브에서 광선의 위치와 방향, 구의 크기를 직접 바꿔보면서 교차점이 어떻게 변하는지 체험할 수 있다.
+
+%[https://www.geogebra.org/m/uxv5kfum]
+
+슬라이더를 움직여서 D < 0, D = 0, D > 0인 경우를 각각 만들어보자.
+
+---
+
+## 마무리
+
+정리하면 Ray-Sphere Intersection의 핵심은 이것이다:
+
+1. 광선의 방정식을 구의 방정식에 **대입**하면 t에 대한 **이차방정식**이 된다.
+2. **판별식 D**의 부호로 충돌 여부를 알 수 있다.
+3. **양수인 t** 중 작은 것을 택하면 카메라에서 가장 가까운 충돌점을 얻는다.
+4. 법선벡터는 `normalize(충돌점 - 구 중심)`으로 간단하게 구한다.
+
+고등학교 때 배운 이차방정식의 근의 공식이 3D 세계에서 이렇게 쓰일 줄은 몰랐다. 이것이 레이트레이싱의 가장 기본적인 형태이고, 여기에 삼각형, 조명, 그림자, 반사, 굴절이 더해지면 우리가 아는 포토리얼리스틱 렌더링이 된다.
+
+---
+
+### 참고자료
+
+- [Wikipedia: Line-sphere intersection](https://en.wikipedia.org/wiki/Line%E2%80%93sphere_intersection)
+- [Scratchapixel: Ray-Sphere Intersection](https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-sphere-intersection.html)
+- [GeoGebra Interactive Visualization](https://www.geogebra.org/m/uxv5kfum)
+- Ray Tracing in One Weekend — Peter Shirley
