@@ -15,6 +15,7 @@ function Computer({ isMobile }) {
   }, [computer.scene]);
 
   useFrame(({ clock }) => {
+    if (isMobile) return;
     if (!groupRef.current) return;
 
     const t = clock.getElapsedTime();
@@ -58,10 +59,12 @@ export default function Computers3D() {
   return (
     <Canvas
       key={isMobile ? "m" : "d"}
+      frameloop={isMobile ? "demand" : "always"}
       dpr={[1, 1]}
       // 모바일은 fov 를 더 넓혀(줌아웃) 좁은 화면에서도 모델 전체가 들어오게
       camera={{ position: isMobile ? [15.5, 2.7, 4.6] : [20, 3, 5], fov: 30 }}
       gl={{ alpha: true, antialias: false, powerPreference: "high-performance" }}
+      performance={{ min: 0.5 }}
       style={{
         background: "transparent",
         pointerEvents: isMobile ? "none" : "auto",

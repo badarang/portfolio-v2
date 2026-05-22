@@ -18,10 +18,7 @@ export default function Hero() {
   const { content } = useI18n();
   const { profile, ui } = content;
   const [wordIndex, setWordIndex] = useState(0);
-  const [useLightHero, setUseLightHero] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(max-width: 767px), (pointer: coarse)").matches;
-  });
+  const [showHero3D, setShowHero3D] = useState(false);
   const activeWord = profile.slogan[wordIndex];
 
   useEffect(() => {
@@ -34,10 +31,34 @@ export default function Hero() {
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 767px), (pointer: coarse)");
-    const update = () => setUseLightHero(mq.matches);
+    let timer;
+    let idleId;
+
+    const update = () => {
+      window.clearTimeout(timer);
+      if (idleId && window.cancelIdleCallback) window.cancelIdleCallback(idleId);
+
+      if (!mq.matches) {
+        setShowHero3D(true);
+        return;
+      }
+
+      setShowHero3D(false);
+      const load = () => setShowHero3D(true);
+      if (window.requestIdleCallback) {
+        idleId = window.requestIdleCallback(load, { timeout: 1400 });
+      } else {
+        timer = window.setTimeout(load, 850);
+      }
+    };
+
     update();
     mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    return () => {
+      window.clearTimeout(timer);
+      if (idleId && window.cancelIdleCallback) window.cancelIdleCallback(idleId);
+      mq.removeEventListener("change", update);
+    };
   }, []);
 
   const scrollTo = (id) =>
@@ -165,14 +186,12 @@ export default function Hero() {
         <div className="hero-model-shell pointer-events-none absolute bottom-[10%] right-[2%] z-10 h-[38vh] w-[88%] sm:pointer-events-auto sm:relative sm:bottom-auto sm:right-auto sm:h-[460px] sm:w-full lg:h-[600px]">
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[78%] w-[88%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-simple/[0.14] blur-[90px]" />
           <div className="pointer-events-none absolute bottom-[14%] left-[10%] h-20 w-[78%] rounded-full bg-hook/[0.16] blur-[55px]" />
-          {useLightHero ? (
+          {!showHero3D ? (
             <MobileHeroScene image={heroPreview} />
           ) : (
             <Suspense
               fallback={
-                <div className="grid h-full place-items-center text-sm text-muted">
-                  <span className="animate-pulse">{ui.hero.loading3d}</span>
-                </div>
+                <MobileHeroScene image={heroPreview} />
               }
             >
               <Computers3D />
