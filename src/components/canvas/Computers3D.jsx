@@ -58,7 +58,7 @@ export default function Computers3D() {
   return (
     <Canvas
       key={isMobile ? "m" : "d"}
-      dpr={[1, 1.25]}
+      dpr={[1, 1]}
       // 모바일은 fov 를 더 넓혀(줌아웃) 좁은 화면에서도 모델 전체가 들어오게
       camera={{ position: isMobile ? [15.5, 2.7, 4.6] : [20, 3, 5], fov: 30 }}
       gl={{ alpha: true, antialias: false, powerPreference: "high-performance" }}
@@ -82,5 +82,3 @@ export default function Computers3D() {
     </Canvas>
   );
 }
-
-useGLTF.preload("/desktop_pc/scene-desktop.glb");

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const layers = [
   { color: [34, 211, 238], baseFrac: 0.4, amp: 26, waves: 2.0, speed: 0.5, alpha: 0.13, phase: 0.0 },
@@ -18,8 +18,22 @@ function waveOffset(x, f, t, amp, phase) {
 
 export default function Waves() {
   const ref = useRef(null);
+  const [staticWaves, setStaticWaves] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce)").matches;
+  });
 
   useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px), (pointer: coarse), (prefers-reduced-motion: reduce)");
+    const update = () => setStaticWaves(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (staticWaves) return undefined;
+
     const canvas = ref.current;
     const ctx = canvas.getContext("2d");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -114,7 +128,16 @@ export default function Waves() {
       window.removeEventListener("resize", resize);
       reducedMotion.removeEventListener("change", onMotionChange);
     };
-  }, []);
+  }, [staticWaves]);
+
+  if (staticWaves) {
+    return (
+      <div
+        aria-hidden
+        className="mobile-static-waves pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[52vh] w-full opacity-80"
+      />
+    );
+  }
 
   return (
     <canvas
