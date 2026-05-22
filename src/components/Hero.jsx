@@ -1,11 +1,9 @@
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useI18n } from "../i18n";
 import Waves from "./Waves";
 import FloatingIcons from "./FloatingIcons";
-
-// 3D 캔버스는 무거우니 lazy-load — 첫 페인트를 막지 않게.
-const Computers3D = lazy(() => import("./canvas/Computers3D"));
+import Computers3D from "./canvas/Computers3D";
 
 const accentFor = {
   Fun: "text-hook",
@@ -17,7 +15,6 @@ export default function Hero() {
   const { content } = useI18n();
   const { profile, ui } = content;
   const [wordIndex, setWordIndex] = useState(0);
-  const [showHero3D, setShowHero3D] = useState(false);
   const activeWord = profile.slogan[wordIndex];
 
   useEffect(() => {
@@ -26,38 +23,6 @@ export default function Hero() {
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px), (pointer: coarse)");
-    let timer;
-    let idleId;
-
-    const update = () => {
-      window.clearTimeout(timer);
-      if (idleId && window.cancelIdleCallback) window.cancelIdleCallback(idleId);
-
-      if (!mq.matches) {
-        setShowHero3D(true);
-        return;
-      }
-
-      setShowHero3D(false);
-      const load = () => setShowHero3D(true);
-      if (window.requestIdleCallback) {
-        idleId = window.requestIdleCallback(load, { timeout: 1400 });
-      } else {
-        timer = window.setTimeout(load, 850);
-      }
-    };
-
-    update();
-    mq.addEventListener("change", update);
-    return () => {
-      window.clearTimeout(timer);
-      if (idleId && window.cancelIdleCallback) window.cancelIdleCallback(idleId);
-      mq.removeEventListener("change", update);
-    };
   }, []);
 
   const scrollTo = (id) =>
@@ -136,10 +101,10 @@ export default function Hero() {
             </ul>
           </div>
 
-          <div className="mt-2 grid w-full max-w-[44rem] grid-cols-2 gap-3 sm:flex sm:w-auto sm:max-w-none sm:flex-nowrap">
+          <div className="mt-2 grid w-full max-w-[21rem] grid-cols-2 gap-3 sm:flex sm:w-auto sm:max-w-none sm:flex-nowrap">
             <button
               onClick={() => scrollTo("career")}
-              className="inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-full bg-white px-5 py-3 text-sm font-semibold text-ink transition hover:bg-hook hover:text-white sm:min-w-[9.5rem] sm:px-6"
+              className="col-span-2 inline-flex min-h-12 min-w-0 items-center justify-center whitespace-nowrap rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink transition hover:bg-hook hover:text-white xs:col-span-1 sm:min-w-[9.5rem] sm:px-6"
             >
               {ui.hero.primary}
             </button>
@@ -185,13 +150,9 @@ export default function Hero() {
         <div className="hero-model-shell pointer-events-none absolute bottom-[10%] right-[2%] z-10 h-[38vh] w-[88%] sm:pointer-events-auto sm:relative sm:bottom-auto sm:right-auto sm:h-[460px] sm:w-full lg:h-[600px]">
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[78%] w-[88%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-simple/[0.14] blur-[90px]" />
           <div className="pointer-events-none absolute bottom-[14%] left-[10%] h-20 w-[78%] rounded-full bg-hook/[0.16] blur-[55px]" />
-          {showHero3D && (
-            <Suspense
-              fallback={null}
-            >
-              <Computers3D />
-            </Suspense>
-          )}
+          <Suspense fallback={null}>
+            <Computers3D />
+          </Suspense>
         </div>
       </div>
 

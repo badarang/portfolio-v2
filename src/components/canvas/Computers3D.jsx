@@ -85,3 +85,5 @@ export default function Computers3D() {
     </Canvas>
   );
 }
+
+useGLTF.preload("/desktop_pc/scene-desktop.glb");
