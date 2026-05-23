@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useI18n } from "../i18n";
+import { scrollToSection } from "../lib/scrollToSection";
 
 export default function Navbar() {
   const { content, language, languages, setLanguage } = useI18n();
@@ -67,7 +68,7 @@ export default function Navbar() {
   const goToSection = (id) => {
     setOpen(false);
     if (onHome) {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      scrollToSection(id);
     } else {
       navigate(`/#${id}`);
     }
@@ -136,7 +137,7 @@ export default function Navbar() {
             >
               <span
                 aria-hidden="true"
-                className="grid h-4 w-4 place-items-center rounded-[3px] bg-[#0A66C2] text-[0.62rem] font-black leading-none text-white"
+                className="brand-linkedin-mark grid h-4 w-4 place-items-center rounded-[3px] bg-[#0A66C2] text-[0.62rem] font-black leading-none text-white"
               >
                 in
               </span>
@@ -303,7 +304,7 @@ export default function Navbar() {
               >
                 <span
                   aria-hidden="true"
-                  className="grid h-4 w-4 place-items-center rounded-[3px] bg-[#0A66C2] text-[0.62rem] font-black leading-none text-white"
+                  className="brand-linkedin-mark grid h-4 w-4 place-items-center rounded-[3px] bg-[#0A66C2] text-[0.62rem] font-black leading-none text-white"
                 >
                   in
                 </span>

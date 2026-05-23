@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Haein Oh · Rapid Gameplay Programmer · Resume</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+        :root {
+            --ink: #0a0a0f;
+            --strong: #111827;
+            --body: #2c3344;
+            --muted: #5b677a;
+            --line: #e2e8f0;
+            --line-soft: #f1f5f9;
+            --accent: #0891b2;        /* simple cyan, light-tuned */
+            --accent-soft: #ecfeff;
+            --hook: #db2777;          /* pink accent (sparingly) */
+            --bg: #f6f9fd;
+            --paper: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: transparent !important;
+            color: var(--body);
+            font-family: "Space Grotesk", "Pretendard", Inter, system-ui, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.35;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* When embedded as iframe — keep enough room for the paper shadow. */
+        html.embed, html.embed body { overflow: hidden; }
+        html.embed .page { margin: 72px auto 180px; }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 24px auto;
+            padding: 11mm 14mm 13mm;
+            background: var(--paper);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.06),
+                0 6px 20px rgba(0, 0, 0, 0.5),
+                0 40px 80px rgba(0, 0, 0, 0.55),
+                0 80px 140px -40px rgba(0, 0, 0, 0.55),
+                0 0 120px rgba(34, 211, 238, 0.05);
+            border-radius: 10px;
+        }
+        /* Hide the F2 export hint when the resume is embedded in a parent page. */
+        html.embed .hint { display: none !important; }
+
+        /* === HEADER === */
+        .hero {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--strong);
+            margin-bottom: 7px;
+        }
+
+        .name-block h1 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 26pt;
+            font-weight: 700;
+            color: var(--strong);
+            margin: 0;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .name-block .role {
+            margin-top: 5px;
+            font-size: 10.5pt;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .contacts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 3px 12px;
+            font-size: 9pt;
+            color: var(--muted);
+            max-width: 58%;
+            text-align: right;
+        }
+
+        .contacts a, .contacts span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--body);
+        }
+        .contacts a:hover { color: var(--accent); }
+        .contacts i { color: var(--accent); width: 12px; }
+
+        /* === SECTIONS === */
+        .section {
+            margin-top: 11px;
+        }
+
+        .section h2 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 10pt;
+            font-weight: 700;
+            color: var(--strong);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin: 0 0 4px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section p { margin: 0; }
+
+        /* === SUMMARY === */
+        .summary {
+            font-size: 9.4pt;
+            color: var(--body);
+            line-height: 1.4;
+        }
+        .summary b { color: var(--strong); }
+
+        /* === BOTTOM TWO-COL (Awards + Education) === */
+        .bottom-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .bottom-cols .section { margin-top: 11px; }
+        .bottom-cols .edu-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            margin-bottom: 10px;
+        }
+        .bottom-cols .edu-row:last-child { margin-bottom: 0; }
+        .bottom-cols .edu-row .right {
+            font-size: 8.6pt;
+            margin-bottom: 2px;
+            order: -1;
+            color: var(--accent);
+            font-weight: 500;
+        }
+        .bottom-cols .edu-row .left {
+            font-size: 9.2pt;
+            line-height: 1.32;
+        }
+        .bottom-cols .edu-row .left span {
+            display: block;
+            margin-top: 2px;
+            font-size: 8.8pt;
+            color: var(--muted);
+        }
+
+        /* === SKILLS === */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            row-gap: 3px;
+            column-gap: 14px;
+        }
+        .skills-grid dt {
+            font-weight: 600;
+            color: var(--strong);
+            font-size: 9.8pt;
+        }
+        .skills-grid dd {
+            margin: 0;
+            color: var(--body);
+            font-size: 9.8pt;
+        }
+
+        /* === EXPERIENCE === */
+        .entry {
+            margin-bottom: 7px;
+        }
+        .entry:last-child { margin-bottom: 0; }
+
+        .entry-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 0;
+        }
+        .entry-head .left {
+            font-size: 10.2pt;
+        }
+        .entry-head .role-line {
+            font-weight: 600;
+            color: var(--strong);
+        }
+        .entry-head .org {
+            color: var(--muted);
+            font-weight: 500;
+        }
+        .entry-head .date {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 9pt;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .entry-sub {
+            font-size: 9.2pt;
+            color: var(--accent);
+            font-style: italic;
+            margin-bottom: 4px;
+        }
+
+        .entry ul {
+            margin: 4px 0 0;
+            padding-left: 15px;
+            list-style: disc;
+        }
+        .entry li {
+            margin-bottom: 3px;
+            color: var(--body);
+            line-height: 1.45;
+        }
+        .entry li b { color: var(--strong); font-weight: 600; }
+
+        /* === PROJECTS === */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 14px;
+        }
+        .project-card {
+            border-left: 2px solid var(--accent);
+            padding-left: 9px;
+        }
+        .project-card .pname {
+            font-weight: 600;
+            color: var(--strong);
+            font-size: 10pt;
+            line-height: 1.3;
+        }
+        .project-card .pmeta {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 8.4pt;
+            color: var(--muted);
+            margin-bottom: 1px;
+        }
+        .project-card p {
+            font-size: 9.4pt;
+            line-height: 1.35;
+            color: var(--body);
+            margin: 1px 0 0;
+        }
+
+        /* === EDUCATION === */
+        .edu-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 3px;
+            font-size: 9.8pt;
+            line-height: 1.35;
+        }
+        .edu-row .left b { color: var(--strong); }
+        .edu-row .left span { color: var(--muted); }
+        .edu-row .right {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 9pt;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        /* === PRINT === */
+        @media print {
+            html, body { background: white; }
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+                margin: 0 auto;
+                box-shadow: none;
+                border-radius: 0;
+                padding: 14mm 15mm;
+            }
+            a { color: var(--body); }
+            .hint { display: none; }
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        .hint {
+            position: fixed;
+            right: 14px;
+            bottom: 14px;
+            background: var(--strong);
+            color: white;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 11px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            opacity: 0.82;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <main class="page" id="resume-content">
+
+        <!-- HEADER -->
+        <header class="hero">
+            <div class="name-block">
+                <h1>Haein Oh</h1>
+                <div class="role">Rapid Gameplay Programmer</div>
+            </div>
+
+            <div class="contacts">
+                <a href="mailto:badarangdev@gmail.com"><i class="fas fa-envelope"></i>badarangdev@gmail.com</a>
+                <span><i class="fas fa-phone"></i>+82-10-2244-9436</span>
+                <a href="https://haeinoh.vercel.app"><i class="fas fa-globe"></i>haeinoh.vercel.app</a>
+                <a href="https://linkedin.com/in/haein-oh-979b29304"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                <a href="https://github.com/badarang"><i class="fab fa-github"></i>github.com/badarang</a>
+                <a href="https://badarang.itch.io"><i class="fab fa-itch-io"></i>badarang.itch.io</a>
+            </div>
+        </header>
+
+        <!-- SUMMARY -->
+        <section class="section">
+            <h2>Summary</h2>
+            <p class="summary">
+                Gameplay programmer with strengths in <b>rapid prototyping</b> and <b>responsive game feel &amp; juice</b>. <br>
+                Hands-on with <b>Unity-based mobile live-service</b> and <b>Steam releases</b>; focused on building <b>productivity tools</b> and dependable <b>LiveOps</b>. <br>
+                Shipped a <b>40,000+ download Steam title</b>, contributed to <b>Halfbrick&apos;s Jetpack Joyride Racing</b>, and ship Unity·LÖVE-based indie projects.
+            </p>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="section">
+            <h2>Skills</h2>
+            <dl class="skills-grid">
+                <dt>Languages</dt>
+                <dd>C#, C++, Lua, JavaScript, Python, GML</dd>
+
+                <dt>Engines &amp; Frameworks</dt>
+                <dd>Unity, Unreal Engine 5, LÖVE, GameMaker, React</dd>
+
+                <dt>Mobile / Live Service</dt>
+                <dd>Photon, Firebase, Firebase Crashlytics, Supabase, BACKND Match, IAP, AdMob</dd>
+
+                <dt>Tools &amp; Pipeline</dt>
+                <dd>Git, Perforce, Jenkins, Redmine, Jira</dd>
+
+                <dt>Specialties</dt>
+                <dd>Game feel (juice), DOTween-driven animation, mobile optimization, FSM/Behavior Tree AI, data-driven design</dd>
+
+                <dt>Languages &amp; Tests</dt>
+                <dd>English collaboration &amp; communication (Halfbrick daily standup meetings), TOEIC 860, TOPCIT 697</dd>
+            </dl>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section class="section">
+            <h2>Experience</h2>
+
+            <div class="entry">
+                <div class="entry-head">
+                    <div class="left">
+                        <span class="role-line">Gameplay Programmer</span>
+                        <span class="org"> | Halfbrick Studios, Brisbane, Australia</span>
+                    </div>
+                    <div class="date">Jan 2026 – May 2026</div>
+                </div>
+                <div class="entry-sub">Jetpack Joyride Racing &amp; Halfbrick+ HubApp</div>
+                <ul>
+                    <li>Developed new features for <b>Jetpack Joyride Racing</b>. Owned continuous gameplay and UX improvements in a live-service environment from soft launch through global launch.</li>
+                    <li>Built and maintained features across the <b>Halfbrick+ HubApp</b> ecosystem connecting multiple mobile titles.</li>
+                    <li>Handled <b>Crashlytics-driven crash triage</b>, QA loops, internal playtesting, and SDK maintenance, reducing recurring crash classes between releases.</li>
+                </ul>
+            </div>
+
+            <div class="entry">
+                <div class="entry-head">
+                    <div class="left">
+                        <span class="role-line">Game Client Programmer</span>
+                        <span class="org"> | 111%, Seoul, Korea</span>
+                    </div>
+                    <div class="date">Aug 2025 – Jan 2026</div>
+                </div>
+                <div class="entry-sub">Mobile Live-Service Title: “Heroll”</div>
+                <ul>
+                    <li>Developed <b>Unity-based live-service content end-to-end</b> (events, skins, achievements, in-game combat). Contributed to new-feature development and design.</li>
+                    <li>Designed and shipped the <b>achievement table system with 70+ achievements</b>. Implemented skin system, boss mechanics, augment core logic, and status-effect rework as core gameplay logic.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="section">
+            <h2>Selected Projects</h2>
+            <div class="projects-grid">
+
+                <div class="project-card">
+                    <div class="pname">Necro Rumble</div>
+                    <div class="pmeta">Unity · Steam · 2023–2024</div>
+                    <p>Strategy roguelike released through Krafton Jungle Game Lab. Led unit design, gameplay systems, and skill implementation. <b>Steam 40,000+ downloads</b>.</p>
+                </div>
+
+                <div class="project-card">
+                    <div class="pname">Moai Wanna Slam</div>
+                    <div class="pmeta">LÖVE · Lua · 2026</div>
+                    <p>LÖVE/Lua 1v1 action prototype focused on responsive combat. Resolved <b>PC/mobile shader differences</b> and improved <b>multiplayer sync &amp; lag</b> on mobile builds.</p>
+                </div>
+
+                <div class="project-card">
+                    <div class="pname">Animal Jumping!</div>
+                    <div class="pmeta">Unity · iOS/Android · 2024</div>
+                    <p>Solo mobile project. <b>Cut GC allocation 202KB → 37KB</b> via object pooling and preset caching. Procedural map generation, AdMob/IAP, and BACKND Match-based 1v1. Selected for Smilegate Membership 16th as the only solo team.</p>
+                </div>
+
+                <div class="project-card">
+                    <div class="pname">15+ GameMaker Titles</div>
+                    <div class="pmeta">GML · itch.io / Google Play · 2012–2022</div>
+                    <p>14 years of indie game development across platformers, action, and other genres. Built deep experience in gameplay logic design and responsive controls.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- AWARDS + EDUCATION (2-col) -->
+        <div class="bottom-cols">
+
+            <!-- AWARDS -->
+            <section class="section">
+                <h2>Awards</h2>
+
+                <div class="edu-row">
+                    <div class="right">Jun 2025</div>
+                    <div class="left">
+                        <b>Capstone Design Excellence Award</b>
+                        <span>Dean's Award, College of Software Convergence, Inha University. Unity Visual Tween Editor (3rd of 25 teams).</span>
+                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="right">Dec 2024</div>
+                    <div class="left">
+                        <b>Grand Prize, 12th iStartupLab Accelerating Program</b>
+                        <span>President's Award, Inha University. Awarded for “Animal Jumping!”</span>
+                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="right">Aug 2016</div>
+                    <div class="left">
+                        <b>Grand Prize, 1st Gyeonggi Game Talent Camp</b>
+                        <span>Governor of Gyeonggi Province Award. Grid-based shooter “Velocity”.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EDUCATION -->
+            <section class="section">
+                <h2>Education &amp; Programs</h2>
+
+                <div class="edu-row">
+                    <div class="right">2020 – 2026</div>
+                    <div class="left">
+                        <b>Inha University</b>
+                        <span>B.S. Computer Engineering, Minor in Design Technology. GPA 4.05 / 4.5.</span>
+                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="right">2024</div>
+                    <div class="left">
+                        <b>Smilegate Membership, 16th Cohort</b>
+                        <span>Selected with “Animal Jumping!” as the only solo team</span>
+                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="right">2023 – 2024</div>
+                    <div class="left">
+                        <b>Krafton Jungle Game Lab, 1st Cohort</b>
+                        <span>Agile collaborative development · Vertical Slice · Gameplay QA</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <div class="hint">Press <b>F2</b> to export PDF · <b>Ctrl/Cmd + P</b> to print</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        window.jsPDF = window.jspdf.jsPDF;
+
+        function exportResumePdf() {
+            const content = document.getElementById('resume-content');
+            const PAGE_W = 595.28; // A4 width  (pt)
+            const PAGE_H = 841.89; // A4 height (pt)
+
+            html2canvas(content, { scale: 2, backgroundColor: '#ffffff', useCORS: true }).then(canvas => {
+                const imgData = canvas.toDataURL('image/jpeg', 0.96);
+                const pdf = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
+
+                // Natural dimensions if scaled to A4 width
+                const naturalW = PAGE_W;
+                const naturalH = (canvas.height * naturalW) / canvas.width;
+
+                if (naturalH <= PAGE_H) {
+                    // Fits naturally — single page
+                    pdf.addImage(imgData, 'JPEG', 0, 0, naturalW, naturalH);
+                } else if (naturalH <= PAGE_H * 1.3) {
+                    // Up to 30% overflow — scale-to-fit on one page (preserve aspect)
+                    const factor = PAGE_H / naturalH;
+                    const w = naturalW * factor;
+                    const offsetX = (PAGE_W - w) / 2;
+                    pdf.addImage(imgData, 'JPEG', offsetX, 0, w, PAGE_H);
+                } else {
+                    // Major overflow — split across multiple pages
+                    let heightLeft = naturalH;
+                    let position = 0;
+                    pdf.addImage(imgData, 'JPEG', 0, position, naturalW, naturalH);
+                    heightLeft -= PAGE_H;
+                    while (heightLeft > 0) {
+                        position -= PAGE_H;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'JPEG', 0, position, naturalW, naturalH);
+                        heightLeft -= PAGE_H;
+                    }
+                }
+                pdf.save('Haein-Oh-Resume.pdf');
+            });
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'F2') {
+                event.preventDefault();
+                exportResumePdf();
+            }
+        });
+
+        /* === Embed integration: when loaded inside a parent iframe ===
+         * - mark <html class="embed"> so embed-only CSS kicks in
+         * - report content height to parent so it can resize the iframe
+         * - listen for "export-pdf" message so a host button can trigger F2
+         */
+        (function () {
+            const isEmbedded = window.parent && window.parent !== window;
+            if (!isEmbedded) return;
+
+            document.documentElement.classList.add('embed');
+
+            const post = () => {
+                const page = document.getElementById('resume-content');
+                if (!page) return;
+                const rect = page.getBoundingClientRect();
+                const h = Math.ceil(Math.max(
+                    rect.bottom,
+                    document.documentElement.scrollHeight,
+                    document.body.scrollHeight
+                ) + 40);
+                window.parent.postMessage({ type: 'resume-height', height: h }, '*');
+            };
+
+            window.addEventListener('load', post);
+            window.addEventListener('resize', post);
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(post);
+            const ro = new ResizeObserver(post);
+            ro.observe(document.getElementById('resume-content'));
+
+            window.addEventListener('message', (e) => {
+                if (e.data && e.data.type === 'export-pdf') exportResumePdf();
+            });
+        })();
+    </script>
+</body>
+</html>

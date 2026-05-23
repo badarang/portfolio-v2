@@ -8,6 +8,7 @@ import Testimonials from "../components/Testimonials";
 import Blog from "../components/Blog";
 import Activities from "../components/Activities";
 import Contact from "../components/Contact";
+import { scrollToSection } from "../lib/scrollToSection";
 
 // 홈: 홈 → 프로젝트 → 블로그 → 대외활동 으로 이어지는 연속 스크롤.
 export default function Home() {
@@ -18,7 +19,7 @@ export default function Home() {
     if (location.hash) {
       const id = location.hash.slice(1);
       setTimeout(() => {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        scrollToSection(id);
       }, 60);
     }
   }, [location]);

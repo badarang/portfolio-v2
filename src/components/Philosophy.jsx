@@ -217,13 +217,13 @@ function TechStackGroups({ techGroups }) {
                 key={item.name}
                 className="inline-flex min-h-9 w-auto items-center gap-2 rounded-lg border border-line bg-card px-2.5 py-1.5 text-xs font-bold text-soft transition hover:border-simple/50 hover:text-white md:flex md:min-h-11 md:w-full md:gap-3 md:px-3 md:py-2 md:text-sm"
               >
-                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md border border-white/10 bg-white/[0.04] text-[0.62rem] font-black text-white md:h-7 md:w-7 md:text-[0.68rem]">
+                <span className="tech-icon-badge grid h-6 w-6 shrink-0 place-items-center rounded-md border border-white/10 bg-white/[0.04] text-[0.62rem] font-black text-white md:h-7 md:w-7 md:text-[0.68rem]">
                   {item.icon ? (
                     <img
                       src={item.icon}
                       alt=""
                       loading="lazy"
-                      className="h-3.5 w-3.5 object-contain md:h-4 md:w-4"
+                      className="tech-icon-img h-3.5 w-3.5 object-contain md:h-4 md:w-4"
                     />
                   ) : (
                     item.mark

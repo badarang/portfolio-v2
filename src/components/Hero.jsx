@@ -1,9 +1,11 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { useI18n } from "../i18n";
 import Waves from "./Waves";
 import FloatingIcons from "./FloatingIcons";
 import Computers3D from "./canvas/Computers3D";
+import { scrollToSection } from "../lib/scrollToSection";
 
 const accentFor = {
   Fun: "text-hook",
@@ -86,8 +88,7 @@ export default function Hero() {
     };
   }, [shouldMount3d]);
 
-  const scrollTo = (id) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (id) => scrollToSection(id);
 
   return (
     <section className="relative flex min-h-screen items-start overflow-hidden bg-ink lg:items-center">
@@ -162,49 +163,89 @@ export default function Hero() {
             </ul>
           </div>
 
-          <div className="mt-2 grid w-full max-w-[21rem] grid-cols-2 gap-3 sm:flex sm:w-auto sm:max-w-none sm:flex-nowrap">
-            <button
-              onClick={() => scrollTo("career")}
-              className="inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-full bg-white px-4 py-3 text-[0.82rem] font-semibold text-ink transition hover:bg-hook hover:text-white xs:text-sm sm:min-w-[9.5rem] sm:px-6"
-            >
-              <span className="sm:hidden">{ui.hero.primaryMobile ?? ui.hero.primary}</span>
-              <span className="hidden sm:inline">{ui.hero.primary}</span>
-            </button>
-            <a
-              href={profile.links.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-line px-5 py-3 text-sm font-semibold text-soft transition hover:border-[#0A66C2] hover:text-white sm:min-w-[8.25rem] sm:px-6"
-            >
-              <span
-                aria-hidden="true"
-                className="grid h-4 w-4 place-items-center rounded-[3px] bg-[#0A66C2] text-[0.62rem] font-black leading-none text-white"
+          <div className="mt-2 flex w-full max-w-[26rem] flex-col gap-2.5 sm:max-w-none">
+            {/* Row 1: Primary CTA + social */}
+            <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto sm:flex-nowrap sm:gap-2.5">
+              <button
+                onClick={() => scrollTo("career")}
+                className="hero-cta-3d hero-cta-primary col-span-3 inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-full px-4 text-[0.82rem] font-bold sm:col-span-1 xs:text-sm sm:min-w-[10rem] sm:px-6"
               >
-                in
-              </span>
-              LinkedIn
-            </a>
-            <a
-              href={profile.links.github}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-line px-5 py-3 text-sm font-semibold text-soft transition hover:border-white hover:text-white sm:min-w-[8.25rem] sm:px-6"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                className="h-4 w-4 fill-current"
+                <span className="sm:hidden">{ui.hero.primaryMobile ?? ui.hero.primary}</span>
+                <span className="hidden sm:inline">{ui.hero.primary}</span>
+              </button>
+              <a
+                href={profile.links.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="hero-cta-3d hero-cta-ghost group inline-flex min-h-11 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[0.78rem] font-semibold xs:text-sm sm:min-w-[8rem] sm:px-5"
               >
-                <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.41-4.04-1.41-.55-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.53.12-3.18 0 0 1.01-.32 3.3 1.23a11.45 11.45 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z" />
-              </svg>
-              GitHub
-            </a>
-            <button
-              onClick={() => scrollTo("contact")}
-              className="inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-full border border-line px-5 py-3 text-sm font-semibold text-soft transition hover:border-white hover:text-white sm:min-w-[8.25rem] sm:px-6"
-            >
-              {ui.nav.contact}
-            </button>
+                <span
+                  aria-hidden="true"
+                  className="hero-linkedin-mark grid h-4 w-4 place-items-center rounded-[3px] bg-[#0A66C2] text-[0.6rem] font-black leading-none text-white"
+                >
+                  in
+                </span>
+                LinkedIn
+              </a>
+              <a
+                href={profile.links.github}
+                target="_blank"
+                rel="noreferrer"
+                className="hero-cta-3d hero-cta-ghost inline-flex min-h-11 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[0.78rem] font-semibold xs:text-sm sm:min-w-[8rem] sm:px-5"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  className="h-4 w-4 fill-current"
+                >
+                  <path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.41-4.04-1.41-.55-1.38-1.33-1.75-1.33-1.75-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49.99.11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.53.12-3.18 0 0 1.01-.32 3.3 1.23a11.45 11.45 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z" />
+                </svg>
+                GitHub
+              </a>
+            </div>
+
+            {/* Row 2: Resume + Contact */}
+            <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-nowrap sm:gap-2.5">
+              <Link
+                to="/resume"
+                className="hero-cta-3d hero-cta-accent inline-flex min-h-11 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[0.78rem] font-bold xs:text-sm sm:min-w-[8rem] sm:px-5"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M7 3h7l5 5v13H7z" />
+                  <path d="M14 3v5h5" />
+                  <path d="M10 13h6M10 17h6" />
+                </svg>
+                {ui.nav.resume ?? "Resume"}
+              </Link>
+              <button
+                onClick={() => scrollTo("contact")}
+                className="hero-cta-3d hero-cta-ghost inline-flex min-h-11 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[0.78rem] font-semibold xs:text-sm sm:min-w-[8rem] sm:px-5"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M4 6h16v12H4z" />
+                  <path d="M4 6l8 7 8-7" />
+                </svg>
+                {ui.nav.contact}
+              </button>
+            </div>
           </div>
         </motion.div>
 

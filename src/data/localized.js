@@ -391,7 +391,7 @@ export const localizedContent = {
     },
     ui: {
       language: "언어",
-      nav: { career: "경력 및 프로젝트", blog: "블로그", activities: "대외활동", contact: "Contact" },
+      nav: { career: "경력 및 프로젝트", blog: "블로그", activities: "대외활동", resume: "이력서", contact: "Contact" },
       theme: { light: "라이트 모드로 전환", dark: "다크 모드로 전환" },
       hero: {
         bullets: ["플레이어 중심", "빠른 프로토타이핑", "짜릿한 손맛"],
@@ -443,7 +443,7 @@ export const localizedContent = {
     profile: { name: "Haein Oh", realName: "Haein Oh", role: "Rapid Gameplay Programmer", slogan: ["Fun", "Fast", "Juicy"], intro: "A gameplay programmer focused on fast prototypes, live-service iteration, and player-first systems." },
     ui: {
       language: "Language",
-      nav: { career: "Experience & Projects", blog: "Blog", activities: "Activities", contact: "Contact" },
+      nav: { career: "Experience & Projects", blog: "Blog", activities: "Activities", resume: "Resume", contact: "Contact" },
       theme: { light: "Switch to light mode", dark: "Switch to dark mode" },
       hero: { bullets: ["Player-first", "Fast prototyping", "Juicy game feel"], primary: "Experience & Projects", primaryMobile: "Projects", loading3d: "Loading 3D model…", scrollDown: "Scroll down" },
       philosophy: { eyebrow: "Development Philosophy", title: "How I Design Fun" },
@@ -489,7 +489,7 @@ export const localizedContent = {
     profile: { name: "Haein Oh", realName: "Haein Oh", role: "Rapid Gameplay Programmer", slogan: ["Fun", "Fast", "Juicy"], intro: "专注于快速原型、在线服务迭代和玩家优先系统的 Gameplay Programmer。" },
     ui: {
       language: "语言",
-      nav: { career: "经历与项目", blog: "博客", activities: "活动", contact: "Contact" },
+      nav: { career: "经历与项目", blog: "博客", activities: "活动", resume: "简历", contact: "Contact" },
       theme: { light: "切换到浅色模式", dark: "切换到深色模式" },
       hero: { bullets: ["玩家优先", "快速原型制作", "爽快手感"], primary: "经历与项目", primaryMobile: "项目", loading3d: "正在加载 3D 模型…", scrollDown: "向下滚动" },
       philosophy: { eyebrow: "Development Philosophy", title: "我设计乐趣的标准" },
@@ -535,7 +535,7 @@ export const localizedContent = {
     profile: { name: "Haein Oh", realName: "Haein Oh", role: "Rapid Gameplay Programmer", slogan: ["Fun", "Fast", "Juicy"], intro: "高速プロトタイピング、ライブサービス改善、プレイヤーファーストなシステムに注力する Gameplay Programmer です。" },
     ui: {
       language: "言語",
-      nav: { career: "経験とプロジェクト", blog: "ブログ", activities: "活動", contact: "Contact" },
+      nav: { career: "経験とプロジェクト", blog: "ブログ", activities: "活動", resume: "履歴書", contact: "Contact" },
       theme: { light: "ライトモードへ切り替え", dark: "ダークモードへ切り替え" },
       hero: { bullets: ["プレイヤーファースト", "高速プロトタイピング", "気持ちいい手触り"], primary: "経験とプロジェクト", primaryMobile: "プロジェクト", loading3d: "3Dモデルを読み込み中…", scrollDown: "下へスクロール" },
       philosophy: { eyebrow: "Development Philosophy", title: "面白さを作る基準" },
