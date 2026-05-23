@@ -1,33 +1,43 @@
 /* eslint-disable react/no-unknown-property */
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, OrbitControls, useGLTF, useProgress } from "@react-three/drei";
 
-function CanvasLoader() {
+const MODEL_URL = "/desktop_pc/scene-desktop.glb";
+
+function CanvasLoader({ onStall }) {
   const { progress } = useProgress();
+  const roundedProgress = Math.round(progress);
+
+  useEffect(() => {
+    if (progress < 95 || progress >= 100) return undefined;
+    const timeoutId = window.setTimeout(onStall, 8000);
+    return () => window.clearTimeout(timeoutId);
+  }, [onStall, progress]);
 
   return (
     <Html center>
       <div className="grid min-w-24 place-items-center gap-3 text-white">
         <span className="h-9 w-9 rounded-full border-2 border-white/20 border-t-simple animate-spin" />
         <span className="font-mono text-xs font-bold text-soft">
-          {Math.round(progress)}%
+          {roundedProgress}%
         </span>
       </div>
     </Html>
   );
 }
 
-function Computer({ isMobile }) {
+function Computer({ isMobile, onReady }) {
   const groupRef = useRef(null);
-  const computer = useGLTF("/desktop_pc/scene-desktop.glb");
+  const computer = useGLTF(MODEL_URL);
 
   useEffect(() => {
     computer.scene.traverse((child) => {
       child.castShadow = false;
       child.receiveShadow = false;
     });
-  }, [computer.scene]);
+    onReady();
+  }, [computer.scene, onReady]);
 
   useFrame(({ clock }) => {
     if (isMobile || !groupRef.current) return;
@@ -61,6 +71,9 @@ function Computer({ isMobile }) {
 
 export default function Computers3D() {
   const [isMobile, setIsMobile] = useState(false);
+  const [modelReady, setModelReady] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
+  const retryCountRef = useRef(0);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
@@ -70,10 +83,25 @@ export default function Computers3D() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
+  const handleReady = useCallback(() => {
+    setModelReady(true);
+    retryCountRef.current = 0;
+  }, []);
+
+  const handleStall = useCallback(() => {
+    if (retryCountRef.current >= 2) return;
+    retryCountRef.current += 1;
+    setModelReady(false);
+    if (typeof useGLTF.clear === "function") {
+      useGLTF.clear(MODEL_URL);
+    }
+    setRetryKey((value) => value + 1);
+  }, []);
+
   return (
     <Canvas
-      key={isMobile ? "m" : "d"}
-      frameloop={isMobile ? "demand" : "always"}
+      key={`${isMobile ? "m" : "d"}-${retryKey}`}
+      frameloop={isMobile && modelReady ? "demand" : "always"}
       dpr={[1, 1]}
       // 모바일은 fov 를 더 넓혀(줌아웃) 좁은 화면에서도 모델 전체가 들어오게
       camera={{ position: isMobile ? [15.5, 2.7, 4.6] : [20, 3, 5], fov: 30 }}
@@ -85,7 +113,7 @@ export default function Computers3D() {
         touchAction: "pan-y",
       }}
     >
-      <Suspense fallback={<CanvasLoader />}>
+      <Suspense fallback={<CanvasLoader onStall={handleStall} />}>
         {!isMobile && (
           <OrbitControls
             enableZoom={false}
@@ -94,10 +122,10 @@ export default function Computers3D() {
             minPolarAngle={Math.PI / 2}
           />
         )}
-        <Computer isMobile={isMobile} />
+        <Computer isMobile={isMobile} onReady={handleReady} />
       </Suspense>
     </Canvas>
   );
 }
 
-useGLTF.preload("/desktop_pc/scene-desktop.glb");
+useGLTF.preload(MODEL_URL);

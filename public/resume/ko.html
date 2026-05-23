@@ -349,6 +349,51 @@
             }
         }
 
+        html.exporting,
+        html.exporting body {
+            width: 210mm !important;
+            overflow: visible !important;
+            font-size: 9.5pt !important;
+            line-height: 1.4 !important;
+        }
+        html.exporting .page {
+            width: 210mm !important;
+            min-height: 297mm !important;
+            margin: 0 !important;
+            padding: 11mm 14mm 13mm !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        html.exporting .hero {
+            display: flex !important;
+            align-items: flex-end !important;
+            justify-content: space-between !important;
+            gap: 24px !important;
+            padding-bottom: 5px !important;
+        }
+        html.exporting .contacts {
+            justify-content: flex-end !important;
+            max-width: 82mm !important;
+            margin-top: 0 !important;
+            text-align: right !important;
+        }
+        html.exporting .skills-grid {
+            grid-template-columns: 22mm 1fr !important;
+            row-gap: 0 !important;
+        }
+        html.exporting .skills-grid dt {
+            margin-top: 0 !important;
+        }
+        html.exporting .entry-head {
+            flex-direction: row !important;
+            align-items: baseline !important;
+            gap: 8px !important;
+        }
+        html.exporting .projects-grid,
+        html.exporting .bottom-cols {
+            grid-template-columns: 1fr 1fr !important;
+        }
+
         .hint {
             position: fixed;
             right: 14px;
@@ -562,12 +607,25 @@
     <script>
         window.jsPDF = window.jspdf.jsPDF;
 
-        function exportResumePdf() {
+        async function exportResumePdf() {
             const content = document.getElementById('resume-content');
             const PAGE_W = 595.28;
             const PAGE_H = 841.89;
 
-            html2canvas(content, { scale: 2, backgroundColor: '#ffffff', useCORS: true }).then(canvas => {
+            document.documentElement.classList.add('exporting');
+            if (document.fonts && document.fonts.ready) await document.fonts.ready;
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+            try {
+                const canvas = await html2canvas(content, {
+                    scale: 2,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    windowWidth: content.scrollWidth,
+                    windowHeight: content.scrollHeight,
+                    width: content.scrollWidth,
+                    height: content.scrollHeight
+                });
                 const imgData = canvas.toDataURL('image/jpeg', 0.96);
                 const pdf = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
 
@@ -598,7 +656,9 @@
                     }
                 }
                 pdf.save('오해인-이력서.pdf');
-            });
+            } finally {
+                document.documentElement.classList.remove('exporting');
+            }
         }
 
         document.addEventListener('keydown', function (event) {
