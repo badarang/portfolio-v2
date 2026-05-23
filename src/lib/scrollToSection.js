@@ -6,8 +6,14 @@ export function scrollToSection(id, options = {}) {
 
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
   const sectionPaddingOffset = isMobile ? 64 : 40;
+  const perSectionOffset = {
+    activities: isMobile ? 36 : 48,
+  };
   const top =
-    target.getBoundingClientRect().top + window.scrollY + sectionPaddingOffset;
+    target.getBoundingClientRect().top +
+    window.scrollY +
+    sectionPaddingOffset +
+    (perSectionOffset[id] ?? 0);
 
   window.scrollTo({
     top: Math.max(top, 0),
