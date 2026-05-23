@@ -1,11 +1,12 @@
-import { Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useI18n } from "../i18n";
 import Waves from "./Waves";
 import FloatingIcons from "./FloatingIcons";
-import Computers3D from "./canvas/Computers3D";
 import { scrollToSection } from "../lib/scrollToSection";
+
+const Computers3D = lazy(() => import("./canvas/Computers3D"));
 
 const accentFor = {
   Fun: "text-hook",
@@ -39,6 +40,11 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
+    if (isMobile) {
+      setShouldMount3d(false);
+      return undefined;
+    }
+
     if (shouldMount3d) return undefined;
 
     const target = modelShellRef.current;
@@ -86,7 +92,7 @@ export default function Hero() {
         window.cancelIdleCallback(idleId);
       }
     };
-  }, [shouldMount3d]);
+  }, [isMobile, shouldMount3d]);
 
   const scrollTo = (id) => scrollToSection(id);
 
@@ -256,7 +262,16 @@ export default function Hero() {
         >
           <div className="pointer-events-none absolute left-1/2 top-1/2 h-[58%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-simple/[0.08] blur-[42px] sm:h-[78%] sm:w-[88%] sm:bg-simple/[0.14] sm:blur-[90px]" />
           <div className="pointer-events-none absolute bottom-[14%] left-[10%] h-14 w-[60%] rounded-full bg-hook/[0.08] blur-[30px] sm:h-20 sm:w-[78%] sm:bg-hook/[0.16] sm:blur-[55px]" />
-          {shouldMount3d ? (
+          {isMobile ? (
+            <div className="absolute inset-0 flex items-center justify-end pr-2 opacity-90">
+              <div className="relative h-24 w-32 rounded-2xl border border-white/10 bg-white/[0.06] shadow-glow backdrop-blur-md">
+                <span className="absolute left-5 top-5 h-3 w-3 rounded-full bg-simple shadow-[0_0_18px_rgba(34,211,238,0.7)]" />
+                <span className="absolute left-10 top-5 h-2 w-12 rounded-full bg-white/70" />
+                <span className="absolute left-10 top-10 h-2 w-8 rounded-full bg-white/35" />
+                <span className="absolute bottom-4 right-4 h-9 w-9 rounded-full border border-hook/40 bg-hook/15" />
+              </div>
+            </div>
+          ) : shouldMount3d ? (
             <Suspense
               fallback={
                 <div className="grid h-full place-items-center text-sm text-muted">
