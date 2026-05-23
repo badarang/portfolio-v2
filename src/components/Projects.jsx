@@ -215,8 +215,12 @@ function FeaturedProject({ p, index, labels }) {
 export default function Projects() {
   const { content } = useI18n();
   const { projects, ui } = content;
+  const [showArchive, setShowArchive] = useState(false);
   const featured = projects.filter((p) => p.featured);
   const rest = projects.filter((p) => !p.featured);
+  const archiveLabel = showArchive
+    ? ui.projects.archiveHide
+    : ui.projects.archiveShow.replace("{count}", rest.length);
 
   return (
     <section id="projects" className="container-px py-24">
@@ -233,7 +237,29 @@ export default function Projects() {
         ))}
       </div>
 
-      <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <button
+        type="button"
+        onClick={() => setShowArchive((value) => !value)}
+        className="mt-5 flex w-full items-center justify-between rounded-xl border border-line bg-card px-4 py-3 text-left font-bold text-white sm:hidden"
+        aria-expanded={showArchive}
+      >
+        <span>{archiveLabel}</span>
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          className={`h-5 w-5 fill-current text-simple transition ${
+            showArchive ? "rotate-180" : ""
+          }`}
+        >
+          <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41Z" />
+        </svg>
+      </button>
+
+      <div
+        className={`mt-4 gap-5 sm:mt-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 ${
+          showArchive ? "grid" : "hidden"
+        }`}
+      >
         {rest.map((p, i) => (
           <Reveal key={p.name} delay={(i % 3) * 0.06}>
             <ProjectCard p={p} />

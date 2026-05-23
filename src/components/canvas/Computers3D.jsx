@@ -1,7 +1,22 @@
 /* eslint-disable react/no-unknown-property */
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { Html, OrbitControls, useGLTF, useProgress } from "@react-three/drei";
+
+function CanvasLoader() {
+  const { progress } = useProgress();
+
+  return (
+    <Html center>
+      <div className="grid min-w-24 place-items-center gap-3 text-white">
+        <span className="h-9 w-9 rounded-full border-2 border-white/20 border-t-simple animate-spin" />
+        <span className="font-mono text-xs font-bold text-soft">
+          {Math.round(progress)}%
+        </span>
+      </div>
+    </Html>
+  );
+}
 
 function Computer({ isMobile }) {
   const groupRef = useRef(null);
@@ -15,11 +30,10 @@ function Computer({ isMobile }) {
   }, [computer.scene]);
 
   useFrame(({ clock }) => {
-    if (isMobile) return;
-    if (!groupRef.current) return;
+    if (isMobile || !groupRef.current) return;
 
     const t = clock.getElapsedTime();
-    const baseY = isMobile ? -2.45 : -3.1;
+    const baseY = -3.1;
     groupRef.current.rotation.y = -0.45 + Math.sin(t * 0.55) * 0.045;
     groupRef.current.rotation.x = -0.01 + Math.sin(t * 0.42) * 0.012;
     groupRef.current.rotation.z = -0.1 + Math.sin(t * 0.5 + 0.8) * 0.01;
@@ -71,7 +85,7 @@ export default function Computers3D() {
         touchAction: "pan-y",
       }}
     >
-      <Suspense fallback={null}>
+      <Suspense fallback={<CanvasLoader />}>
         {!isMobile && (
           <OrbitControls
             enableZoom={false}

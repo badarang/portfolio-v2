@@ -7,3 +7,4 @@ dist
 .env.publish
 *.log
 .DS_Store
+.env*.local

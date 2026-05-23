@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useI18n } from "../i18n";
 
@@ -7,6 +7,7 @@ export default function Navbar() {
   const { profile, ui } = content;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const headerRef = useRef(null);
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return "dark";
     return (
@@ -36,6 +37,28 @@ export default function Navbar() {
     window.localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const onPointerDown = (event) => {
+      if (!headerRef.current?.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
   const toggleTheme = () => {
     setTheme((current) => (current === "dark" ? "light" : "dark"));
   };
@@ -52,6 +75,7 @@ export default function Navbar() {
 
   return (
     <header
+      ref={headerRef}
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled || open
           ? "border-b border-line bg-surface shadow-card"
@@ -66,10 +90,10 @@ export default function Navbar() {
         >
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-white/15 bg-white shadow-[0_0_22px_rgba(34,211,238,0.2)]">
             <img
-              src="/icons/badarang-runner.png"
+              src="/icons/profile-haein.jpg"
               alt=""
               aria-hidden="true"
-              className="h-7 w-7 object-contain"
+              className="h-full w-full rounded-full object-cover"
             />
           </span>
           <span className="flex min-w-0 items-center gap-2">
@@ -207,21 +231,46 @@ export default function Navbar() {
         </ul>
 
         <button
-          className="lg:hidden"
+          className="text-strong lg:hidden"
           aria-label="menu"
+          aria-expanded={open}
+          aria-controls="mobile-nav"
           onClick={() => setOpen((v) => !v)}
         >
           <div className="space-y-1.5">
-            <span className="block h-0.5 w-6 bg-strong" />
-            <span className="block h-0.5 w-6 bg-strong" />
-            <span className="block h-0.5 w-4 bg-strong" />
+            <span
+              className={`block h-0.5 w-6 origin-center bg-current transition-transform duration-200 ${
+                open ? "translate-y-2 rotate-45" : ""
+              }`}
+            />
+            <span
+              className={`block h-0.5 w-6 bg-current transition-opacity duration-200 ${
+                open ? "opacity-0" : ""
+              }`}
+            />
+            <span
+              className={`block h-0.5 origin-center bg-current transition-all duration-200 ${
+                open ? "w-6 -translate-y-2 -rotate-45" : "w-4"
+              }`}
+            />
           </div>
         </button>
       </nav>
 
-      {open && (
-        <div className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface px-6 py-5 shadow-card lg:hidden">
-          <ul className="flex flex-col gap-4 text-base font-semibold">
+      <div
+        id="mobile-nav"
+        className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-250 ease-out lg:hidden ${
+          open ? "grid-rows-[1fr] opacity-100" : "pointer-events-none grid-rows-[0fr] opacity-0"
+        }`}
+        aria-hidden={!open}
+      >
+        <div className="min-h-0 overflow-hidden">
+        <div
+          className={`mobile-nav-panel border-t border-line bg-ink px-6 py-4 transition-transform duration-250 ease-out ${
+            open ? "translate-y-0" : "-translate-y-2"
+          }`}
+        >
+          <ul className="flex flex-col gap-4">
             {links.map((l) => (
               <li key={l.id || l.path}>
                 {l.path ? (
@@ -344,7 +393,8 @@ export default function Navbar() {
             </li>
           </ul>
         </div>
-      )}
+        </div>
+      </div>
     </header>
   );
 }

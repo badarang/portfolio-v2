@@ -3,7 +3,7 @@ import Reveal from "./Reveal";
 import { useI18n } from "../i18n";
 
 const cardClass =
-  "group flex w-full items-center justify-between rounded-xl border border-line bg-surface px-5 py-4 text-left transition-colors hover:border-white";
+  "group flex w-full items-center justify-between gap-3 rounded-xl border border-line bg-surface px-3 py-4 text-left transition-colors hover:border-white sm:px-5";
 
 function Icon({ type }) {
   if (type === "linkedin") {
@@ -48,6 +48,25 @@ function CopyIcon() {
       <path d="M8 8h10v12H8z" />
       <path d="M6 16H4V4h12v2" />
     </svg>
+  );
+}
+
+function ActionIcon({ type }) {
+  return (
+    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-white/10 bg-white/[0.04] text-muted transition group-hover:border-white/20 group-hover:text-white">
+      {type === "copy" ? (
+        <CopyIcon />
+      ) : (
+        <svg
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          className="h-5 w-5 fill-none stroke-current stroke-2 transition-transform group-hover:translate-x-0.5"
+        >
+          <path d="M5 12h14" />
+          <path d="m13 6 6 6-6 6" />
+        </svg>
+      )}
+    </span>
   );
 }
 
@@ -116,7 +135,7 @@ export default function Contact() {
 
   return (
     <section id="contact" className="container-px py-24">
-      <div className="card-surface relative overflow-hidden p-10 sm:p-14">
+      <div className="card-surface relative overflow-hidden p-4 sm:p-14">
         <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-hook/20 blur-[100px]" />
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -130,12 +149,10 @@ export default function Contact() {
                       <span className="block text-xs uppercase tracking-wider text-muted">
                         {c.label}
                       </span>
-                      <span className="font-medium text-white">{c.value}</span>
+                      <span className="block truncate font-medium text-white">{c.value}</span>
                     </span>
                   </span>
-                  <span className="text-muted transition-colors group-hover:text-white">
-                    <CopyIcon />
-                  </span>
+                  <ActionIcon type="copy" />
                 </button>
               ) : (
                 <a
@@ -150,12 +167,10 @@ export default function Contact() {
                       <span className="block text-xs uppercase tracking-wider text-muted">
                         {c.label}
                       </span>
-                      <span className="font-medium text-white">{c.value}</span>
+                      <span className="block truncate font-medium text-white">{c.value}</span>
                     </span>
                   </span>
-                  <span className="text-muted transition-transform group-hover:translate-x-1">
-                    →
-                  </span>
+                  <ActionIcon />
                 </a>
               )}
             </Reveal>

@@ -23,8 +23,8 @@ const strengthVisuals = [
   { image: fxPolish },
   { image: project21 },
   { image: optimization },
-  { image: project18 },
   { image: project15 },
+  { image: project18 },
 ];
 
 function LineBreakText({ text }) {
@@ -118,7 +118,7 @@ function PhilosophyRow({ p, index }) {
 
 function StrengthList({ strengths }) {
   return (
-    <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="mt-8 grid grid-cols-2 gap-2 sm:mt-10 sm:gap-3 lg:grid-cols-3">
       {strengths.map((s, index) => {
         const visual = strengthVisuals[index];
         return (
@@ -128,8 +128,8 @@ function StrengthList({ strengths }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ delay: index * 0.06, duration: 0.35 }}
-          className={`strength-card group relative overflow-hidden border border-line/80 bg-card/70 p-5 transition hover:border-simple/45 hover:bg-card ${
-            index === 0 ? "sm:col-span-2 lg:col-span-3" : ""
+          className={`strength-card group relative min-h-[8rem] overflow-hidden border border-line/80 bg-card/70 p-3 transition hover:border-simple/45 hover:bg-card sm:p-5 ${
+            index === 0 ? "col-span-2 lg:col-span-3" : ""
           }`}
         >
           {visual?.image && (
@@ -162,29 +162,31 @@ function StrengthList({ strengths }) {
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-card via-card/76 to-card/25" />
             </>
           )}
-          <div className="relative z-10">
-          <div className="flex items-start justify-between gap-4">
+          <div className="relative z-10 flex h-full flex-col">
+          <div className="flex items-start justify-between gap-2 sm:gap-4">
             <span className="font-mono text-[0.68rem] font-bold text-muted">
               0{index + 1}
             </span>
             <span className={`bg-gradient-to-r from-simple to-juicy bg-clip-text font-display font-bold leading-none text-transparent ${
-              index === 0 ? "text-5xl sm:text-6xl" : "text-2xl"
+              index === 0 ? "text-3xl sm:text-6xl" : "text-lg xs:text-xl sm:text-2xl"
             }`}>
               {s.stat}
             </span>
           </div>
 
-          <h4 className={`mt-5 font-display font-bold leading-tight text-white ${
-            index === 0 ? "text-3xl sm:text-4xl" : "text-xl"
+          <h4 className={`mt-3 font-display font-bold leading-tight text-white sm:mt-5 ${
+            index === 0 ? "text-xl sm:text-4xl" : "text-[0.95rem] xs:text-base sm:text-xl"
           }`}>
             {s.title}
           </h4>
-          <p className={`mt-2 leading-relaxed text-soft ${
-            index === 0 ? "max-w-3xl text-base sm:text-lg" : "text-sm"
+          <p className={`mt-1.5 line-clamp-2 leading-5 text-soft sm:mt-2 sm:line-clamp-none sm:leading-relaxed ${
+            index === 0 ? "max-w-3xl text-sm sm:text-lg" : "text-xs sm:text-sm"
           }`}>
             {s.desc}
           </p>
-          <div className="mt-4 h-px w-12 bg-gradient-to-r from-hook via-simple to-transparent opacity-70 transition-all group-hover:w-20" />
+          <div className="mt-auto pt-3">
+            <div className="h-px w-10 bg-gradient-to-r from-hook via-simple to-transparent opacity-70 transition-all group-hover:w-16 sm:w-12 sm:group-hover:w-20" />
+          </div>
           </div>
         </motion.div>
         );
@@ -195,7 +197,7 @@ function StrengthList({ strengths }) {
 
 function TechStackGroups({ techGroups }) {
   return (
-    <div className="mt-8 grid gap-3 md:grid-cols-2 xl:grid-cols-5">
+    <div className="mt-8 grid gap-2 md:gap-3 md:grid-cols-2 xl:grid-cols-5">
       {techGroups.map((group, index) => (
         <motion.div
           key={group.title}
@@ -203,25 +205,25 @@ function TechStackGroups({ techGroups }) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ delay: index * 0.05, duration: 0.35 }}
-          className="relative overflow-hidden rounded-xl border border-line/80 bg-surface/70 p-5"
+          className="relative overflow-hidden rounded-xl border border-line/80 bg-surface/70 p-4 md:p-5"
         >
           <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-simple/10 blur-[45px]" />
-          <p className="relative font-display text-lg font-bold text-white">
+          <p className="relative font-display text-base font-bold text-white md:text-lg">
             {group.title}
           </p>
-          <ul className="relative mt-4 grid gap-2">
+          <ul className="relative mt-3 flex flex-wrap gap-2 md:mt-4 md:grid">
             {group.items.map((item) => (
               <li
                 key={item.name}
-                className="flex min-h-11 items-center gap-3 rounded-lg border border-line bg-card px-3 py-2 text-sm font-bold text-soft transition hover:border-simple/50 hover:text-white"
+                className="inline-flex min-h-9 w-auto items-center gap-2 rounded-lg border border-line bg-card px-2.5 py-1.5 text-xs font-bold text-soft transition hover:border-simple/50 hover:text-white md:flex md:min-h-11 md:w-full md:gap-3 md:px-3 md:py-2 md:text-sm"
               >
-                <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-white/10 bg-white/[0.04] text-[0.68rem] font-black text-white">
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-md border border-white/10 bg-white/[0.04] text-[0.62rem] font-black text-white md:h-7 md:w-7 md:text-[0.68rem]">
                   {item.icon ? (
                     <img
                       src={item.icon}
                       alt=""
                       loading="lazy"
-                      className="h-4 w-4 object-contain"
+                      className="h-3.5 w-3.5 object-contain md:h-4 md:w-4"
                     />
                   ) : (
                     item.mark

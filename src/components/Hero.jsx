@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useI18n } from "../i18n";
 import Waves from "./Waves";
@@ -15,6 +15,9 @@ export default function Hero() {
   const { content } = useI18n();
   const { profile, ui } = content;
   const [wordIndex, setWordIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const [shouldMount3d, setShouldMount3d] = useState(false);
+  const modelShellRef = useRef(null);
   const activeWord = profile.slogan[wordIndex];
 
   useEffect(() => {
@@ -25,6 +28,64 @@ export default function Hero() {
     return () => window.clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    setIsMobile(mq.matches);
+    const onChange = (e) => setIsMobile(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  useEffect(() => {
+    if (shouldMount3d) return undefined;
+
+    const target = modelShellRef.current;
+    if (!target) return undefined;
+
+    let timeoutId;
+    let idleId;
+    const scheduleMount = () => {
+      if (shouldMount3d) return;
+      if ("requestIdleCallback" in window) {
+        idleId = window.requestIdleCallback(() => setShouldMount3d(true), {
+          timeout: 1200,
+        });
+      } else {
+        timeoutId = window.setTimeout(() => setShouldMount3d(true), 350);
+      }
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      scheduleMount();
+      return () => {
+        window.clearTimeout(timeoutId);
+        if (idleId && "cancelIdleCallback" in window) {
+          window.cancelIdleCallback(idleId);
+        }
+      };
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          scheduleMount();
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "160px 0px" }
+    );
+
+    observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timeoutId);
+      if (idleId && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idleId);
+      }
+    };
+  }, [shouldMount3d]);
+
   const scrollTo = (id) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
@@ -32,10 +93,10 @@ export default function Hero() {
     <section className="relative flex min-h-screen items-start overflow-hidden bg-ink lg:items-center">
       {/* 감각적 배경: 그라데이션 글로우 + 그리드 */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-hook/20 blur-[120px]" />
-        <div className="absolute right-0 top-40 h-96 w-96 rounded-full bg-simple/20 blur-[120px]" />
-        <div className="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-juicy/10 blur-[120px]" />
-        <div className="absolute left-1/2 top-1/2 h-[34rem] w-[54rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-simple/[0.06] blur-[150px]" />
+        <div className="absolute -left-32 top-20 hidden h-96 w-96 rounded-full bg-hook/20 blur-[120px] sm:block" />
+        <div className="absolute right-0 top-40 hidden h-96 w-96 rounded-full bg-simple/20 blur-[120px] sm:block" />
+        <div className="absolute bottom-0 left-1/3 hidden h-80 w-80 rounded-full bg-juicy/10 blur-[120px] sm:block" />
+        <div className="absolute left-1/2 top-1/2 hidden h-[34rem] w-[54rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-simple/[0.06] blur-[150px] sm:block" />
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -47,9 +108,9 @@ export default function Hero() {
       </div>
 
       {/* 배경 파도 + 둥둥 떠다니는 아이콘 */}
-      <Waves />
-      <FloatingIcons />
-      <div className="hero-scanlines pointer-events-none absolute inset-0 z-[1]" />
+      {!isMobile && <Waves />}
+      {!isMobile && <FloatingIcons />}
+      <div className="hero-scanlines pointer-events-none absolute inset-0 z-[1] hidden sm:block" />
 
       <div className="container-px relative z-10 grid min-h-screen items-start gap-8 pb-20 pt-28 sm:py-28 lg:grid-cols-2 lg:items-center lg:pb-36 lg:pt-20">
         {/* 좌측: 카피 */}
@@ -62,10 +123,10 @@ export default function Hero() {
           <span className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/[0.07] px-2.5 py-2 pr-4 text-xs font-bold text-white shadow-glow backdrop-blur sm:text-base">
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white shadow-[0_0_18px_rgba(255,255,255,0.25)]">
               <img
-                src="/icons/badarang-runner.png"
+                src="/icons/profile-haein.jpg"
                 alt=""
                 aria-hidden="true"
-                className="h-6 w-6 object-contain"
+                className="h-full w-full rounded-full object-cover"
               />
             </span>
             {profile.role}
@@ -104,9 +165,10 @@ export default function Hero() {
           <div className="mt-2 grid w-full max-w-[21rem] grid-cols-2 gap-3 sm:flex sm:w-auto sm:max-w-none sm:flex-nowrap">
             <button
               onClick={() => scrollTo("career")}
-              className="col-span-2 inline-flex min-h-12 min-w-0 items-center justify-center whitespace-nowrap rounded-full bg-white px-4 py-3 text-sm font-semibold text-ink transition hover:bg-hook hover:text-white xs:col-span-1 sm:min-w-[9.5rem] sm:px-6"
+              className="inline-flex min-h-12 items-center justify-center whitespace-nowrap rounded-full bg-white px-4 py-3 text-[0.82rem] font-semibold text-ink transition hover:bg-hook hover:text-white xs:text-sm sm:min-w-[9.5rem] sm:px-6"
             >
-              {ui.hero.primary}
+              <span className="sm:hidden">{ui.hero.primaryMobile ?? ui.hero.primary}</span>
+              <span className="hidden sm:inline">{ui.hero.primary}</span>
             </button>
             <a
               href={profile.links.linkedin}
@@ -147,12 +209,23 @@ export default function Hero() {
         </motion.div>
 
         {/* 우측: 3D 모델 */}
-        <div className="hero-model-shell pointer-events-none absolute bottom-[10%] right-[2%] z-10 h-[38vh] w-[88%] sm:pointer-events-auto sm:relative sm:bottom-auto sm:right-auto sm:h-[460px] sm:w-full lg:h-[600px]">
-          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[78%] w-[88%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-simple/[0.14] blur-[90px]" />
-          <div className="pointer-events-none absolute bottom-[14%] left-[10%] h-20 w-[78%] rounded-full bg-hook/[0.16] blur-[55px]" />
-          <Suspense fallback={null}>
-            <Computers3D />
-          </Suspense>
+        <div
+          ref={modelShellRef}
+          className="hero-model-shell pointer-events-none absolute bottom-[10%] right-[2%] z-10 h-[38vh] w-[88%] sm:pointer-events-auto sm:relative sm:bottom-auto sm:right-auto sm:h-[460px] sm:w-full lg:h-[600px]"
+        >
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-[58%] w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-simple/[0.08] blur-[42px] sm:h-[78%] sm:w-[88%] sm:bg-simple/[0.14] sm:blur-[90px]" />
+          <div className="pointer-events-none absolute bottom-[14%] left-[10%] h-14 w-[60%] rounded-full bg-hook/[0.08] blur-[30px] sm:h-20 sm:w-[78%] sm:bg-hook/[0.16] sm:blur-[55px]" />
+          {shouldMount3d ? (
+            <Suspense
+              fallback={
+                <div className="grid h-full place-items-center text-sm text-muted">
+                  <span className="animate-pulse">{ui.hero.loading3d}</span>
+                </div>
+              }
+            >
+              <Computers3D />
+            </Suspense>
+          ) : null}
         </div>
       </div>
 
