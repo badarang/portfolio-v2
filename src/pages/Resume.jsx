@@ -59,7 +59,7 @@ export default function Resume() {
       if (!event?.data || event.data.type !== "resume-height") return;
       const next = Number(event.data.height);
       if (Number.isFinite(next) && next > 200) {
-        setFrameHeight(Math.ceil(next + 48));
+        setFrameHeight(Math.ceil(next));
       }
     };
     window.addEventListener("message", onMessage);
