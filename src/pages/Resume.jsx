@@ -73,7 +73,7 @@ export default function Resume() {
   };
 
   return (
-    <div className="min-h-screen bg-ink pb-16 pt-24 sm:pt-28">
+    <div className="min-h-screen bg-ink pb-8 pt-24 sm:pt-28">
       <div className="container-px">
         {/* Header / toolbar */}
         <div className="mb-6 flex flex-col gap-4 sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
