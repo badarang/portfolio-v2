@@ -634,26 +634,12 @@
                 const naturalH = (canvas.height * naturalW) / canvas.width;
 
                 if (naturalH <= PAGE_H) {
-                    // Fits naturally — single page
                     pdf.addImage(imgData, 'JPEG', 0, 0, naturalW, naturalH);
-                } else if (naturalH <= PAGE_H * 1.3) {
-                    // Up to 30% overflow — scale-to-fit on one page (preserve aspect)
+                } else {
                     const factor = PAGE_H / naturalH;
                     const w = naturalW * factor;
                     const offsetX = (PAGE_W - w) / 2;
                     pdf.addImage(imgData, 'JPEG', offsetX, 0, w, PAGE_H);
-                } else {
-                    // Major overflow — split across multiple pages
-                    let heightLeft = naturalH;
-                    let position = 0;
-                    pdf.addImage(imgData, 'JPEG', 0, position, naturalW, naturalH);
-                    heightLeft -= PAGE_H;
-                    while (heightLeft > 0) {
-                        position -= PAGE_H;
-                        pdf.addPage();
-                        pdf.addImage(imgData, 'JPEG', 0, position, naturalW, naturalH);
-                        heightLeft -= PAGE_H;
-                    }
                 }
                 pdf.save('오해인-이력서.pdf');
             } finally {
