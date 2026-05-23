@@ -7,7 +7,8 @@ export function scrollToSection(id, options = {}) {
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
   const sectionPaddingOffset = isMobile ? 64 : 40;
   const perSectionOffset = {
-    activities: isMobile ? 36 : 48,
+    career: isMobile ? 20 : 28,
+    activities: isMobile ? 128 : 220,
   };
   const top =
     target.getBoundingClientRect().top +
