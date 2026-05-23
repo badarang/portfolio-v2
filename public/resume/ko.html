@@ -48,7 +48,13 @@
         }
         /* When embedded as iframe — keep enough room for the paper shadow. */
         html.embed, html.embed body { overflow: hidden; }
-        html.embed .page { margin: 44px auto 28px; }
+        html.embed .page {
+            margin: 36px auto 20px;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.08),
+                0 8px 24px rgba(0, 0, 0, 0.28),
+                0 24px 46px -24px rgba(0, 0, 0, 0.48);
+        }
 
         a { color: var(--accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
@@ -567,7 +573,7 @@
                 const page = document.getElementById('resume-content');
                 if (!page) return;
                 const rect = page.getBoundingClientRect();
-                const h = Math.ceil(page.offsetTop + rect.height + 36);
+                const h = Math.ceil(page.offsetTop + rect.height + 24);
                 window.parent.postMessage({ type: 'resume-height', height: h }, '*');
             };
 
