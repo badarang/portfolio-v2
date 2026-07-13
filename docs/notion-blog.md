@@ -44,7 +44,23 @@ DB 를 브라우저로 열면 URL 이 `notion.so/<워크스페이스>/<32자리>
 
 ---
 
-## 사용법
+## 사용법 (자동)
+
+**평소엔 아무 명령어도 필요 없어요.** GitHub Actions 가 15분마다 자동으로 동기화합니다.
+
+1. Notion DB 에서 글 작성 (이미지·GIF 마음껏)
+2. **`Published` 체크박스 켜기**
+3. 최대 15분 안에 블로그에 자동 반영 (GIF 는 자동으로 MP4 압축)
+
+`Published` 를 해제하면 다음 동기화 때 비공개 처리됩니다.
+
+- **즉시 반영하고 싶으면**: GitHub → Actions 탭 → "Notion → Blog Sync" → **Run workflow** 버튼.
+- 워크플로우: `.github/workflows/notion-sync.yml`. 키는 GitHub 저장소 Secrets 에 등록됨
+  (`NOTION_TOKEN`, `NOTION_DATABASE_ID`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`).
+
+## 사용법 (수동 / 로컬)
+
+로컬에서 직접 돌리고 싶을 때:
 
 ```bash
 # Published 체크된 글 전체 동기화
