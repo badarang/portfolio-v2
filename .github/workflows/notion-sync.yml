@@ -1,0 +1,40 @@
+name: Notion → Blog Sync
+
+# Notion DB 의 Published 체크된 글을 자동으로 블로그(Supabase)에 동기화한다.
+# 트리거:
+#   - schedule: 15분마다 자동 (Published 체크만 하면 15분 내 반영)
+#   - workflow_dispatch: GitHub Actions 탭에서 "Run workflow" 버튼으로 즉시 실행
+#   - repository_dispatch: (선택) Notion 버튼 등 외부 웹훅으로 즉시 실행
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [notion-sync]
+
+# 동시에 여러 개가 겹쳐 돌지 않도록
+concurrency:
+  group: notion-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync Notion → Supabase
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/notion-sync.mjs

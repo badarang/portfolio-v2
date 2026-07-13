@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext js,jsx",
-    "blog:publish-burning-beaver": "node scripts/publish.mjs delete test-post && node scripts/publish.mjs upsert content/posts/burning-beaver-review.md"
+    "blog:publish-burning-beaver": "node scripts/publish.mjs delete test-post && node scripts/publish.mjs upsert content/posts/burning-beaver-review.md",
+    "notion-sync": "node scripts/notion-sync.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",
@@ -25,11 +26,13 @@
     "three": "^0.161.0"
   },
   "devDependencies": {
+    "@notionhq/client": "^2.3.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "ffmpeg-static": "^5.3.0",
+    "notion-to-md": "^3.1.9",
     "postcss": "^8.4.40",
     "tailwindcss": "^3.4.7",
     "vite": "^5.3.5"
