@@ -229,12 +229,14 @@ export default function SmashStage({ labels, onReveal }) {
       const W = canvas.clientWidth || 1;
       const H = canvas.clientHeight || 1;
       let scale = Math.max(1.6, Math.min(H / 180, W / 170));
+      // 폰 브라우저는 하단 주소창이 화면 위에 떠서 바닥을 가린다(특히 iOS 사파리). 그만큼 바닥을 올린다.
+      const bottomInset = W < 640 ? 96 : 0;
       if (W < 640) {
         // 폰: 글 아래 남는 공간에 벽과 스틱맨이 통째로 들어가게 크기를 맞춘다. 첫 화면에서 바로 보여야 한다.
         const copy = canvas.parentElement.querySelector("[data-hero-copy]");
         if (copy) {
-          const free = H - (copy.getBoundingClientRect().bottom - canvas.getBoundingClientRect().top) - 6;
-          scale = Math.max(1.05, Math.min(scale, free / (WALL_H + 20)));
+          const free = H - (copy.getBoundingClientRect().bottom - canvas.getBoundingClientRect().top) - 6 - bottomInset;
+          scale = Math.max(1.0, Math.min(scale, free / (WALL_H + 20)));
         }
       }
       LW = Math.ceil(W / scale);
@@ -246,7 +248,7 @@ export default function SmashStage({ labels, onReveal }) {
       ctx.imageSmoothingEnabled = false;
       const oldFloor = FLOOR;
       const oldWall = WALL_X;
-      FLOOR = LH - 14;
+      FLOOR = LH - 14 - Math.round(bottomInset / scale);
       WALL_X = Math.round(LW - WALL_W - Math.max(18, LW * 0.11));
       WALL_TOP = FLOOR - WALL_H;
       HOME = WALL_X - 17;
