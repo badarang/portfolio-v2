@@ -1,6 +1,6 @@
 TITLE: [Riot Games] 리그오브레전드 레나타 챔피언 개발 & 광란 CC기 & 리팩토링
 SLUG: renata-champion-refactoring
-TAGS: Riot Games, League of Legends, Refactoring
+TAGS: Riot Games, League of Legends, Refactoring, Special
 EXCERPT: Getting into the Guts of BerserkIn this article, I’ll cover how we took Renata Glasc's ultimate from a hacky prototype to a game-changing spell, cleaning up some legacy code and sy
 PUBLISHED: true
 PUBLISHED_AT: 2025-04-07T15:17:31+09:00

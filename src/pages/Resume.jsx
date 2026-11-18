@@ -7,8 +7,8 @@ import { useI18n } from "../i18n";
  * Loads a standalone resume HTML file (with its own light theme, fonts,
  * and F2 → PDF export script) inside an iframe. The file shown depends on
  * the active i18n language:
- *   ko          → /resume/ko.html
- *   en/zh/ja    → /resume/en.html  (English version, used as fallback)
+ *   ko          → /resume/ko.html or /resume-devrel/ko.html
+ *   en/zh/ja    → English version, used as fallback
  *
  * Visual goal: the A4 paper floats on the dark canvas with no wrapper
  * surface around it. To achieve that:
@@ -19,26 +19,51 @@ import { useI18n } from "../i18n";
  *   - We can also tell it to run its F2 export through postMessage
  *     ({ type: "export-pdf" }) so the toolbar Download button just works.
  */
-export default function Resume() {
+export default function Resume({ variant = "developer" }) {
   const { language, setLanguage, content } = useI18n();
   const { ui } = content;
 
   // ko gets its own file; everything else falls back to en.
   const resumeLang = language === "ko" ? "ko" : "en";
-  const resumeSrc = `/resume/${resumeLang}.html`;
+  const resumeBase = variant === "devrel" ? "resume-devrel" : "resume";
+  const resumeSrc = `/${resumeBase}/${resumeLang}.html`;
 
   const labels = useMemo(() => {
     switch (language) {
       case "ko":
-        return { title: "이력서", download: "PDF 다운로드" };
+        return {
+          title: variant === "devrel" ? "DevRel 이력서" : "이력서",
+          download: "PDF 다운로드",
+        };
       case "zh":
-        return { title: "简历", download: "下载 PDF" };
+        return {
+          title: variant === "devrel" ? "DevRel 简历" : "简历",
+          download: "下载 PDF",
+        };
       case "ja":
-        return { title: "履歴書", download: "PDF をダウンロード" };
+        return {
+          title: variant === "devrel" ? "DevRel 履歴書" : "履歴書",
+          download: "PDF をダウンロード",
+        };
       default:
-        return { title: "Resume", download: "Download PDF" };
+        return {
+          title: variant === "devrel" ? "DevRel Resume" : "Resume",
+          download: "Download PDF",
+        };
     }
-  }, [language]);
+  }, [language, variant]);
+
+  const heading = useMemo(() => {
+    if (variant === "devrel") {
+      return language === "ko"
+        ? "오해인 · Developer Relations"
+        : "Haein Oh · Developer Relations";
+    }
+
+    return language === "ko"
+      ? "오해인 · 게임플레이 프로그래머"
+      : "Haein Oh · Rapid Gameplay Programmer";
+  }, [language, variant]);
 
   // Reset scroll when opening the page.
   useEffect(() => {
@@ -82,9 +107,7 @@ export default function Resume() {
               {labels.title}
             </p>
             <h1 className="mt-2 font-display text-3xl font-bold text-white sm:text-4xl">
-              {language === "ko"
-                ? "오해인 · 게임플레이 프로그래머"
-                : "Haein Oh · Rapid Gameplay Programmer"}
+              {heading}
             </h1>
           </div>
 

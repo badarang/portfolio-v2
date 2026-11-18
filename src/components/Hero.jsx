@@ -11,24 +11,33 @@ const accentFor = {
   Fun: "text-hook",
   Fast: "text-simple",
   Juicy: "text-juicy",
+  Clear: "text-simple",
+  Helpful: "text-hook",
+  Connected: "text-juicy",
 };
 
-export default function Hero() {
+export default function Hero({ variant = "developer" }) {
   const { content } = useI18n();
   const { profile, ui } = content;
+  const heroCopy = variant === "devrel" ? ui.devrelHero : ui.hero;
+  const heroRole = heroCopy.role ?? profile.role;
+  const heroSlogan = heroCopy.slogan ?? profile.slogan;
+  const primaryTarget = variant === "devrel" ? "community" : "career";
+  const scrollTarget = variant === "devrel" ? "career" : "philosophy";
+  const resumePath = variant === "devrel" ? "/resume-devrel" : "/resume";
   const [wordIndex, setWordIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [shouldMount3d, setShouldMount3d] = useState(false);
   const modelShellRef = useRef(null);
-  const activeWord = profile.slogan[wordIndex];
+  const activeWord = heroSlogan[wordIndex];
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setWordIndex((current) => (current + 1) % profile.slogan.length);
+      setWordIndex((current) => (current + 1) % heroSlogan.length);
     }, 1000);
 
     return () => window.clearInterval(timer);
-  }, []);
+  }, [heroSlogan.length]);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
@@ -130,7 +139,7 @@ export default function Hero() {
                 className="h-full w-full rounded-full object-cover"
               />
             </span>
-            {profile.role}
+            {heroRole}
           </span>
 
           <h1 className="font-display font-bold leading-[0.9] tracking-normal text-white">
@@ -145,33 +154,38 @@ export default function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.18 }}
-                className={`change-glitch relative inline-block min-w-[5.1ch] ${accentFor[activeWord]}`}
+                className={`change-glitch relative inline-block min-w-[5.1ch] ${accentFor[activeWord] ?? "text-simple"}`}
               >
-                {activeWord}
-              </motion.span>
+                  {activeWord}
+                </motion.span>
             </span>
           </h1>
 
           <div className="relative max-w-3xl text-base font-semibold leading-7 text-white sm:text-xl sm:leading-9">
             <ul className="space-y-1.5">
-              {ui.hero.bullets.map((item) => (
+              {heroCopy.bullets.map((item) => (
                 <li key={item} className="flex items-center gap-2.5">
                   <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-simple" />
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
+            {heroCopy.supportLine && (
+              <p className="mt-4 max-w-2xl text-sm font-semibold leading-6 text-soft sm:text-base sm:leading-7">
+                {heroCopy.supportLine}
+              </p>
+            )}
           </div>
 
           <div className="mt-2 flex w-full max-w-[26rem] flex-col gap-2.5 sm:max-w-none">
             {/* Row 1: Primary CTA + social */}
             <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto sm:flex-nowrap sm:gap-2.5">
               <button
-                onClick={() => scrollTo("career")}
+                onClick={() => scrollTo(primaryTarget)}
                 className="hero-cta-3d hero-cta-primary col-span-3 inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-full px-4 text-[0.82rem] font-bold sm:col-span-1 xs:text-sm sm:min-w-[10rem] sm:px-6"
               >
-                <span className="sm:hidden">{ui.hero.primaryMobile ?? ui.hero.primary}</span>
-                <span className="hidden sm:inline">{ui.hero.primary}</span>
+                <span className="sm:hidden">{heroCopy.primaryMobile ?? heroCopy.primary}</span>
+                <span className="hidden sm:inline">{heroCopy.primary}</span>
               </button>
               <a
                 href={profile.links.linkedin}
@@ -207,7 +221,7 @@ export default function Hero() {
             {/* Row 2: Resume + Contact */}
             <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-nowrap sm:gap-2.5">
               <Link
-                to="/resume"
+                to={resumePath}
                 className="hero-cta-3d hero-cta-accent inline-flex min-h-11 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[0.78rem] font-bold xs:text-sm sm:min-w-[8rem] sm:px-5"
               >
                 <svg
@@ -260,7 +274,7 @@ export default function Hero() {
             <Suspense
               fallback={
                 <div className="grid h-full place-items-center text-sm text-muted">
-                  <span className="animate-pulse">{ui.hero.loading3d}</span>
+                  <span className="animate-pulse">{heroCopy.loading3d}</span>
                 </div>
               }
             >
@@ -272,9 +286,9 @@ export default function Hero() {
 
       {/* 스크롤 유도 */}
       <button
-        onClick={() => scrollTo("philosophy")}
+        onClick={() => scrollTo(scrollTarget)}
         className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
-        aria-label={ui.hero.scrollDown}
+        aria-label={heroCopy.scrollDown}
       >
         <div className="flex h-10 w-6 items-start justify-center rounded-full border-2 border-line p-1.5">
           <motion.span

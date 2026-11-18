@@ -191,6 +191,7 @@
             font-weight: 600;
             color: var(--strong);
             font-size: 9.8pt;
+            white-space: nowrap;
         }
         .skills-grid dd {
             margin: 0;
@@ -223,7 +224,7 @@
             font-weight: 500;
         }
         .entry-head .date {
-            font-family: "JetBrains Mono", monospace;
+            font-family: "Space Grotesk", "Pretendard", Inter, system-ui, sans-serif;
             font-size: 9pt;
             color: var(--muted);
             white-space: nowrap;
@@ -390,11 +391,19 @@
             text-align: right !important;
         }
         html.exporting .skills-grid {
-            grid-template-columns: 22mm 1fr !important;
+            grid-template-columns: 38mm 1fr !important;
             row-gap: 0 !important;
+            column-gap: 3mm !important;
         }
         html.exporting .skills-grid dt {
             margin-top: 0 !important;
+            font-size: 8.8pt !important;
+            white-space: nowrap !important;
+        }
+        html.exporting .skills-grid dd {
+            font-size: 8.8pt !important;
+            line-height: 1.42 !important;
+            white-space: nowrap !important;
         }
         html.exporting .entry-head {
             flex-direction: row !important;
@@ -433,7 +442,7 @@
 
             <div class="contacts">
                 <a href="mailto:badarangdev@gmail.com"><i class="fas fa-envelope"></i>badarangdev@gmail.com</a>
-                <span><i class="fas fa-phone"></i>+82-10-2244-9436</span>
+                <span><i class="fas fa-phone"></i>+82 10-2244-9436</span>
                 <a href="https://haeinoh.vercel.app"><i class="fas fa-globe"></i>haeinoh.vercel.app</a>
                 <a href="https://linkedin.com/in/haein-oh-979b29304"><i class="fab fa-linkedin"></i>LinkedIn</a>
                 <a href="https://github.com/badarang"><i class="fab fa-github"></i>github.com/badarang</a>
@@ -485,7 +494,7 @@
                         <span class="role-line">Gameplay Programmer</span>
                         <span class="org"> | Halfbrick Studios, Brisbane, Australia</span>
                     </div>
-                    <div class="date">Jan 2026 – May 2026</div>
+                    <div class="date">Jan 2026 – May 2026 · Full-time</div>
                 </div>
                 <div class="entry-sub">Jetpack Joyride Racing &amp; Halfbrick+ HubApp</div>
                 <ul>
@@ -501,12 +510,12 @@
                         <span class="role-line">Game Client Programmer</span>
                         <span class="org"> | 111%, Seoul, Korea</span>
                     </div>
-                    <div class="date">Aug 2025 – Jan 2026</div>
+                    <div class="date">Aug 2025 – Jan 2026 · Full-time</div>
                 </div>
                 <div class="entry-sub">Mobile Live-Service Title: “Heroll”</div>
                 <ul>
-                    <li>Developed <b>Unity-based live-service content end-to-end</b> (events, skins, achievements, in-game combat). Contributed to new-feature development and design.</li>
-                    <li>Designed and shipped the <b>achievement table system with 70+ achievements</b>. Implemented skin system, boss mechanics, augment core logic, and status-effect rework as core gameplay logic.</li>
+                    <li>Implemented <b>Unity live-service update content</b> including Spito events, seasonal events, endless mode, and daily dungeons, shipping them across 1.5.x releases.</li>
+                    <li>Designed and implemented <b>70+ achievements, skin, profile/frame, and event-currency systems</b>, accounting for migration and seasonal data rollover risks for stable releases.</li>
                 </ul>
             </div>
         </section>
@@ -525,7 +534,7 @@
                 <div class="project-card">
                     <div class="pname">Moai Wanna Slam</div>
                     <div class="pmeta">LÖVE · Lua · 2026</div>
-                    <p>LÖVE/Lua 1v1 action prototype focused on responsive combat. Resolved <b>PC/mobile shader differences</b> and improved <b>multiplayer sync &amp; lag</b> on mobile builds.</p>
+                    <p>Implemented the core loop of a LÖVE/Lua 1v1 action combat prototype in 2 days. <br>Then iterated on input response, hit feel, and mobile controls, improving <b>WebSocket multiplayer</b>, <b>mobile builds</b>, and <b>shader compatibility</b>.</p>
                 </div>
 
                 <div class="project-card">
@@ -640,15 +649,35 @@
                 // Natural dimensions if scaled to A4 width
                 const naturalW = PAGE_W;
                 const naturalH = (canvas.height * naturalW) / canvas.width;
+                let imageX = 0;
+                let imageY = 0;
+                let imageW = naturalW;
+                let imageH = naturalH;
 
                 if (naturalH <= PAGE_H) {
-                    pdf.addImage(imgData, 'JPEG', 0, 0, naturalW, naturalH);
+                    pdf.addImage(imgData, 'JPEG', imageX, imageY, imageW, imageH);
                 } else {
                     const factor = PAGE_H / naturalH;
-                    const w = naturalW * factor;
-                    const offsetX = (PAGE_W - w) / 2;
-                    pdf.addImage(imgData, 'JPEG', offsetX, 0, w, PAGE_H);
+                    imageW = naturalW * factor;
+                    imageH = PAGE_H;
+                    imageX = (PAGE_W - imageW) / 2;
+                    pdf.addImage(imgData, 'JPEG', imageX, imageY, imageW, imageH);
                 }
+
+                const contentRect = content.getBoundingClientRect();
+                const scaleX = imageW / contentRect.width;
+                const scaleY = imageH / contentRect.height;
+                content.querySelectorAll('a[href]').forEach((anchor) => {
+                    const href = anchor.href;
+                    if (!href || href.startsWith('javascript:')) return;
+                    for (const rect of anchor.getClientRects()) {
+                        const x = imageX + (rect.left - contentRect.left) * scaleX;
+                        const y = imageY + (rect.top - contentRect.top) * scaleY;
+                        const w = rect.width * scaleX;
+                        const h = rect.height * scaleY;
+                        if (w > 0 && h > 0) pdf.link(x, y, w, h, { url: href });
+                    }
+                });
                 pdf.save('Haein-Oh-Resume.pdf');
             } finally {
                 document.documentElement.classList.remove('exporting');

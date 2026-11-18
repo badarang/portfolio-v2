@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 430" role="img" aria-labelledby="title desc">
+  <title id="title">Moai Wanna Slam architecture flow</title>
+  <desc id="desc">A clean animated flow from Unity concepts to Lua modules, Love2D callbacks, server snapshots, and rendering.</desc>
+  <style>
+    svg {
+      background: #ffffff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    .back {
+      fill: #fbfaf7;
+    }
+    .guide {
+      stroke: #e7ece8;
+      stroke-width: 2;
+      stroke-dasharray: 8 12;
+      fill: none;
+    }
+    .node rect {
+      fill: #fff;
+      stroke-width: 2.4;
+      filter: drop-shadow(0 12px 18px rgba(23, 32, 39, .10));
+    }
+    .red { stroke: #e64536; fill: #e64536; }
+    .yellow { stroke: #f2bd3a; fill: #f2bd3a; }
+    .teal { stroke: #0c8792; fill: #0c8792; }
+    .blue { stroke: #3768b7; fill: #3768b7; }
+    .green { stroke: #2f7b52; fill: #2f7b52; }
+    .violet { stroke: #7052a8; fill: #7052a8; }
+    .node rect.red, .node rect.yellow, .node rect.teal,
+    .node rect.blue, .node rect.green, .node rect.violet {
+      fill: #fff;
+    }
+    .title {
+      fill: #172027;
+      font-size: 19px;
+      font-weight: 850;
+    }
+    .body {
+      fill: #61707d;
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .label {
+      fill: #172027;
+      font-size: 17px;
+      font-weight: 850;
+    }
+    .caption {
+      fill: #61707d;
+      font-size: 14px;
+      font-weight: 650;
+    }
+    .track {
+      fill: none;
+      stroke: #d7e0db;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .flow {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 42 760;
+      animation: travel 5.6s linear infinite;
+    }
+    .flow.red { stroke: #e64536; animation-delay: 0s; }
+    .flow.yellow { stroke: #f2bd3a; animation-delay: -1.15s; }
+    .flow.teal { stroke: #0c8792; animation-delay: -2.3s; }
+    .flow.blue { stroke: #3768b7; animation-delay: -3.45s; }
+    .pulse {
+      animation: pop 2.8s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .pulse.two { animation-delay: -.7s; }
+    .pulse.three { animation-delay: -1.4s; }
+    .pulse.four { animation-delay: -2.1s; }
+    @keyframes travel {
+      from { stroke-dashoffset: 820; }
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes pop {
+      0%, 100% { transform: scale(1); opacity: .82; }
+      50% { transform: scale(1.18); opacity: 1; }
+    }
+  </style>
+
+  <rect class="back" x="0" y="0" width="1080" height="430" rx="22"/>
+  <path class="guide" d="M 70 118 H 1010"/>
+  <path class="guide" d="M 70 300 H 1010"/>
+
+  <text class="label" x="50" y="48">Unity에서 익숙한 개념을 Love2D 구조로 옮겨 보기</text>
+  <text class="caption" x="50" y="74">먼저 흐름만 보고, 세부 코드는 아래 접는 카드에서 천천히 확인합니다.</text>
+
+  
+    <g class="node" transform="translate(54 132)">
+      <rect class="red" width="190" height="92" rx="14"/>
+      <circle class="dot red" cx="28" cy="32" r="8"/>
+      <text class="title" x="48" y="38">Lua module</text>
+      <text class="body" x="22" y="68">파일 하나가 작은 기능 묶음</text>
+    </g>
+  
+    <g class="node" transform="translate(292 132)">
+      <rect class="yellow" width="190" height="92" rx="14"/>
+      <circle class="dot yellow" cx="28" cy="32" r="8"/>
+      <text class="title" x="48" y="38">Composition</text>
+      <text class="body" x="22" y="68">필요한 기능을 조립</text>
+    </g>
+  
+    <g class="node" transform="translate(530 132)">
+      <rect class="teal" width="190" height="92" rx="14"/>
+      <circle class="dot teal" cx="28" cy="32" r="8"/>
+      <text class="title" x="48" y="38">Love2D loop</text>
+      <text class="body" x="22" y="68">update / draw / input</text>
+    </g>
+  
+    <g class="node" transform="translate(768 132)">
+      <rect class="blue" width="190" height="92" rx="14"/>
+      <circle class="dot blue" cx="28" cy="32" r="8"/>
+      <text class="title" x="48" y="38">Game state</text>
+      <text class="body" x="22" y="68">world / players / UI</text>
+    </g>
+
+  
+    <g class="node" transform="translate(530 296)">
+      <rect class="green" width="190" height="92" rx="14"/>
+      <circle class="dot green" cx="28" cy="32" r="8"/>
+      <text class="title" x="48" y="38">Server tick</text>
+      <text class="body" x="22" y="68">60Hz 판정과 SNAP 전송</text>
+    </g>
+  
+    <g class="node" transform="translate(768 296)">
+      <rect class="violet" width="190" height="92" rx="14"/>
+      <circle class="dot violet" cx="28" cy="32" r="8"/>
+      <text class="title" x="48" y="38">Render</text>
+      <text class="body" x="22" y="68">Canvas 뒤 Shader 출력</text>
+    </g>
+
+  <path class="track" d="M 244 178 H 292 M 482 178 H 530 M 720 178 H 768"/>
+  <path class="track" d="M 625 224 V 296 M 720 342 H 768"/>
+  <path class="flow red" d="M 244 178 H 292 M 482 178 H 530 M 720 178 H 768 M 625 224 V 296 M 720 342 H 768"/>
+  <path class="flow yellow" d="M 244 178 H 292 M 482 178 H 530 M 720 178 H 768 M 625 224 V 296 M 720 342 H 768"/>
+  <path class="flow teal" d="M 244 178 H 292 M 482 178 H 530 M 720 178 H 768 M 625 224 V 296 M 720 342 H 768"/>
+  <path class="flow blue" d="M 244 178 H 292 M 482 178 H 530 M 720 178 H 768 M 625 224 V 296 M 720 342 H 768"/>
+
+  <g class="pulse">
+    <circle cx="1010" cy="178" r="12" fill="#3768b7" opacity=".88"/>
+    <text class="caption" x="986" y="214">상태 갱신</text>
+  </g>
+  <g class="pulse two">
+    <circle cx="625" cy="260" r="12" fill="#2f7b52" opacity=".88"/>
+    <text class="caption" x="642" y="264">온라인이면 서버 보정</text>
+  </g>
+  <g class="pulse three">
+    <circle cx="1010" cy="342" r="12" fill="#7052a8" opacity=".88"/>
+    <text class="caption" x="982" y="378">화면 출력</text>
+  </g>
+</svg>

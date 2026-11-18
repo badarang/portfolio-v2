@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>오해인 · Developer Relations · 이력서</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
+    />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+        :root {
+            --ink: #0a0a0f;
+            --strong: #111827;
+            --body: #2c3344;
+            --muted: #5b677a;
+            --line: #e2e8f0;
+            --line-soft: #f1f5f9;
+            --accent: #0891b2;
+            --accent-soft: #ecfeff;
+            --hook: #db2777;
+            --bg: #f6f9fd;
+            --paper: #ffffff;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: transparent !important;
+            color: var(--body);
+            font-family: "Pretendard", "Space Grotesk", Inter, system-ui, sans-serif;
+            font-size: 9.5pt;
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+            word-break: keep-all;
+        }
+        /* When embedded as iframe — keep enough room for the paper shadow. */
+        html.embed, html.embed body { overflow: hidden; }
+        html.embed .page {
+            margin: 36px auto 20px;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.08),
+                0 8px 24px rgba(0, 0, 0, 0.28),
+                0 24px 46px -24px rgba(0, 0, 0, 0.48);
+        }
+
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 24px auto;
+            padding: 11mm 14mm 13mm;
+            background: var(--paper);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.06),
+                0 6px 20px rgba(0, 0, 0, 0.5),
+                0 40px 80px rgba(0, 0, 0, 0.55),
+                0 80px 140px -40px rgba(0, 0, 0, 0.55),
+                0 0 120px rgba(34, 211, 238, 0.05);
+            border-radius: 10px;
+        }
+        /* Hide the F2 export hint when the resume is embedded in a parent page. */
+        html.embed .hint { display: none !important; }
+
+        /* === HEADER === */
+        .hero {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--strong);
+            margin-bottom: 7px;
+        }
+
+        .name-block h1 {
+            font-family: "Pretendard", "Space Grotesk", sans-serif;
+            font-size: 26pt;
+            font-weight: 800;
+            color: var(--strong);
+            margin: 0;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .name-block .role {
+            margin-top: 5px;
+            font-size: 10.5pt;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.04em;
+        }
+
+        .contacts {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 3px 12px;
+            font-size: 9pt;
+            color: var(--muted);
+            max-width: 58%;
+            text-align: right;
+        }
+
+        .contacts a, .contacts span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--body);
+        }
+        .contacts a:hover { color: var(--accent); }
+        .contacts i { color: var(--accent); width: 12px; }
+
+        /* === SECTIONS === */
+        .section {
+            margin-top: 11px;
+        }
+
+        .section h2 {
+            font-family: "Pretendard", "Space Grotesk", sans-serif;
+            font-size: 10pt;
+            font-weight: 800;
+            color: var(--strong);
+            letter-spacing: 0.12em;
+            margin: 0 0 4px;
+            padding-bottom: 2px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section p { margin: 0; }
+
+        /* === SUMMARY === */
+        .summary {
+            font-size: 9.4pt;
+            color: var(--body);
+            line-height: 1.55;
+        }
+        .summary b { color: var(--strong); font-weight: 700; }
+
+        /* === BOTTOM TWO-COL === */
+        .bottom-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .bottom-cols .section { margin-top: 11px; }
+        .bottom-cols .edu-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0;
+            margin-bottom: 9px;
+        }
+        .bottom-cols .edu-row:last-child { margin-bottom: 0; }
+        .bottom-cols .edu-row .right {
+            font-size: 8.6pt;
+            margin-bottom: 2px;
+            order: -1;
+            color: var(--accent);
+            font-weight: 600;
+            font-family: "JetBrains Mono", monospace;
+        }
+        .bottom-cols .edu-row .left {
+            font-size: 9.2pt;
+            line-height: 1.4;
+        }
+        .bottom-cols .edu-row .left span {
+            display: block;
+            margin-top: 2px;
+            font-size: 8.8pt;
+            color: var(--muted);
+        }
+
+        /* === SKILLS === */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            row-gap: 3px;
+            column-gap: 14px;
+        }
+        .skills-grid dt {
+            font-weight: 700;
+            color: var(--strong);
+            font-size: 9.8pt;
+            white-space: nowrap;
+        }
+        .skills-grid dd {
+            margin: 0;
+            color: var(--body);
+            font-size: 9.8pt;
+            line-height: 1.5;
+        }
+
+        /* === EXPERIENCE === */
+        .entry {
+            margin-bottom: 7px;
+        }
+        .entry:last-child { margin-bottom: 0; }
+
+        .entry-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 0;
+        }
+        .entry-head .left {
+            font-size: 10.2pt;
+        }
+        .entry-head .role-line {
+            font-weight: 700;
+            color: var(--strong);
+        }
+        .entry-head .org {
+            color: var(--muted);
+            font-weight: 500;
+        }
+        .entry-head .date {
+            font-family: "Pretendard", "Space Grotesk", Inter, system-ui, sans-serif;
+            font-size: 9pt;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .entry-sub {
+            font-size: 9.2pt;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .entry ul {
+            margin: 4px 0 0;
+            padding-left: 15px;
+            list-style: disc;
+        }
+        .entry li {
+            margin-bottom: 3px;
+            color: var(--body);
+            line-height: 1.5;
+        }
+        .entry li b { color: var(--strong); font-weight: 700; }
+
+        /* === PROJECTS === */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 14px;
+        }
+        .project-card {
+            border-left: 2px solid var(--accent);
+            padding-left: 9px;
+        }
+        .project-card .pname {
+            font-weight: 700;
+            color: var(--strong);
+            font-size: 10pt;
+            line-height: 1.3;
+        }
+        .project-card .pmeta {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 8.4pt;
+            color: var(--muted);
+            margin-bottom: 1px;
+        }
+        .project-card p {
+            font-size: 9.4pt;
+            line-height: 1.5;
+            color: var(--body);
+            margin: 1px 0 0;
+        }
+        .project-card b { color: var(--strong); font-weight: 700; }
+
+        /* === PRINT === */
+        @media print {
+            html, body { background: white; }
+            .page {
+                width: 210mm;
+                min-height: 297mm;
+                margin: 0 auto;
+                box-shadow: none;
+                border-radius: 0;
+                padding: 14mm 15mm;
+            }
+            a { color: var(--body); }
+            .hint { display: none; }
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media screen and (max-width: 720px) {
+            html.embed body {
+                font-size: 10pt;
+                line-height: 1.48;
+            }
+            html.embed .page {
+                width: calc(100vw - 24px);
+                min-height: auto;
+                margin: 24px auto 16px;
+                padding: 22px 18px 24px;
+                border-radius: 10px;
+            }
+            html.embed .hero {
+                display: block;
+                padding-bottom: 9px;
+            }
+            html.embed .contacts {
+                justify-content: flex-start;
+                max-width: none;
+                margin-top: 10px;
+                text-align: left;
+            }
+            html.embed .skills-grid {
+                grid-template-columns: 1fr;
+                row-gap: 2px;
+            }
+            html.embed .skills-grid dt {
+                margin-top: 7px;
+            }
+            html.embed .skills-grid dt:first-child {
+                margin-top: 0;
+            }
+            html.embed .entry-head {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1px;
+            }
+            html.embed .projects-grid,
+            html.embed .bottom-cols {
+                grid-template-columns: 1fr;
+            }
+            html.embed .project-card {
+                padding-bottom: 4px;
+            }
+        }
+
+        html.exporting,
+        html.exporting body {
+            width: 210mm !important;
+            overflow: visible !important;
+            font-size: 9.5pt !important;
+            line-height: 1.4 !important;
+        }
+        html.exporting .page {
+            width: 210mm !important;
+            min-height: 297mm !important;
+            margin: 0 !important;
+            padding: 11mm 14mm 13mm !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        html.exporting .hero {
+            display: flex !important;
+            align-items: flex-end !important;
+            justify-content: space-between !important;
+            gap: 24px !important;
+            padding-bottom: 5px !important;
+        }
+        html.exporting .contacts {
+            justify-content: flex-end !important;
+            max-width: 82mm !important;
+            margin-top: 0 !important;
+            text-align: right !important;
+        }
+        html.exporting .skills-grid {
+            grid-template-columns: 35mm 1fr !important;
+            row-gap: 0 !important;
+            column-gap: 3mm !important;
+        }
+        html.exporting .skills-grid dt {
+            margin-top: 0 !important;
+            font-size: 8.8pt !important;
+            white-space: nowrap !important;
+        }
+        html.exporting .skills-grid dd {
+            font-size: 8.8pt !important;
+            line-height: 1.42 !important;
+            white-space: nowrap !important;
+        }
+        html.exporting .entry-head {
+            flex-direction: row !important;
+            align-items: baseline !important;
+            gap: 8px !important;
+        }
+        html.exporting .projects-grid,
+        html.exporting .bottom-cols {
+            grid-template-columns: 1fr 1fr !important;
+        }
+
+        .hint {
+            position: fixed;
+            right: 14px;
+            bottom: 14px;
+            background: var(--strong);
+            color: white;
+            font-family: "JetBrains Mono", "Pretendard", monospace;
+            font-size: 11px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            opacity: 0.82;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <main class="page" id="resume-content">
+
+        <!-- HEADER -->
+        <header class="hero">
+            <div class="name-block">
+                <h1>오해인</h1>
+                <div class="role">Developer Relations</div>
+            </div>
+
+            <div class="contacts">
+                <a href="mailto:badarangdev@gmail.com"><i class="fas fa-envelope"></i>badarangdev@gmail.com</a>
+                <span><i class="fas fa-phone"></i>+82 10-2244-9436</span>
+                <a href="https://haeinoh.vercel.app"><i class="fas fa-globe"></i>haeinoh.vercel.app</a>
+                <a href="https://linkedin.com/in/haein-oh-979b29304"><i class="fab fa-linkedin"></i>LinkedIn</a>
+                <a href="https://github.com/badarang"><i class="fab fa-github"></i>github.com/badarang</a>
+                <a href="https://badarang.itch.io"><i class="fab fa-itch-io"></i>badarang.itch.io</a>
+            </div>
+        </header>
+
+        <!-- SUMMARY -->
+        <section class="section">
+            <h2>요약</h2>
+            <p class="summary">
+                <b>Developer Relations</b> 관점에서 게임 개발 실무, 기술 커뮤니케이션, 멘토링 경험을 연결해온 개발자. <br>
+                <b>Halfbrick</b>에서 Jetpack Joyride Racing 및 Halfbrick+ HubApp 라이브 서비스 개발 참여. <br>
+                <b>111%</b>에서 “용사님 돌았어요?” 1.5.x 업데이트 콘텐츠와 도전과제·스킨·프로필 시스템 구현. <br>
+                <b>Steam 40,000+</b> 다운로드 팀 프로젝트, 오즈코딩스쿨 Unity 멘토, JDC Dev Club 커뮤니티 크루 경험.
+            </p>
+        </section>
+
+        <!-- SKILLS -->
+        <section class="section">
+            <h2>보유 기술</h2>
+            <dl class="skills-grid">
+                <dt>언어</dt>
+                <dd>C#, C++, Lua, JavaScript, Python, GML</dd>
+
+                <dt>엔진 / 프레임워크</dt>
+                <dd>Unity, Unreal Engine 5, LÖVE, GameMaker, React</dd>
+
+                <dt>모바일 / 라이브 서비스</dt>
+                <dd>Photon, Firebase, Firebase Crashlytics, Supabase, BACKND Match, IAP, AdMob</dd>
+                
+                <dt>협업 / 빌드 도구</dt>
+                <dd>Git, Perforce, Jenkins, Redmine, Jira</dd>
+
+                <dt>전문 분야</dt>
+                <dd>Game Feel (Juice), DOTween 기반 연출, 모바일 최적화, FSM/Behavior Tree AI, Data-Driven 설계</dd>
+                
+                <dt>DevRel / 커뮤니티</dt>
+                <dd>Unity 멘토링, 후배 개발자 지원, 커리어 멘토링, 커뮤니티 운영, 기술 설명, 발표 및 외부 파트너 커뮤니케이션</dd>
+                
+                <dt>어학 / 인증</dt>
+                <dd>영어 기반 협업 및 커뮤니케이션 경험 (Halfbrick Daily Standup Meeting), TOEIC 860, TOPCIT 697</dd>            </dl>
+        </section>
+
+        <!-- EXPERIENCE -->
+        <section class="section">
+            <h2>경력</h2>
+
+            <div class="entry">
+                <div class="entry-head">
+                    <div class="left">
+                        <span class="role-line">게임 개발 및 라이브 서비스</span>
+                        <span class="org"> | Halfbrick Studios, 호주 브리즈번</span>
+                    </div>
+                    <div class="date">2026.01 – 2026.05 · 정규직</div>
+                </div>
+                <div class="entry-sub">Jetpack Joyride Racing & Halfbrick+ HubApp</div>
+                <ul>
+                    <li><b>Jetpack Joyride Racing</b> 신규 기능 개발. 소프트 런칭부터 글로벌 런칭까지 라이브 서비스 환경에서 콘텐츠·UX 개선 사이클 경험.</li>                    <li>여러 모바일 타이틀을 연결하는 <b>Halfbrick+ HubApp</b> 생태계 전반 기능 개발 및 유지보수.</li>
+                    <li><b>Crashlytics 기반 크래시 분석</b>, QA 루프, 사내 플레이테스트, SDK 유지보수. 릴리즈 간 반복 크래시 감소.</li>
+                </ul>
+            </div>
+
+            <div class="entry">
+                <div class="entry-head">
+                    <div class="left">
+                        <span class="role-line">게임 클라이언트 개발 및 라이브 운영</span>
+                        <span class="org"> | 111%, 서울</span>
+                    </div>
+                    <div class="date">2025.08 – 2026.01 · 정규직</div>
+                </div>
+                <div class="entry-sub">모바일 라이브 서비스 타이틀: “용사님 돌았어요?”</div>
+                <ul>
+                    <li><b>Spito 이벤트, 시즌 이벤트, 무한모드, 요일던전</b> 등 Unity 기반 라이브 서비스 업데이트 콘텐츠를 구현하고 1.5.x 업데이트에 반영.</li>
+                    <li><b>도전과제 70종 이상, 스킨, 프로필/프레임, 이벤트 재화</b> 등 장기 수집형 시스템을 설계·구현하고, 마이그레이션·시즌 데이터 이월 리스크를 고려해 안정적으로 출시 대응.</li>
+                </ul>
+                </div>
+        </section>
+
+        <!-- COMMUNITY -->
+        <section class="section">
+            <h2>커뮤니티 · 멘토링</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="pname">오즈코딩스쿨 Unity 멘토</div>
+                    <div class="pmeta">5개월째 · 현재</div>
+                    <p>코드 리뷰, 구현 방향, 디버깅 피드백과 함께 학습 우선순위와 커리어 고민을 정리하며 긍정적인 피드백을 꾸준히 받음.</p>
+                </div>
+                <div class="project-card">
+                    <div class="pname">JDC Dev Club · KRAFTON Alumni</div>
+                    <div class="pmeta">Community Crew</div>
+                    <p>크래프톤 정글게임랩 Alumni 커뮤니티 크루로 활동하며 후배 개발자와 수료생 네트워크, 프로젝트 방향과 커리어 선택을 지원.</p>
+                </div>
+                <div class="project-card">
+                    <div class="pname">SGM Study Party · Going</div>
+                    <div class="pmeta">Smilegate Membership</div>
+                    <p>게임 인사이트/보드게임 스터디 활동을 이어가고, 새로운 기수의 적응과 성장을 돕는 멘토형 활동 참여.</p>
+                </div>
+                <div class="project-card">
+                    <div class="pname">외부 발표 · 현장 커뮤니케이션</div>
+                    <div class="pmeta">Solo Indie / Service</div>
+                    <p>애니멀 점핑의 버닝비버 전시, 퍼블리싱 미팅, 지원사업 발표, 인하대 멘토 대표, 서비스 현장 경험을 통해 설명과 조율 역량 축적.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="section">
+            <h2>관련 프로젝트</h2>
+            <div class="projects-grid">
+
+                <div class="project-card">
+                    <div class="pname">Necro Rumble</div>
+                    <div class="pmeta">Unity · Steam · 2023–2024</div>
+                    <p>팀 기반 Steam 출시 프로젝트. QA·협업·피드백 반영 경험. <b>40,000+ 다운로드</b>.</p>
+                </div>
+
+                <div class="project-card">
+                    <div class="pname">애니멀 점핑!</div>
+                    <div class="pmeta">Unity · iOS/Android · 2024</div>
+                    <p>1인 개발 모바일 프로젝트. 버닝비버 전시, 퍼블리싱 미팅, 지원사업 발표 경험.</p>                </div>
+
+            </div>
+        </section>
+
+        <!-- AWARDS + EDUCATION (2-col) -->
+        <div class="bottom-cols">
+
+            <!-- AWARDS -->
+            <section class="section">
+                <h2>수상</h2>
+
+                <div class="edu-row">
+                    <div class="right">2025.06</div>
+                    <div class="left">
+                        <b>2025-1학기 캡스톤 디자인 우수상</b>
+                        <span>인하대학교 소프트웨어융합대학장상. <br>Unity Visual Tween Editor (25개 팀 중 3위).</span>
+                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="right">2024.12</div>
+                    <div class="left">
+                        <b>제12회 아이스타트업랩 액셀러레이팅 프로그램 대상</b>
+                        <span>인하대학교 총장상. “애니멀 점핑!” 프로젝트로 수상.</span>
+                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="right">2016.08</div>
+                    <div class="left">
+                        <b>제1회 경기 게임영재캠프 대상</b>
+                        <span>경기도지사상. 그리드 기반 슈팅 게임 “Velocity”.</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EDUCATION -->
+            <section class="section">
+                <h2>학력 · 프로그램</h2>
+
+                <div class="edu-row">
+                    <div class="right">2020 – 2026</div>
+                    <div class="left">
+                        <b>인하대학교</b>
+                        <span>컴퓨터공학 전공, 디자인테크놀로지 부전공. 학점 4.05 / 4.5</span>
+                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="right">2024</div>
+                    <div class="left">
+                        <b>스마일게이트 멤버십 16기</b>
+                        <span>“애니멀 점핑!” 프로젝트로 1인 팀 선정</span>
+                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="right">2023 – 2024</div>
+                    <div class="left">
+                        <b>크래프톤 정글 게임랩 1기</b>
+                    <span>애자일 협업 개발 · Vertical Slice · Gameplay QA</span>                    </div>
+                </div>
+
+                <div class="edu-row">
+                    <div class="right">2021 – 2023</div>
+                    <div class="left">
+                        <b>대한민국 육군</b>
+                        <span>정보보호병. 네트워크 장비 관리 및 방화벽 보안 업무.</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <div class="hint">F2 PDF 저장 · Ctrl/Cmd + P 인쇄</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        window.jsPDF = window.jspdf.jsPDF;
+
+        async function exportResumePdf() {
+            const content = document.getElementById('resume-content');
+            const PAGE_W = 595.28;
+            const PAGE_H = 841.89;
+
+            document.documentElement.classList.add('exporting');
+            if (document.fonts && document.fonts.ready) await document.fonts.ready;
+            await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+            try {
+                const canvas = await html2canvas(content, {
+                    scale: 2,
+                    backgroundColor: '#ffffff',
+                    useCORS: true,
+                    windowWidth: content.scrollWidth,
+                    windowHeight: content.scrollHeight,
+                    width: content.scrollWidth,
+                    height: content.scrollHeight
+                });
+                const imgData = canvas.toDataURL('image/jpeg', 0.96);
+                const pdf = new jsPDF({ unit: 'pt', format: 'a4', compress: true });
+
+                // Natural dimensions if scaled to A4 width
+                const naturalW = PAGE_W;
+                const naturalH = (canvas.height * naturalW) / canvas.width;
+                let imageX = 0;
+                let imageY = 0;
+                let imageW = naturalW;
+                let imageH = naturalH;
+
+                if (naturalH <= PAGE_H) {
+                    pdf.addImage(imgData, 'JPEG', imageX, imageY, imageW, imageH);
+                } else {
+                    const factor = PAGE_H / naturalH;
+                    imageW = naturalW * factor;
+                    imageH = PAGE_H;
+                    imageX = (PAGE_W - imageW) / 2;
+                    pdf.addImage(imgData, 'JPEG', imageX, imageY, imageW, imageH);
+                }
+
+                const contentRect = content.getBoundingClientRect();
+                const scaleX = imageW / contentRect.width;
+                const scaleY = imageH / contentRect.height;
+                content.querySelectorAll('a[href]').forEach((anchor) => {
+                    const href = anchor.href;
+                    if (!href || href.startsWith('javascript:')) return;
+                    for (const rect of anchor.getClientRects()) {
+                        const x = imageX + (rect.left - contentRect.left) * scaleX;
+                        const y = imageY + (rect.top - contentRect.top) * scaleY;
+                        const w = rect.width * scaleX;
+                        const h = rect.height * scaleY;
+                        if (w > 0 && h > 0) pdf.link(x, y, w, h, { url: href });
+                    }
+                });
+                pdf.save('오해인-이력서.pdf');
+            } finally {
+                document.documentElement.classList.remove('exporting');
+            }
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'F2') {
+                event.preventDefault();
+                exportResumePdf();
+            }
+        });
+
+        /* === Embed integration: when loaded inside a parent iframe === */
+        (function () {
+            const isEmbedded = window.parent && window.parent !== window;
+            if (!isEmbedded) return;
+
+            document.documentElement.classList.add('embed');
+
+            const post = () => {
+                const page = document.getElementById('resume-content');
+                if (!page) return;
+                const rect = page.getBoundingClientRect();
+                const h = Math.ceil(page.offsetTop + rect.height + 24);
+                window.parent.postMessage({ type: 'resume-height', height: h }, '*');
+            };
+
+            window.addEventListener('load', post);
+            window.addEventListener('resize', post);
+            if (document.fonts && document.fonts.ready) document.fonts.ready.then(post);
+            const ro = new ResizeObserver(post);
+            ro.observe(document.getElementById('resume-content'));
+
+            window.addEventListener('message', (e) => {
+                if (e.data && e.data.type === 'export-pdf') exportResumePdf();
+            });
+        })();
+    </script>
+</body>
+</html>

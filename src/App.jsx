@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import BlogIndex from "./pages/BlogIndex";
 import BlogPost from "./pages/BlogPost";
 import Resume from "./pages/Resume";
+import DevRel from "./pages/DevRel";
 
 export default function App() {
   return (
@@ -15,6 +16,8 @@ export default function App() {
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/resume" element={<Resume />} />
+          <Route path="/resume-devrel" element={<Resume variant="devrel" />} />
+          <Route path="/devrel" element={<DevRel />} />
         </Routes>
       </main>
     </div>

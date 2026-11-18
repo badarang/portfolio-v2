@@ -8,6 +8,10 @@ export function scrollToSection(id, options = {}) {
   const sectionPaddingOffset = isMobile ? 64 : 40;
   const perSectionOffset = {
     career: isMobile ? 20 : 28,
+    community: isMobile ? 20 : 28,
+    blog: isMobile ? 20 : 28,
+    testimonials: isMobile ? 20 : 28,
+    contact: isMobile ? 20 : 28,
     activities: isMobile ? 128 : 220,
   };
   const top =

@@ -18,6 +18,65 @@ function toEmbed(url) {
   return url;
 }
 
+function isVideoAsset(url = "") {
+  return /\.(?:mp4|webm|mov)(?:[?#].*)?$/i.test(url);
+}
+
+function LazyMarkdownImage({ src = "", alt = "", ...props }) {
+  const ref = useRef(null);
+  return <img ref={ref} src={src} alt={alt} loading="lazy" decoding="async" {...props} />;
+}
+
+function LazyMarkdownVideo({ src = "", ...props }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!ref.current) return undefined;
+    const video = ref.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play?.().catch(() => {});
+        } else {
+          video.pause?.();
+        }
+      },
+      { rootMargin: "120px 0px", threshold: 0.08 }
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return <video ref={ref} src={src} preload="metadata" {...props} />;
+}
+
+function escapeRegExp(value = "") {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function stripDuplicateTitle(markdown = "", title = "") {
+  if (!title) return markdown;
+  const escapedTitle = escapeRegExp(title.trim());
+  const duplicateTitle = new RegExp(
+    `^\\s*#\\s+(?:\\*\\*)?(?:\\[)?${escapedTitle}(?:\\])?(?:\\*\\*)?\\s*\\n+`,
+    "i"
+  );
+  return markdown.replace(duplicateTitle, "");
+}
+
+function BlogTitle({ title }) {
+  const gameTitle = "[모아이는내려찍고싶다]";
+  if (!title.includes(gameTitle)) return title;
+  const [before, after] = title.split(gameTitle);
+  return (
+    <>
+      {before}
+      <span className="blog-title-game">{gameTitle}</span>
+      {after}
+    </>
+  );
+}
+
 export default function BlogPost() {
   const { content, languageMeta } = useI18n();
   const { ui } = content;
@@ -60,6 +119,10 @@ export default function BlogPost() {
     );
 
   const embed = toEmbed(post.video_url);
+  const shouldShowCover =
+    post.cover_url &&
+    !isVideoAsset(post.cover_url) &&
+    post.slug !== "moai-wanna-slam-devlog-00-series-retrospective";
 
   return (
     <article className="container-px py-28">
@@ -76,7 +139,7 @@ export default function BlogPost() {
           ))}
         </div>
         <h1 className="mt-3 font-display text-4xl font-bold leading-tight text-white">
-          {post.title}
+          <BlogTitle title={post.title} />
         </h1>
         <div className="mt-4 flex items-center gap-4 text-sm text-muted">
           <span>
@@ -87,7 +150,7 @@ export default function BlogPost() {
         </div>
       </header>
 
-      {post.cover_url && (
+      {shouldShowCover && (
         <img
           src={post.cover_url}
           alt={post.title}
@@ -112,6 +175,12 @@ export default function BlogPost() {
           remarkPlugins={[remarkGfm]}
           rehypePlugins={[rehypeRaw]}
           components={{
+            img({ node, src, alt, ...props }) {
+              return <LazyMarkdownImage src={src} alt={alt} {...props} />;
+            },
+            video({ node, src, ...props }) {
+              return <LazyMarkdownVideo src={src} {...props} />;
+            },
             code({ inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || "");
               return !inline && match ? (
@@ -131,7 +200,7 @@ export default function BlogPost() {
             },
           }}
         >
-          {post.content_md || ""}
+          {stripDuplicateTitle(post.content_md || "", post.title)}
         </ReactMarkdown>
       </div>
     </article>

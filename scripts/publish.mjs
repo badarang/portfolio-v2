@@ -66,13 +66,14 @@ const slugify = (s) =>
     .slice(0, 80);
 
 function parsePostFile(path) {
-  const raw = readFileSync(resolve(path), "utf8");
+  const raw = readFileSync(resolve(path), "utf8").replace(/^\uFEFF/, "");
   const idx = raw.indexOf("\n---");
   const head = idx === -1 ? raw : raw.slice(0, idx);
   const body = idx === -1 ? "" : raw.slice(idx + 4).replace(/^\s*\n/, "");
   const meta = {};
   for (const line of head.split("\n")) {
-    const m = line.match(/^([A-Z_]+):\s*(.*)$/);
+    const cleanLine = line.replace(/^[\uFEFF\u200B]+/, "").trimEnd();
+    const m = cleanLine.match(/^\s*([A-Z_]+):\s*(.*)$/);
     if (m) meta[m[1].toLowerCase()] = m[2].trim();
   }
   if (!meta.title) throw new Error("TITLE 이 필요합니다.");
@@ -91,7 +92,15 @@ function parsePostFile(path) {
 
 async function upsert(path) {
   const post = parsePostFile(path);
-  if (post.published && !post.published_at) post.published_at = new Date().toISOString();
+  if (post.published && !post.published_at) {
+    const { data: existing, error: existingError } = await db
+      .from("posts")
+      .select("published_at")
+      .eq("slug", post.slug)
+      .maybeSingle();
+    if (existingError) throw existingError;
+    post.published_at = existing?.published_at || new Date().toISOString();
+  }
   if (!post.published) post.published_at = null;
   const { data, error } = await db
     .from("posts")

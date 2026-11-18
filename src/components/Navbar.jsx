@@ -20,9 +20,11 @@ export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const onHome = location.pathname === "/";
+  const inDevRelContext = location.pathname === "/devrel" || location.pathname === "/resume-devrel";
+  const onSectionPage = onHome || location.pathname === "/devrel";
   const links = [
     { id: "career", label: ui.nav.career },
-    { path: "/blog", label: ui.nav.blog },
+    inDevRelContext ? { id: "blog", label: ui.nav.blog } : { path: "/blog", label: ui.nav.blog },
     { id: "activities", label: ui.nav.activities },
   ];
 
@@ -64,11 +66,13 @@ export default function Navbar() {
     setTheme((current) => (current === "dark" ? "light" : "dark"));
   };
 
-  // 홈에 있으면 해당 섹션으로 스크롤, 아니면 홈으로 이동 후 스크롤.
+  // 홈/DevRel 랜딩에 있으면 현재 페이지 섹션으로 스크롤, 아니면 홈으로 이동 후 스크롤.
   const goToSection = (id) => {
     setOpen(false);
-    if (onHome) {
+    if (onSectionPage) {
       scrollToSection(id);
+    } else if (inDevRelContext) {
+      navigate(`/devrel#${id}`);
     } else {
       navigate(`/#${id}`);
     }
@@ -85,7 +89,7 @@ export default function Navbar() {
     >
       <nav className="container-px flex h-16 items-center justify-between">
         <Link
-          to="/"
+          to={inDevRelContext ? "/devrel" : "/"}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="group flex min-w-0 shrink-0 items-center gap-2.5"
         >
@@ -104,7 +108,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <ul className="hidden min-w-0 items-center gap-3 lg:flex">
+        <ul className="hidden min-w-0 items-center gap-3 xl:flex">
           {links.map((l) => (
             <li key={l.id || l.path} className="flex items-center gap-3">
               {l.path ? (
@@ -232,7 +236,7 @@ export default function Navbar() {
         </ul>
 
         <button
-          className="text-strong lg:hidden"
+          className="text-strong xl:hidden"
           aria-label="menu"
           aria-expanded={open}
           aria-controls="mobile-nav"
@@ -260,7 +264,7 @@ export default function Navbar() {
 
       <div
         id="mobile-nav"
-        className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-250 ease-out lg:hidden ${
+        className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-250 ease-out xl:hidden ${
           open ? "grid-rows-[1fr] opacity-100" : "pointer-events-none grid-rows-[0fr] opacity-0"
         }`}
         aria-hidden={!open}

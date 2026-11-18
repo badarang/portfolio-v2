@@ -195,6 +195,7 @@
             font-weight: 700;
             color: var(--strong);
             font-size: 9.8pt;
+            white-space: nowrap;
         }
         .skills-grid dd {
             margin: 0;
@@ -228,7 +229,7 @@
             font-weight: 500;
         }
         .entry-head .date {
-            font-family: "JetBrains Mono", monospace;
+            font-family: "Pretendard", "Space Grotesk", Inter, system-ui, sans-serif;
             font-size: 9pt;
             color: var(--muted);
             white-space: nowrap;
@@ -378,11 +379,19 @@
             text-align: right !important;
         }
         html.exporting .skills-grid {
-            grid-template-columns: 22mm 1fr !important;
+            grid-template-columns: 35mm 1fr !important;
             row-gap: 0 !important;
+            column-gap: 3mm !important;
         }
         html.exporting .skills-grid dt {
             margin-top: 0 !important;
+            font-size: 8.8pt !important;
+            white-space: nowrap !important;
+        }
+        html.exporting .skills-grid dd {
+            font-size: 8.8pt !important;
+            line-height: 1.42 !important;
+            white-space: nowrap !important;
         }
         html.exporting .entry-head {
             flex-direction: row !important;
@@ -421,7 +430,7 @@
 
             <div class="contacts">
                 <a href="mailto:badarangdev@gmail.com"><i class="fas fa-envelope"></i>badarangdev@gmail.com</a>
-                <span><i class="fas fa-phone"></i>010-2244-9436</span>
+                <span><i class="fas fa-phone"></i>+82 10-2244-9436</span>
                 <a href="https://haeinoh.vercel.app"><i class="fas fa-globe"></i>haeinoh.vercel.app</a>
                 <a href="https://linkedin.com/in/haein-oh-979b29304"><i class="fab fa-linkedin"></i>LinkedIn</a>
                 <a href="https://github.com/badarang"><i class="fab fa-github"></i>github.com/badarang</a>
@@ -433,7 +442,7 @@
         <section class="section">
             <h2>요약</h2>
             <p class="summary">
-                <b>빠른 프로토타이핑</b>과 <b>반응성 있는 게임 Feel 및 연출</b>에 강점을 가진 게임플레이 프로그래머. <br>
+                <b>빠른 프로토타이핑</b>과 <b>입력 반응성, 타격감, 플레이 감각 개선 및 연출</b>에 강점을 가진 게임플레이 프로그래머. <br>
                 <b>Unity 기반 모바일 라이브 서비스</b>와 <b>Steam 출시 경험</b>을 보유하고 있으며, 
                 <b>개발 생산성을 높이는 툴 제작</b>과 안정적인 <b>LiveOps 운영</b>에 집중. 
                 <br><b>Steam 40,000+</b> 다운로드 타이틀 보유, <b>Halfbrick Jetpack Joyride Racing</b> 개발 참여, Unity·LÖVE 기반 인디 프로젝트 다수.
@@ -473,7 +482,7 @@
                         <span class="role-line">게임플레이 프로그래머</span>
                         <span class="org"> | Halfbrick Studios, 호주 브리즈번</span>
                     </div>
-                    <div class="date">2026.01 – 2026.05</div>
+                    <div class="date">2026.01 – 2026.05 · 정규직</div>
                 </div>
                 <div class="entry-sub">Jetpack Joyride Racing & Halfbrick+ HubApp</div>
                 <ul>
@@ -488,12 +497,12 @@
                         <span class="role-line">게임 클라이언트 프로그래머</span>
                         <span class="org"> | 111%, 서울</span>
                     </div>
-                    <div class="date">2025.08 – 2026.01</div>
+                    <div class="date">2025.08 – 2026.01 · 정규직</div>
                 </div>
                 <div class="entry-sub">모바일 라이브 서비스 타이틀: “용사님 돌았어요?”</div>
                 <ul>
-                    <li><b>Unity 기반 라이브 서비스 콘텐츠</b> 전반 개발 (이벤트, 스킨, 도전과제, 인게임 전투 시스템). 신규 콘텐츠 개발 및 기획 참여.</li>
-                    <li><b>도전과제 시스템 테이블 설계 및 70종 이상 구현</b>. 스킨 시스템, 보스 기믹, 증강체 시스템, 상태이상 리워크 등 핵심 게임플레이 로직 구현.</li>
+                    <li><b>Spito 이벤트, 시즌 이벤트, 무한모드, 요일던전</b> 등 Unity 기반 라이브 서비스 업데이트 콘텐츠를 구현하고 1.5.x 업데이트에 반영.</li>
+                    <li><b>도전과제 70종 이상, 스킨, 프로필/프레임, 이벤트 재화</b> 등 장기 수집형 시스템을 설계·구현하고, 마이그레이션·시즌 데이터 이월 리스크를 고려해 안정적으로 출시 대응.</li>
                 </ul>
                 </div>
         </section>
@@ -512,7 +521,7 @@
                 <div class="project-card">
                     <div class="pname">모아이는내려찍고싶다</div>
                     <div class="pmeta">LÖVE · Lua · 2026</div>
-                    <p>반응성 있는 전투에 집중한 LÖVE/Lua 기반 1v1 액션 프로토타입. <br><b>PC/모바일 셰이더 차이</b> 해결, <b>모바일 멀티플레이 동기화 및 지연 문제</b> 개선.</p>                </div>
+                    <p>LÖVE/Lua로 1v1 액션 전투의 핵심 루프를 2일 만에 구현. <br>이후 입력 반응성·타격감·모바일 조작감을 짧은 주기로 튜닝하고, <b>WebSocket 멀티플레이</b>, <b>모바일 빌드</b>, <b>셰이더 호환성 문제</b>를 개선.</p>                </div>
 
                 <div class="project-card">
                     <div class="pname">애니멀 점핑!</div>
@@ -632,15 +641,35 @@
                 // Natural dimensions if scaled to A4 width
                 const naturalW = PAGE_W;
                 const naturalH = (canvas.height * naturalW) / canvas.width;
+                let imageX = 0;
+                let imageY = 0;
+                let imageW = naturalW;
+                let imageH = naturalH;
 
                 if (naturalH <= PAGE_H) {
-                    pdf.addImage(imgData, 'JPEG', 0, 0, naturalW, naturalH);
+                    pdf.addImage(imgData, 'JPEG', imageX, imageY, imageW, imageH);
                 } else {
                     const factor = PAGE_H / naturalH;
-                    const w = naturalW * factor;
-                    const offsetX = (PAGE_W - w) / 2;
-                    pdf.addImage(imgData, 'JPEG', offsetX, 0, w, PAGE_H);
+                    imageW = naturalW * factor;
+                    imageH = PAGE_H;
+                    imageX = (PAGE_W - imageW) / 2;
+                    pdf.addImage(imgData, 'JPEG', imageX, imageY, imageW, imageH);
                 }
+
+                const contentRect = content.getBoundingClientRect();
+                const scaleX = imageW / contentRect.width;
+                const scaleY = imageH / contentRect.height;
+                content.querySelectorAll('a[href]').forEach((anchor) => {
+                    const href = anchor.href;
+                    if (!href || href.startsWith('javascript:')) return;
+                    for (const rect of anchor.getClientRects()) {
+                        const x = imageX + (rect.left - contentRect.left) * scaleX;
+                        const y = imageY + (rect.top - contentRect.top) * scaleY;
+                        const w = rect.width * scaleX;
+                        const h = rect.height * scaleY;
+                        if (w > 0 && h > 0) pdf.link(x, y, w, h, { url: href });
+                    }
+                });
                 pdf.save('오해인-이력서.pdf');
             } finally {
                 document.documentElement.classList.remove('exporting');

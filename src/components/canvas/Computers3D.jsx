@@ -4,16 +4,13 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, OrbitControls, useGLTF, useProgress } from "@react-three/drei";
 
 const MODEL_URL = "/desktop_pc/scene-desktop.glb";
+const DRACO_DECODER_PATH = "/draco/gltf/";
 
-function CanvasLoader({ onStall }) {
+useGLTF.setDecoderPath(DRACO_DECODER_PATH);
+
+function CanvasLoader() {
   const { progress } = useProgress();
   const roundedProgress = Math.round(progress);
-
-  useEffect(() => {
-    if (progress < 95 || progress >= 100) return undefined;
-    const timeoutId = window.setTimeout(onStall, 8000);
-    return () => window.clearTimeout(timeoutId);
-  }, [onStall, progress]);
 
   return (
     <Html center>
@@ -29,7 +26,7 @@ function CanvasLoader({ onStall }) {
 
 function Computer({ isMobile, onReady }) {
   const groupRef = useRef(null);
-  const computer = useGLTF(MODEL_URL);
+  const computer = useGLTF(MODEL_URL, DRACO_DECODER_PATH);
 
   useEffect(() => {
     computer.scene.traverse((child) => {
@@ -72,8 +69,6 @@ function Computer({ isMobile, onReady }) {
 export default function Computers3D() {
   const [isMobile, setIsMobile] = useState(false);
   const [modelReady, setModelReady] = useState(false);
-  const [retryKey, setRetryKey] = useState(0);
-  const retryCountRef = useRef(0);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)");
@@ -85,22 +80,11 @@ export default function Computers3D() {
 
   const handleReady = useCallback(() => {
     setModelReady(true);
-    retryCountRef.current = 0;
-  }, []);
-
-  const handleStall = useCallback(() => {
-    if (retryCountRef.current >= 2) return;
-    retryCountRef.current += 1;
-    setModelReady(false);
-    if (typeof useGLTF.clear === "function") {
-      useGLTF.clear(MODEL_URL);
-    }
-    setRetryKey((value) => value + 1);
   }, []);
 
   return (
     <Canvas
-      key={`${isMobile ? "m" : "d"}-${retryKey}`}
+      key={isMobile ? "m" : "d"}
       frameloop={isMobile && modelReady ? "demand" : "always"}
       dpr={[1, 1]}
       // 모바일은 fov 를 더 넓혀(줌아웃) 좁은 화면에서도 모델 전체가 들어오게
@@ -113,7 +97,7 @@ export default function Computers3D() {
         touchAction: "pan-y",
       }}
     >
-      <Suspense fallback={<CanvasLoader onStall={handleStall} />}>
+      <Suspense fallback={<CanvasLoader />}>
         {!isMobile && (
           <OrbitControls
             enableZoom={false}
@@ -128,4 +112,4 @@ export default function Computers3D() {
   );
 }
 
-useGLTF.preload(MODEL_URL);
+useGLTF.preload(MODEL_URL, DRACO_DECODER_PATH);

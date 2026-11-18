@@ -1,6 +1,6 @@
 TITLE: [Unity] DOTS 이해하기
 SLUG: unity-dots-understanding
-TAGS: Unity, DOTS, ECS, Burst, Data-Oriented
+TAGS: Unity, DOTS, ECS, Burst, Data-Oriented, Special
 EXCERPT: Unity DOTS의 기본 개념, ECS 구조, Baking Process, 런타임 Entity 확인 방식, 값 타입과 참조 타입 차이를 정리한 글.
 PUBLISHED: true
 PUBLISHED_AT: 2025-04-08T23:54:33+09:00

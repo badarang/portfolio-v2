@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">State, action, reward reinforcement learning loop</title>
+  <desc id="desc">A readable diagram explaining that the reinforcement learning AI observes state, chooses an action, and receives reward feedback.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset="0.52" stop-color="#0a0f1d"/>
+      <stop offset="1" stop-color="#101527"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#facc15"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#86efac"/>
+      <stop offset="1" stop-color="#10b981"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.12 0 0 0 0 0.82 0 0 0 0 0.93 0 0 0 0.35 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <marker id="arrowCyan" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrowGold" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#facc15"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M1 1 L11 6 L1 11 Z" fill="#86efac"/>
+    </marker>
+    <style>
+      .title { fill: #f8fafc; font: 800 36px Pretendard, "Noto Sans KR", Arial, sans-serif; letter-spacing: 0; }
+      .subtitle { fill: #aab6cf; font: 500 18px Pretendard, "Noto Sans KR", Arial, sans-serif; }
+      .card-title { font: 900 27px Pretendard, "Noto Sans KR", Arial, sans-serif; letter-spacing: 0.02em; }
+      .card-body { fill: #d9e4f7; font: 600 18px Pretendard, "Noto Sans KR", Arial, sans-serif; }
+      .card-note { fill: #8fa0bc; font: 500 14px Pretendard, "Noto Sans KR", Arial, sans-serif; }
+      .label { fill: #dbeafe; font: 800 13px Pretendard, "Noto Sans KR", Arial, sans-serif; }
+      .chip { fill: #d8e3f6; font: 700 15px Pretendard, "Noto Sans KR", Arial, sans-serif; }
+      .caption { fill: #c7d2fe; font: 700 16px Pretendard, "Noto Sans KR", Arial, sans-serif; }
+      .small { fill: #93a4c0; font: 600 13px Pretendard, "Noto Sans KR", Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="620" rx="28" fill="url(#bg)"/>
+  <path d="M0 510 C170 450 265 570 430 515 S715 466 890 520 S1110 565 1200 500 L1200 620 L0 620 Z" fill="#081421" opacity="0.88"/>
+  <g opacity="0.16" stroke="#5b6f99" stroke-width="1">
+    <path d="M90 0 V620M210 0 V620M330 0 V620M450 0 V620M570 0 V620M690 0 V620M810 0 V620M930 0 V620M1050 0 V620"/>
+    <path d="M0 95 H1200M0 215 H1200M0 335 H1200M0 455 H1200"/>
+  </g>
+
+  <text class="title" x="72" y="70">강화학습은 state, action, reward를 계속 돌려보는 과정</text>
+  <text class="subtitle" x="72" y="101">이 게임에서는 버튼이 작아서 action보다 state와 reward 설계가 더 중요했습니다.</text>
+
+  <g filter="url(#glow)">
+    <path d="M345 250 C430 195 505 182 566 196" fill="none" stroke="#22d3ee" stroke-width="4" opacity="0.9" marker-end="url(#arrowCyan)"/>
+    <path d="M635 198 C720 190 820 214 875 272" fill="none" stroke="#facc15" stroke-width="4" opacity="0.9" marker-end="url(#arrowGold)"/>
+    <path d="M846 376 C690 440 507 438 355 378" fill="none" stroke="#86efac" stroke-width="4" opacity="0.9" marker-end="url(#arrowGreen)"/>
+  </g>
+
+  <g transform="translate(96 245)">
+    <rect width="290" height="160" rx="22" fill="#101827" stroke="url(#cyan)" stroke-width="2.5"/>
+    <circle cx="40" cy="42" r="18" fill="#0b3441" stroke="#22d3ee" stroke-width="2"/>
+    <text x="40" y="49" text-anchor="middle" class="label">01</text>
+    <text x="75" y="58" class="card-title" fill="#22d3ee">STATE</text>
+    <text x="38" y="96" class="card-body">전투 상황을 읽는다</text>
+    <text x="38" y="125" class="card-note">좌표, 속도, 지형, 상태 전환</text>
+  </g>
+
+  <g transform="translate(455 145)">
+    <rect width="290" height="170" rx="24" fill="#152530" stroke="url(#gold)" stroke-width="3.5"/>
+    <circle cx="44" cy="44" r="19" fill="#3d2a0b" stroke="#facc15" stroke-width="2"/>
+    <text x="44" y="51" text-anchor="middle" class="label">02</text>
+    <text x="145" y="62" text-anchor="middle" class="card-title" fill="#facc15">ACTION</text>
+    <text x="145" y="104" text-anchor="middle" class="card-body">누른다</text>
+    <text x="145" y="132" text-anchor="middle" class="card-note">또는 기다린다</text>
+  </g>
+
+  <g transform="translate(816 245)">
+    <rect width="290" height="160" rx="22" fill="#101827" stroke="url(#green)" stroke-width="2.5"/>
+    <circle cx="40" cy="42" r="18" fill="#0d3325" stroke="#86efac" stroke-width="2"/>
+    <text x="40" y="49" text-anchor="middle" class="label">03</text>
+    <text x="75" y="58" class="card-title" fill="#86efac">REWARD</text>
+    <text x="38" y="96" class="card-body">선택을 평가한다</text>
+    <text x="38" y="125" class="card-note">좋은 타이밍은 +, 반복 남용은 -</text>
+  </g>
+
+  <g transform="translate(144 455)">
+    <rect width="116" height="34" rx="17" fill="#071827" stroke="#22d3ee" stroke-width="2"/>
+    <text x="58" y="23" text-anchor="middle" class="chip">위치</text>
+  </g>
+  <g transform="translate(296 455)">
+    <rect width="116" height="34" rx="17" fill="#120f25" stroke="#a78bfa" stroke-width="2"/>
+    <text x="58" y="23" text-anchor="middle" class="chip">속도</text>
+  </g>
+  <g transform="translate(448 455)">
+    <rect width="136" height="34" rx="17" fill="#071827" stroke="#22d3ee" stroke-width="2"/>
+    <text x="68" y="23" text-anchor="middle" class="chip">높이 차이</text>
+  </g>
+  <g transform="translate(620 455)">
+    <rect width="116" height="34" rx="17" fill="#120f25" stroke="#a78bfa" stroke-width="2"/>
+    <text x="58" y="23" text-anchor="middle" class="chip">상태</text>
+  </g>
+  <g transform="translate(772 455)">
+    <rect width="116" height="34" rx="17" fill="#071827" stroke="#22d3ee" stroke-width="2"/>
+    <text x="58" y="23" text-anchor="middle" class="chip">지형</text>
+  </g>
+  <g transform="translate(924 455)">
+    <rect width="136" height="34" rx="17" fill="#120f25" stroke="#a78bfa" stroke-width="2"/>
+    <text x="68" y="23" text-anchor="middle" class="chip">착지 시간</text>
+  </g>
+
+  <g transform="translate(170 525)">
+    <rect width="860" height="48" rx="16" fill="#0e1726" stroke="#41577c" stroke-width="2"/>
+    <text x="430" y="30" text-anchor="middle" class="caption">버튼은 단순하지만, AI가 무엇을 보고 어떤 선택을 했으며 그 선택을 어떻게 평가할지가 핵심이었습니다.</text>
+  </g>
+
+  <text x="600" y="598" text-anchor="middle" class="small">Rule Based AI를 기준선으로 두고, 이 루프를 반복해 더 덜 뻔한 상대를 만들었습니다.</text>
+</svg>

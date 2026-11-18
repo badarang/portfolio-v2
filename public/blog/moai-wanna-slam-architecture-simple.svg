@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="900" viewBox="0 0 1500 900" role="img" aria-labelledby="title desc">
+  <title id="title">Moai Wanna Slam readable architecture</title>
+  <desc id="desc">A readable architecture diagram for blog width showing client, WebSocket, Node server, database, monitoring, and deployment.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#061724"/>
+      <stop offset="1" stop-color="#111426"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#000814" flood-opacity=".38"/>
+    </filter>
+    <marker id="arrow-cyan" markerWidth="18" markerHeight="18" refX="14" refY="9" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M2 2 L16 9 L2 16 Z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="18" markerHeight="18" refX="14" refY="9" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M2 2 L16 9 L2 16 Z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="18" markerHeight="18" refX="14" refY="9" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M2 2 L16 9 L2 16 Z" fill="#a78bfa"/>
+    </marker>
+    <marker id="arrow-pink" markerWidth="18" markerHeight="18" refX="14" refY="9" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M2 2 L16 9 L2 16 Z" fill="#fb7185"/>
+    </marker>
+    <style>
+      .bg { fill: url(#bg); }
+      .grid { stroke: #2dd4bf; stroke-width: 1; opacity: .08; }
+      .title { fill: #f8fafc; font-family: Inter, Pretendard, Arial, sans-serif; font-size: 50px; font-weight: 850; letter-spacing: 0; }
+      .subtitle { fill: #b8c8d8; font-family: Inter, Pretendard, Arial, sans-serif; font-size: 24px; font-weight: 650; letter-spacing: 0; }
+      .box { fill: rgba(10, 18, 33, .9); stroke-width: 4; filter: url(#shadow); }
+      .h { fill: #f8fafc; font-family: Inter, Pretendard, Arial, sans-serif; font-size: 30px; font-weight: 850; letter-spacing: 0; }
+      .num { font-family: Inter, Pretendard, Arial, sans-serif; font-size: 22px; font-weight: 850; letter-spacing: 0; }
+      .body { fill: #d9e5f2; font-family: Inter, Pretendard, Arial, sans-serif; font-size: 23px; font-weight: 700; letter-spacing: 0; }
+      .small { fill: #aebdcb; font-family: Inter, Pretendard, Arial, sans-serif; font-size: 19px; font-weight: 650; letter-spacing: 0; }
+      .label { fill: #eef6ff; font-family: Inter, Pretendard, Arial, sans-serif; font-size: 20px; font-weight: 850; letter-spacing: 0; }
+      .cyan { stroke: #22d3ee; }
+      .amber { stroke: #f59e0b; }
+      .green { stroke: #65d46e; }
+      .purple { stroke: #a78bfa; }
+      .pink { stroke: #fb7185; }
+      .yellow { stroke: #eab308; }
+      .cyanText { fill: #67e8f9; }
+      .amberText { fill: #fbbf24; }
+      .greenText { fill: #86efac; }
+      .purpleText { fill: #c4b5fd; }
+      .pinkText { fill: #fda4af; }
+      .yellowText { fill: #fde047; }
+      .flow { fill: none; stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+      .thin { stroke-width: 5; }
+      .dash { stroke-dasharray: 16 16; }
+      .pill { fill: rgba(15, 23, 42, .85); stroke: rgba(148, 163, 184, .4); stroke-width: 2; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1500" height="900"/>
+  <path class="grid" d="M0 90H1500M0 180H1500M0 270H1500M0 360H1500M0 450H1500M0 540H1500M0 630H1500M0 720H1500M0 810H1500"/>
+  <path class="grid" d="M100 0V900M200 0V900M300 0V900M400 0V900M500 0V900M600 0V900M700 0V900M800 0V900M900 0V900M1000 0V900M1100 0V900M1200 0V900M1300 0V900M1400 0V900"/>
+
+  <text x="750" y="72" text-anchor="middle" class="title">Moai Wanna Slam Architecture</text>
+  <text x="750" y="112" text-anchor="middle" class="subtitle">게임 실행, 실시간 서버, 저장, 모니터링, 배포를 나눈 구조</text>
+
+  <g transform="translate(74 180)">
+    <rect width="285" height="245" rx="22" class="box cyan"/>
+    <text x="28" y="-22" class="num cyanText">1. Client</text>
+    <text x="32" y="58" class="h">LÖVE Client</text>
+    <text x="32" y="112" class="body">입력 / 화면 / 사운드</text>
+    <text x="32" y="154" class="body">UI와 스냅샷 반영</text>
+    <text x="32" y="205" class="small">love.js로 웹 실행</text>
+  </g>
+
+  <g transform="translate(435 180)">
+    <rect width="250" height="245" rx="22" class="box amber"/>
+    <text x="28" y="-22" class="num amberText">2. Protocol</text>
+    <text x="32" y="58" class="h">WebSocket</text>
+    <text x="32" y="112" class="body">PRESS / MATCH</text>
+    <text x="32" y="154" class="body">SNAP / RESULT</text>
+    <text x="32" y="205" class="small">텍스트 메시지 계약</text>
+  </g>
+
+  <g transform="translate(762 180)">
+    <rect width="315" height="245" rx="22" class="box green"/>
+    <text x="28" y="-22" class="num greenText">3. Server</text>
+    <text x="32" y="58" class="h">Node.js Server</text>
+    <text x="32" y="112" class="body">매칭 / 방 관리</text>
+    <text x="32" y="154" class="body">전투 런타임</text>
+    <text x="32" y="205" class="small">서버가 경기 상태를 관리</text>
+  </g>
+
+  <g transform="translate(1160 165)">
+    <rect width="265" height="190" rx="22" class="box purple"/>
+    <text x="28" y="-22" class="num purpleText">4. Database</text>
+    <text x="32" y="58" class="h">Supabase</text>
+    <text x="32" y="112" class="body">세션 / 티켓 / 결과</text>
+    <text x="32" y="154" class="small">보상, 코스튬, RLS</text>
+  </g>
+
+  <g transform="translate(1160 445)">
+    <rect width="265" height="190" rx="22" class="box pink"/>
+    <text x="28" y="-22" class="num pinkText">5. Monitoring</text>
+    <text x="32" y="58" class="h">Sentry / Logs</text>
+    <text x="32" y="112" class="body">오류와 이벤트</text>
+    <text x="32" y="154" class="small">실패 지점 추적</text>
+  </g>
+
+  <g transform="translate(148 670)">
+    <rect width="1204" height="145" rx="22" class="box yellow"/>
+    <text x="32" y="-24" class="num yellowText">6. Deploy</text>
+    <text x="42" y="62" class="h">GitHub Actions</text>
+    <text x="338" y="62" class="h">Build</text>
+    <text x="582" y="62" class="h">GitHub Pages</text>
+    <text x="900" y="62" class="h">User Access</text>
+    <text x="42" y="105" class="small">source / test</text>
+    <text x="338" y="105" class="small">web bundle</text>
+    <text x="582" y="105" class="small">static page</text>
+    <text x="900" y="105" class="small">browser play</text>
+  </g>
+
+  <path d="M359 303 H435" class="flow cyan" marker-end="url(#arrow-cyan)"/>
+  <text x="397" y="278" text-anchor="middle" class="label">commands</text>
+  <path d="M435 352 H359" class="flow cyan dash thin" marker-end="url(#arrow-cyan)"/>
+  <text x="397" y="386" text-anchor="middle" class="label">snapshots</text>
+
+  <path d="M685 303 H762" class="flow amber" marker-end="url(#arrow-amber)"/>
+  <path d="M762 352 H685" class="flow amber dash thin" marker-end="url(#arrow-amber)"/>
+
+  <path d="M1077 266 H1160" class="flow purple" marker-end="url(#arrow-purple)"/>
+  <text x="1118" y="239" text-anchor="middle" class="label">auth / save</text>
+
+  <path d="M1077 376 C1128 454 1130 512 1160 540" class="flow pink dash thin" marker-end="url(#arrow-pink)"/>
+  <path d="M359 424 C620 586 872 608 1160 563" class="flow pink dash thin" marker-end="url(#arrow-pink)" opacity=".9"/>
+  <text x="918" y="618" text-anchor="middle" class="label">error / event context</text>
+
+  <path d="M414 742 H472" class="flow yellow" marker-end="url(#arrow-amber)"/>
+  <path d="M520 742 H574" class="flow yellow" marker-end="url(#arrow-amber)"/>
+  <path d="M820 742 H884" class="flow yellow" marker-end="url(#arrow-amber)"/>
+  <path d="M1077 425 C1040 552 888 604 750 670" class="flow yellow dash thin" marker-end="url(#arrow-amber)"/>
+  <text x="908" y="552" class="label">server deploy</text>
+
+  <g transform="translate(274 842)">
+    <rect width="952" height="36" rx="10" class="pill"/>
+    <line x1="34" y1="18" x2="92" y2="18" class="flow cyan thin"/>
+    <text x="112" y="25" class="small">client/protocol</text>
+    <line x1="300" y1="18" x2="358" y2="18" class="flow purple thin"/>
+    <text x="378" y="25" class="small">database</text>
+    <line x1="535" y1="18" x2="593" y2="18" class="flow pink dash thin"/>
+    <text x="613" y="25" class="small">monitoring</text>
+    <line x1="775" y1="18" x2="833" y2="18" class="flow yellow thin"/>
+    <text x="853" y="25" class="small">deploy</text>
+  </g>
+</svg>

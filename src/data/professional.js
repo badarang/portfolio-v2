@@ -11,7 +11,7 @@ export const professional = [
     location: "Brisbane, Australia",
     logo: "/companies/halfbrick.jpg",
     role: "Gameplay Programmer",
-    period: "(기간 입력)",
+    period: "2026.01 - 2026.05 · 정규직",
     impact: [
       "Jetpack Joyride Racing(JJR) 기능 개발 및 런칭 참여",
       "Halfbrick+ HubApp 기능 개발",
@@ -33,11 +33,11 @@ export const professional = [
     location: "Seoul, Korea",
     logo: "/companies/111percent.svg",
     role: "Game Client Programmer",
-    period: "(기간 입력)",
+    period: "2025.08 - 2026.01 · 정규직",
     impact: [
-      "도전과제 70+ 시스템 설계/구현",
-      "전투 · 보스 · 스킨 · 증강체 시스템 개발",
-      "라이브 서비스 구조 개선 및 신규 기능 데이터 연동",
+      "1.5.x 라이브 서비스 업데이트 콘텐츠 출시",
+      "도전과제 70+ · 스킨 · 프로필/프레임 시스템 설계/구현",
+      "시즌 재화·마이그레이션 리스크를 고려한 안정적 출시 대응",
     ],
     workAreas: [
       "이벤트 / 스킨 / 도전과제 시스템 개발",
