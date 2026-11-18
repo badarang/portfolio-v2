@@ -7,8 +7,8 @@ const img = (n) => imageMap[`../assets/project/project${n}.png`];
 const links = {
   linkedin: "https://kr.linkedin.com/in/haein-oh-979b29304/en",
   github: "https://github.com/badarang",
-  emailAddress: "badarangdev@gmail.com",
-  email: "mailto:badarangdev@gmail.com",
+  emailAddress: "badarang@a4room.com",
+  email: "mailto:badarang@a4room.com",
   itch: "https://badarang.itch.io",
 };
 
@@ -381,7 +381,7 @@ function makeContent(language, content) {
 
 export const localizedContent = {
   ko: makeContent("ko", {
-    documentTitle: "Haein Oh - Rapid Game Dev",
+    documentTitle: "Haein Oh | Game Builder",
     profile: {
       name: "Haein Oh",
       realName: "Haein Oh",
@@ -483,8 +483,9 @@ export const localizedContent = {
       ],
     },
     professional: [
+      { company: "OVERDARE", location: "Seoul, Korea", logo: "/companies/krafton.png", role: "UGC Game Engineer", period: "2026.07 - 현재 · 정규직", impact: ["UGC 플랫폼 위에서 Luau로 게임을 1인 개발", "엔진을 쓰며 찾은 오류와 개선점을 스튜디오 엔진팀에 제보", "창작자 관점에서 필요한 엔진 기능 제안"], workAreas: ["Luau 게임플레이 구현", "엔진 버그 재현 및 리포트", "기능 요청과 피드백 정리", "UGC 콘텐츠 제작"], tech: ["Luau", "OVERDARE Studio", "UGC", "Rapid Prototyping"], link: "https://overdare.com", media: "https://www.youtube.com/watch?v=2bW4QIMLMz4", accent: "juicy" },
       { company: "Halfbrick Studios", location: "Brisbane, Australia", logo: "/companies/halfbrick.jpg", role: "Gameplay Programmer", period: "2026.01 - 2026.05 · 정규직", impact: ["Jetpack Joyride Racing(JJR) 기능 개발 및 런칭 참여", "Halfbrick+ HubApp 기능 개발", "SDK 유지보수 및 라이브 안정화"], workAreas: ["Crashlytics 기반 크래시 분석", "딥링크 / CTA 모바일 이슈 대응", "LiveOps QA 및 버그 수정", "해외 팀과 라이브 이슈 대응"], tech: ["Unity", "Mobile LiveOps", "Firebase", "Crashlytics", "Perforce"], link: "https://www.halfbrick.com", media: "https://www.youtube.com/watch?v=6PWzxNSnN20", accent: "simple" },
-      { company: "111%", location: "Seoul, Korea", logo: "/companies/111percent.svg", role: "Game Client Programmer", period: "2025.08 - 2026.01 · 정규직", impact: ["1.5.x 라이브 서비스 업데이트 콘텐츠 출시", "도전과제 70+ · 스킨 · 프로필/프레임 시스템 설계/구현", "시즌 재화·마이그레이션 리스크를 고려한 안정적 출시 대응"], workAreas: ["이벤트 / 스킨 / 도전과제 시스템 개발", "전투 및 보스 기믹 로직 구현", "Jenkins / Git 협업 파이프라인", "Redmine QA 대응 및 트러블슈팅"], tech: ["Unity", "Firebase", "Jenkins", "Git", "Rapid Prototyping"], link: "https://111percent.net", media: "https://www.youtube.com/watch?v=uXJrp3pT7Yc", thumbnailZoom: 1.34, thumbnailPosition: "center 62%", accent: "hook" },
+      { company: "111%", location: "Seoul, Korea", logo: "/companies/111percent.svg", role: "Game Client Programmer", period: "2025.08 - 2026.01 · 정규직", impact: ["용사님 돌았어요? (Heroll: Dice Roguelike) · 100만+ 다운로드 게임의 1.5.x 라이브 업데이트 출시", "도전과제 70+ · 스킨 · 프로필/프레임 시스템 설계/구현", "시즌 재화·마이그레이션 리스크를 고려한 안정적 출시 대응"], workAreas: ["이벤트 / 스킨 / 도전과제 시스템 개발", "전투 및 보스 기믹 로직 구현", "Jenkins / Git 협업 파이프라인", "Redmine QA 대응 및 트러블슈팅"], tech: ["Unity", "Firebase", "Jenkins", "Git", "Rapid Prototyping"], link: "https://111percent.net", media: "https://www.youtube.com/watch?v=uXJrp3pT7Yc", thumbnailZoom: 1.34, thumbnailPosition: "center 62%", accent: "hook" },
     ],
     activityFeature: { type: "Interview", title: "호주 게임회사 취업 이야기", source: "YouTube", youtubeId: "llVMe9Q21N0", url: "https://www.youtube.com/watch?v=llVMe9Q21N0", thumbnail: "/activities/austraila-interview.jpg", desc: "해외 게임회사 취업 과정과 실무 경험을 풀어낸 인터뷰 콘텐츠.", label: "YouTube" },
     activities: [
@@ -497,7 +498,7 @@ export const localizedContent = {
     ],
   }),
   en: makeContent("en", {
-    documentTitle: "Haein Oh - Rapid Game Dev",
+    documentTitle: "Haein Oh | Game Builder",
     profile: { name: "Haein Oh", realName: "Haein Oh", role: "Rapid Gameplay Programmer", slogan: ["Fun", "Fast", "Juicy"], intro: "A gameplay programmer focused on fast prototypes, live-service iteration, and player-first systems." },
     ui: {
       language: "Language",
@@ -577,8 +578,9 @@ export const localizedContent = {
       ],
     },
     professional: [
+      { company: "OVERDARE", location: "Seoul, Korea", logo: "/companies/krafton.png", role: "UGC Game Engineer", period: "Jul 2026 - Present · Full-time", impact: ["Building games solo in Luau on a UGC platform", "Reporting engine bugs and rough edges to the studio engine team", "Proposing engine features from a creator's point of view"], workAreas: ["Luau gameplay implementation", "Engine bug reproduction and reports", "Feature requests and feedback", "UGC content production"], tech: ["Luau", "OVERDARE Studio", "UGC", "Rapid Prototyping"], link: "https://overdare.com", media: "https://www.youtube.com/watch?v=2bW4QIMLMz4", accent: "juicy" },
       { company: "Halfbrick Studios", location: "Brisbane, Australia", logo: "/companies/halfbrick.jpg", role: "Gameplay Programmer", period: "Jan 2026 - May 2026 · Full-time", impact: ["Contributed to Jetpack Joyride Racing feature development and launches", "Built features in the Halfbrick+ HubApp ecosystem", "Maintained SDKs and supported live-service stability"], workAreas: ["Crash analysis with Crashlytics", "Mobile deep link / CTA issue resolution", "LiveOps QA and bug fixing", "Live issue response with an international team"], tech: ["Unity", "Mobile LiveOps", "Firebase", "Crashlytics", "Perforce"], link: "https://www.halfbrick.com", media: "https://www.youtube.com/watch?v=6PWzxNSnN20", accent: "simple" },
-      { company: "111%", location: "Seoul, Korea", logo: "/companies/111percent.svg", role: "Game Client Programmer", period: "Aug 2025 - Jan 2026 · Full-time", impact: ["Shipped 1.5.x live-service update content", "Designed and implemented 70+ achievements, skin, and profile/frame systems", "Supported stable releases with migration and seasonal-currency risk handling"], workAreas: ["Event, skin, and achievement systems", "Combat and boss mechanic logic", "Jenkins / Git collaboration pipeline", "Redmine QA response and troubleshooting"], tech: ["Unity", "Firebase", "Jenkins", "Git", "Rapid Prototyping"], link: "https://111percent.net", media: "https://www.youtube.com/watch?v=uXJrp3pT7Yc", thumbnailZoom: 1.34, thumbnailPosition: "center 62%", accent: "hook" },
+      { company: "111%", location: "Seoul, Korea", logo: "/companies/111percent.svg", role: "Game Client Programmer", period: "Aug 2025 - Jan 2026 · Full-time", impact: ["Shipped 1.5.x live updates for Heroll: Dice Roguelike (1M+ downloads)", "Designed and implemented 70+ achievements, skin, and profile/frame systems", "Supported stable releases with migration and seasonal-currency risk handling"], workAreas: ["Event, skin, and achievement systems", "Combat and boss mechanic logic", "Jenkins / Git collaboration pipeline", "Redmine QA response and troubleshooting"], tech: ["Unity", "Firebase", "Jenkins", "Git", "Rapid Prototyping"], link: "https://111percent.net", media: "https://www.youtube.com/watch?v=uXJrp3pT7Yc", thumbnailZoom: 1.34, thumbnailPosition: "center 62%", accent: "hook" },
     ],
     activityFeature: { type: "Interview", title: "Working at an Australian Game Studio", source: "YouTube", youtubeId: "llVMe9Q21N0", url: "https://www.youtube.com/watch?v=llVMe9Q21N0", thumbnail: "/activities/austraila-interview.jpg", desc: "An interview about the path to overseas game jobs and real production experience.", label: "YouTube" },
     activities: [
@@ -591,7 +593,7 @@ export const localizedContent = {
     ],
   }),
   zh: makeContent("zh", {
-    documentTitle: "Haein Oh - Rapid Game Dev",
+    documentTitle: "Haein Oh | Game Builder",
     profile: { name: "Haein Oh", realName: "Haein Oh", role: "Rapid Gameplay Programmer", slogan: ["Fun", "Fast", "Juicy"], intro: "专注于快速原型、在线服务迭代和玩家优先系统的 Gameplay Programmer。" },
     ui: {
       language: "语言",
@@ -671,8 +673,9 @@ export const localizedContent = {
       ],
     },
     professional: [
+      { company: "OVERDARE", location: "Seoul, Korea", logo: "/companies/krafton.png", role: "UGC Game Engineer", period: "2026.07 - 至今 · 全职", impact: ["在 UGC 平台上用 Luau 独立开发游戏", "把使用引擎时发现的问题和改进点反馈给工作室引擎团队", "从创作者角度提出所需的引擎功能"], workAreas: ["Luau Gameplay 实现", "引擎 Bug 复现与报告", "功能需求与反馈整理", "UGC 内容制作"], tech: ["Luau", "OVERDARE Studio", "UGC", "Rapid Prototyping"], link: "https://overdare.com", media: "https://www.youtube.com/watch?v=2bW4QIMLMz4", accent: "juicy" },
       { company: "Halfbrick Studios", location: "Brisbane, Australia", logo: "/companies/halfbrick.jpg", role: "Gameplay Programmer", period: "2026.01 - 2026.05 · 全职", impact: ["参与 Jetpack Joyride Racing 功能开发与上线", "开发 Halfbrick+ HubApp 生态相关功能", "维护 SDK 并支持在线服务稳定性"], workAreas: ["基于 Crashlytics 的崩溃分析", "处理移动端 deep link / CTA 问题", "LiveOps QA 与 Bug 修复", "与海外团队一起处理线上问题"], tech: ["Unity", "Mobile LiveOps", "Firebase", "Crashlytics", "Perforce"], link: "https://www.halfbrick.com", media: "https://www.youtube.com/watch?v=6PWzxNSnN20", accent: "simple" },
-      { company: "111%", location: "Seoul, Korea", logo: "/companies/111percent.svg", role: "Game Client Programmer", period: "2025.08 - 2026.01 · 全职", impact: ["发布 1.5.x 在线服务更新内容", "设计并实现 70+ 成就、皮肤、个人资料/头像框系统", "考虑迁移与赛季货币风险，支持稳定上线"], workAreas: ["活动 / 皮肤 / 成就系统开发", "战斗与 Boss 机制逻辑实现", "Jenkins / Git 协作流程", "Redmine QA 响应与问题排查"], tech: ["Unity", "Firebase", "Jenkins", "Git", "Rapid Prototyping"], link: "https://111percent.net", media: "https://www.youtube.com/watch?v=uXJrp3pT7Yc", thumbnailZoom: 1.34, thumbnailPosition: "center 62%", accent: "hook" },
+      { company: "111%", location: "Seoul, Korea", logo: "/companies/111percent.svg", role: "Game Client Programmer", period: "2025.08 - 2026.01 · 全职", impact: ["为 Heroll: Dice Roguelike（100万+ 下载）发布 1.5.x 在线更新", "设计并实现 70+ 成就、皮肤、个人资料/头像框系统", "考虑迁移与赛季货币风险，支持稳定上线"], workAreas: ["活动 / 皮肤 / 成就系统开发", "战斗与 Boss 机制逻辑实现", "Jenkins / Git 协作流程", "Redmine QA 响应与问题排查"], tech: ["Unity", "Firebase", "Jenkins", "Git", "Rapid Prototyping"], link: "https://111percent.net", media: "https://www.youtube.com/watch?v=uXJrp3pT7Yc", thumbnailZoom: 1.34, thumbnailPosition: "center 62%", accent: "hook" },
     ],
     activityFeature: { type: "Interview", title: "澳洲游戏公司求职故事", source: "YouTube", youtubeId: "llVMe9Q21N0", url: "https://www.youtube.com/watch?v=llVMe9Q21N0", thumbnail: "/activities/austraila-interview.jpg", desc: "关于海外游戏公司求职过程和实际工作经验的采访内容。", label: "YouTube" },
     activities: [
@@ -685,7 +688,7 @@ export const localizedContent = {
     ],
   }),
   ja: makeContent("ja", {
-    documentTitle: "Haein Oh - Rapid Game Dev",
+    documentTitle: "Haein Oh | Game Builder",
     profile: { name: "Haein Oh", realName: "Haein Oh", role: "Rapid Gameplay Programmer", slogan: ["Fun", "Fast", "Juicy"], intro: "高速プロトタイピング、ライブサービス改善、プレイヤーファーストなシステムに注力する Gameplay Programmer です。" },
     ui: {
       language: "言語",
@@ -765,8 +768,9 @@ export const localizedContent = {
       ],
     },
     professional: [
+      { company: "OVERDARE", location: "Seoul, Korea", logo: "/companies/krafton.png", role: "UGC Game Engineer", period: "2026.07 - 現在 · 正社員", impact: ["UGC プラットフォーム上で Luau によるゲームを 1 人で開発", "エンジン使用中に見つけた不具合と改善点をスタジオのエンジンチームへ報告", "クリエイター視点で必要なエンジン機能を提案"], workAreas: ["Luau ゲームプレイ実装", "エンジンバグの再現と報告", "機能要望とフィードバックの整理", "UGC コンテンツ制作"], tech: ["Luau", "OVERDARE Studio", "UGC", "Rapid Prototyping"], link: "https://overdare.com", media: "https://www.youtube.com/watch?v=2bW4QIMLMz4", accent: "juicy" },
       { company: "Halfbrick Studios", location: "Brisbane, Australia", logo: "/companies/halfbrick.jpg", role: "Gameplay Programmer", period: "2026.01 - 2026.05 · 正社員", impact: ["Jetpack Joyride Racing の機能開発とローンチに貢献", "Halfbrick+ HubApp エコシステムの機能開発", "SDK 保守とライブサービス安定化を支援"], workAreas: ["Crashlytics ベースのクラッシュ分析", "モバイル deep link / CTA 問題対応", "LiveOps QA とバグ修正", "海外チームとのライブ問題対応"], tech: ["Unity", "Mobile LiveOps", "Firebase", "Crashlytics", "Perforce"], link: "https://www.halfbrick.com", media: "https://www.youtube.com/watch?v=6PWzxNSnN20", accent: "simple" },
-      { company: "111%", location: "Seoul, Korea", logo: "/companies/111percent.svg", role: "Game Client Programmer", period: "2025.08 - 2026.01 · 正社員", impact: ["1.5.x ライブサービス更新コンテンツをリリース", "70+ の実績、スキン、プロフィール/フレームシステムを設計・実装", "マイグレーションとシーズン通貨リスクを考慮し、安定したリリースを支援"], workAreas: ["イベント / スキン / 実績システム開発", "戦闘とボスギミックのロジック実装", "Jenkins / Git 協業パイプライン", "Redmine QA 対応とトラブルシューティング"], tech: ["Unity", "Firebase", "Jenkins", "Git", "Rapid Prototyping"], link: "https://111percent.net", media: "https://www.youtube.com/watch?v=uXJrp3pT7Yc", thumbnailZoom: 1.34, thumbnailPosition: "center 62%", accent: "hook" },
+      { company: "111%", location: "Seoul, Korea", logo: "/companies/111percent.svg", role: "Game Client Programmer", period: "2025.08 - 2026.01 · 正社員", impact: ["Heroll: Dice Roguelike（100万+ ダウンロード）の 1.5.x ライブ更新をリリース", "70+ の実績、スキン、プロフィール/フレームシステムを設計・実装", "マイグレーションとシーズン通貨リスクを考慮し、安定したリリースを支援"], workAreas: ["イベント / スキン / 実績システム開発", "戦闘とボスギミックのロジック実装", "Jenkins / Git 協業パイプライン", "Redmine QA 対応とトラブルシューティング"], tech: ["Unity", "Firebase", "Jenkins", "Git", "Rapid Prototyping"], link: "https://111percent.net", media: "https://www.youtube.com/watch?v=uXJrp3pT7Yc", thumbnailZoom: 1.34, thumbnailPosition: "center 62%", accent: "hook" },
     ],
     activityFeature: { type: "Interview", title: "オーストラリアのゲーム会社就職ストーリー", source: "YouTube", youtubeId: "llVMe9Q21N0", url: "https://www.youtube.com/watch?v=llVMe9Q21N0", thumbnail: "/activities/austraila-interview.jpg", desc: "海外ゲーム会社への就職過程と実務経験を語ったインタビューコンテンツ。", label: "YouTube" },
     activities: [

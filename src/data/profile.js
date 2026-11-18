@@ -9,8 +9,8 @@ export const profile = {
   links: {
     linkedin: "https://kr.linkedin.com/in/haein-oh-979b29304/en",
     github: "https://github.com/badarang",
-    emailAddress: "badarangdev@gmail.com",
-    email: "mailto:badarangdev@gmail.com",
+    emailAddress: "badarang@a4room.com",
+    email: "mailto:badarang@a4room.com",
   },
   intro:
     "A game developer focused on rapid prototyping, live service iteration, and player-first design. I enjoy building tools, systems, and gameplay that help teams move faster and make games more fun.",

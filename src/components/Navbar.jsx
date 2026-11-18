@@ -22,10 +22,18 @@ export default function Navbar() {
   const onHome = location.pathname === "/";
   const inDevRelContext = location.pathname === "/devrel" || location.pathname === "/resume-devrel";
   const onSectionPage = onHome || location.pathname === "/devrel";
+  const navText = {
+    ko: { story: "이야기", career: "경력", games: "게임", teach: "멘토링" },
+    en: { story: "Story", career: "Experience", games: "Games", teach: "Teaching" },
+    zh: { story: "故事", career: "经历", games: "游戏", teach: "导师" },
+    ja: { story: "ストーリー", career: "経歴", games: "ゲーム", teach: "メンタリング" },
+  }[language] ?? {};
   const links = [
-    { id: "career", label: ui.nav.career },
-    inDevRelContext ? { id: "blog", label: ui.nav.blog } : { path: "/blog", label: ui.nav.blog },
-    { id: "activities", label: ui.nav.activities },
+    { id: "story", label: navText.story },
+    { id: "a4room", label: navText.games },
+    { id: "career", label: navText.career },
+    { id: "teach", label: navText.teach },
+    { path: "/blog", label: ui.nav.blog },
   ];
 
   useEffect(() => {

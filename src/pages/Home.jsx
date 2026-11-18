@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import Hero from "../components/Hero";
+import FounderHero from "../components/FounderHero";
+import Story from "../components/Story";
 import Philosophy from "../components/Philosophy";
 import Professional from "../components/Professional";
-import Projects from "../components/Projects";
-import Testimonials from "../components/Testimonials";
-import Blog from "../components/Blog";
+import Games from "../components/Games";
+import Teach from "../components/Teach";
 import Activities from "../components/Activities";
 import Contact from "../components/Contact";
 import { scrollToSection } from "../lib/scrollToSection";
 
-// 홈: 홈 → 프로젝트 → 블로그 → 대외활동 으로 이어지는 연속 스크롤.
+// 홈: Hero → 이야기 → 철학 → 게임 → 경력 → 멘토링 → 대외활동·뉴스 → 연락. 블로그는 상단 메뉴의 /blog 로 간다.
 export default function Home() {
   const location = useLocation();
 
@@ -26,13 +26,13 @@ export default function Home() {
 
   return (
     <>
-      <Hero />
+      <FounderHero />
+      <Story />
       <Philosophy />
+      <Games />
       <Professional />
-      <Projects />
-      <Blog />
+      <Teach />
       <Activities />
-      <Testimonials />
       <Contact />
     </>
   );
