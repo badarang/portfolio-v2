@@ -47,6 +47,42 @@ const copy = {
       soundOff: "Sound off",
     },
   },
+  zh: {
+    eyebrow: "FOUNDER, A4Room | Game Builder",
+    creds: [
+      { name: "ex-Halfbrick", icon: "/companies/halfbrick.jpg" },
+      { name: "ex-111%", icon: "/companies/111percent.svg" },
+      { name: "OVERDARE", icon: "/companies/krafton.png", dark: true },
+    ],
+    note: "负责过 100万+ 下载游戏的在线运营",
+    primary: "查看 A4Room 的游戏",
+    secondary: "一路走来的故事",
+    stage: {
+      start: "Ready",
+      alt: "火柴人用拳头、锤子、刀和枪砸墙的黑白像素动画",
+      cleared: "Necro Rumble · Just a Game About Trolling",
+      soundOn: "Sound on",
+      soundOff: "Sound off",
+    },
+  },
+  ja: {
+    eyebrow: "FOUNDER, A4Room | Game Builder",
+    creds: [
+      { name: "ex-Halfbrick", icon: "/companies/halfbrick.jpg" },
+      { name: "ex-111%", icon: "/companies/111percent.svg" },
+      { name: "OVERDARE", icon: "/companies/krafton.png", dark: true },
+    ],
+    note: "100万+ ダウンロードのゲームでライブ運営を担当",
+    primary: "A4Room のゲームを見る",
+    secondary: "ここまでの道のり",
+    stage: {
+      start: "Ready",
+      alt: "棒人間がパンチ、ハンマー、刀、銃で壁を壊す白黒ピクセルアニメーション",
+      cleared: "Necro Rumble · Just a Game About Trolling",
+      soundOn: "Sound on",
+      soundOff: "Sound off",
+    },
+  },
 };
 
 // 글자 하나하나를 따로 감싸서 타격의 충격이 글자 단위로 전달되게 한다.
@@ -109,7 +145,7 @@ export default function FounderHero() {
       };
 
   return (
-    <section className="relative isolate min-h-screen overflow-hidden bg-[#0b0b0c] text-white">
+    <section className="relative isolate min-h-[100svh] overflow-hidden bg-[#0b0b0c] text-white">
       {/* 배경: 게임 영상 */}
       <div className="absolute inset-0 -z-10">
         <img
@@ -151,19 +187,20 @@ export default function FounderHero() {
       )}
 
       <div
-        className="container-px relative z-10 flex min-h-screen flex-col justify-center pb-[23rem] pt-28 sm:pb-64 lg:pb-20"
+        className="container-px relative z-10 flex min-h-[100svh] flex-col justify-start pb-[13.5rem] pt-[5.25rem] sm:justify-center sm:pb-64 sm:pt-28 lg:pb-20"
       >
         <motion.div
           initial={reduced ? false : { opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+          data-hero-copy
           className="min-w-0 max-w-2xl"
         >
           <p data-jolt="0.35" className="text-xs font-semibold tracking-[0.08em] text-white/60 sm:text-sm">
             {t.eyebrow}
           </p>
 
-          <h1 className="mt-6 font-display font-bold leading-[0.92] tracking-tight">
+          <h1 className="mt-3 font-display font-bold leading-[0.92] tracking-tight sm:mt-6">
             <span className="block whitespace-nowrap text-[clamp(3rem,7.4vw,6.6rem)]">
               <Chars text="Haein Oh" shotLast step />
             </span>
@@ -184,7 +221,7 @@ export default function FounderHero() {
             </span>
           </h1>
 
-          <ul className="mt-7 flex max-w-xl flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-white/85 sm:text-base">
+          <ul className="mt-4 flex max-w-xl flex-wrap items-center gap-x-3 gap-y-2 text-[0.8rem] font-semibold sm:mt-7 sm:gap-x-5 sm:text-sm text-white/85 sm:text-base">
             {t.creds.map((c) => (
               <li key={c.name} data-jolt="0.6" className="flex items-center gap-2">
                 <span
@@ -202,14 +239,14 @@ export default function FounderHero() {
             {t.note}
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap gap-2 sm:mt-8 sm:gap-3">
             <span data-jolt="0.8" className="inline-block">
             <motion.a
               {...press}
               href="https://a4room.com"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-6 text-sm font-bold text-[#0b0b0c]"
+              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-4 text-[0.82rem] font-bold text-[#0b0b0c] sm:min-h-12 sm:px-6 sm:text-sm"
             >
               {t.primary}
               <span aria-hidden="true">→</span>
@@ -220,7 +257,7 @@ export default function FounderHero() {
               {...press}
               type="button"
               onClick={() => scrollToSection("story")}
-              className="inline-flex min-h-12 items-center rounded-full border border-white/25 bg-white/[0.06] px-6 text-sm font-bold text-white backdrop-blur-sm"
+              className="inline-flex min-h-11 items-center rounded-full border border-white/25 bg-white/[0.06] px-4 text-[0.82rem] font-bold text-white backdrop-blur-sm sm:min-h-12 sm:px-6 sm:text-sm"
             >
               {t.secondary}
             </motion.button>

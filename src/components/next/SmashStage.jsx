@@ -228,7 +228,15 @@ export default function SmashStage({ labels, onReveal }) {
     const layout = () => {
       const W = canvas.clientWidth || 1;
       const H = canvas.clientHeight || 1;
-      const scale = Math.max(1.6, Math.min(H / 180, W / 170));
+      let scale = Math.max(1.6, Math.min(H / 180, W / 170));
+      if (W < 640) {
+        // 폰: 글 아래 남는 공간에 벽과 스틱맨이 통째로 들어가게 크기를 맞춘다. 첫 화면에서 바로 보여야 한다.
+        const copy = canvas.parentElement.querySelector("[data-hero-copy]");
+        if (copy) {
+          const free = H - (copy.getBoundingClientRect().bottom - canvas.getBoundingClientRect().top) - 6;
+          scale = Math.max(1.05, Math.min(scale, free / (WALL_H + 20)));
+        }
+      }
       LW = Math.ceil(W / scale);
       LH = Math.ceil(H / scale);
       KX = W / LW;
@@ -2179,7 +2187,7 @@ export default function SmashStage({ labels, onReveal }) {
     Object.assign(man, { x: HOME - 30, y: FLOOR, snapHead: true });
     const ro = new ResizeObserver(layout);
     ro.observe(canvas);
-    const remeasure = window.setTimeout(measure, 1200);
+    const remeasure = window.setTimeout(layout, 1200); // 글 등장 애니메이션이 끝난 뒤 다시 맞춘다
     const io = new IntersectionObserver(([entry]) => {
       const was = visible;
       visible = entry.isIntersecting;

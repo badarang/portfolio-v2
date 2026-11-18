@@ -13,7 +13,7 @@ const si = (slug, color = "ffffff") => `https://cdn.simpleicons.org/${slug}/${co
 
 // x, y 는 0~100 의 캔버스 좌표.
 const NODES = [
-  { id: "start", type: "start", x: 5, y: 50, label: { ko: "11살", en: "Age 11" }, stat: { ko: "첫 게임을 만들다", en: "First game" } },
+  { id: "start", type: "start", x: 5, y: 50, label: { ko: "11살", en: "Age 11", zh: "11岁", ja: "11歳" }, stat: { ko: "첫 게임을 만들다", en: "First game", zh: "做出第一款游戏", ja: "初めてゲームを作る" } },
 
   { id: "easytoon", type: "tool", x: 13, y: 22, label: "EasyToon", mark: "Ez" },
   { id: "ps", type: "tool", x: 23, y: 9, label: "Photoshop", icon: "/story/ps.svg" },
@@ -25,14 +25,14 @@ const NODES = [
   { id: "godot", type: "tool", x: 76, y: 94, label: "Godot", icon: si("godotengine", "478CBF") },
   { id: "luau", type: "tool", x: 95, y: 14, label: "Luau", icon: si("roblox") },
 
-  { id: "itch", type: "game", x: 25, y: 86, label: "itch.io", img: "/story/itch.svg", imgBg: "#fff", stat: { ko: "게임 20개+", en: "20+ games" }, href: "https://badarang.itch.io" },
-  { id: "necro", type: "game", x: 44, y: 76, label: "Necro Rumble", img: shot(19), stat: { ko: "Steam 4만 장", en: "40K on Steam" }, href: "https://store.steampowered.com/app/2735950/Necro_Rumble/" },
-  { id: "animal", type: "game", x: 54, y: 50, label: "Animal Jumping!", img: shot(20), stat: { ko: "버닝비버 3일 연속 선정", en: "Burning Beaver pick, 3 days" } },
-  { id: "heroll", type: "game", x: 66, y: 66, label: "Heroll", img: "/story/heroll.png", stat: { ko: "100만+ 다운로드", en: "1M+ downloads" } },
-  { id: "jjr", type: "game", x: 79, y: 50, label: "Jetpack Joyride Racing", img: "/story/jjr.png", stat: { ko: "글로벌 런칭 · 10만+", en: "Global launch · 100K+" } },
-  { id: "slam", type: "game", x: 69, y: 84, label: "Moai Wanna Slam", img: "/story/moai.png", stat: { ko: "출시됨", en: "Live" }, href: "https://a4room.com/#g1" },
-  { id: "frog", type: "game", x: 85, y: 90, label: "Judgy Froggy", img: "/a4room/frog.jpg", stat: { ko: "웹에서 플레이", en: "Play on web" }, href: "https://a4room.com/#g3" },
-  { id: "troll", type: "game", x: 96, y: 82, label: "Trolling", img: "/a4room/troll-capsule.jpg", stat: { ko: "Steam 출시 예정", en: "Coming to Steam" }, href: "https://a4room.com/#g4" },
+  { id: "itch", type: "game", x: 25, y: 86, label: "itch.io", img: "/story/itch.svg", imgBg: "#fff", stat: { ko: "게임 20개+", en: "20+ games", zh: "20+ 款游戏", ja: "ゲーム 20本+" }, href: "https://badarang.itch.io" },
+  { id: "necro", type: "game", x: 44, y: 76, label: "Necro Rumble", img: shot(19), stat: { ko: "Steam 4만 장", en: "40K on Steam", zh: "Steam 4万份", ja: "Steam 4万本" }, href: "https://store.steampowered.com/app/2735950/Necro_Rumble/" },
+  { id: "animal", type: "game", x: 54, y: 50, label: "Animal Jumping!", img: shot(20), stat: { ko: "버닝비버 3일 연속 선정", en: "Burning Beaver pick, 3 days", zh: "Burning Beaver 连续 3 天入选", ja: "Burning Beaver 3日連続選出" } },
+  { id: "heroll", type: "game", x: 66, y: 66, label: "Heroll", img: "/story/heroll.png", stat: { ko: "100만+ 다운로드", en: "1M+ downloads", zh: "100万+ 下载", ja: "100万+ ダウンロード" } },
+  { id: "jjr", type: "game", x: 79, y: 50, label: "Jetpack Joyride Racing", img: "/story/jjr.png", stat: { ko: "글로벌 런칭 · 10만+", en: "Global launch · 100K+", zh: "全球上线 · 10万+", ja: "グローバルローンチ · 10万+" } },
+  { id: "slam", type: "game", x: 69, y: 84, label: "Moai Wanna Slam", img: "/story/moai.png", stat: { ko: "출시됨", en: "Live", zh: "已上线", ja: "配信中" }, href: "https://a4room.com/#g1" },
+  { id: "frog", type: "game", x: 85, y: 90, label: "Judgy Froggy", img: "/a4room/frog.jpg", stat: { ko: "웹에서 플레이", en: "Play on web", zh: "网页可玩", ja: "ブラウザでプレイ" }, href: "https://a4room.com/#g3" },
+  { id: "troll", type: "game", x: 96, y: 82, label: "Trolling", img: "/a4room/troll-capsule.jpg", stat: { ko: "Steam 출시 예정", en: "Coming to Steam", zh: "即将登陆 Steam", ja: "Steam 配信予定" }, href: "https://a4room.com/#g4" },
 
   { id: "jungle", type: "org", x: 40, y: 38, label: "KRAFTON Jungle", img: "/story/jungle.png", imgBg: "#fff" },
   { id: "sgm", type: "org", x: 50, y: 20, label: "Smilegate Membership", img: "/story/smilegate.png", imgBg: "#fff" },
@@ -40,7 +40,7 @@ const NODES = [
   { id: "halfbrick", type: "org", x: 75, y: 22, label: "Halfbrick", img: "/companies/halfbrick.jpg", imgBg: "#fff" },
   { id: "overdare", type: "org", x: 87, y: 32, label: "OVERDARE", img: "/companies/krafton.png", imgBg: "#000" },
 
-  { id: "a4room", type: "hub", x: 90, y: 62, label: "A4Room", stat: { ko: "지금", en: "Now" }, href: "https://a4room.com" },
+  { id: "a4room", type: "hub", x: 90, y: 62, label: "A4Room", stat: { ko: "지금", en: "Now", zh: "现在", ja: "今" }, href: "https://a4room.com" },
 ];
 
 const EDGES = [
@@ -59,6 +59,8 @@ const EDGES = [
 const copy = {
   ko: { eyebrow: "Story", title: "여기까지 온 이야기" },
   en: { eyebrow: "Story", title: "How I got here" },
+  zh: { eyebrow: "Story", title: "一路走来的故事" },
+  ja: { eyebrow: "Story", title: "ここまでの道のり" },
 };
 
 const pick = (v, lang) => (v && typeof v === "object" ? v[lang] ?? v.en : v);
