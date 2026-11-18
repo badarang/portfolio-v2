@@ -23,7 +23,7 @@ const copy = {
     stack: { status: "개발 중", desc: "원버튼 점프, 벽타기, 내려찍기." },
     frog: { status: "웹에서 플레이", desc: "개구리 판사가 심판하는 AI 파티 게임." },
     necro: { stat: "Steam 4만 장", desc: "KRAFTON Jungle 팀 프로젝트" },
-    animal: { stat: "버닝비버 3일 연속 선정", desc: "기획부터 출시까지 혼자" },
+    animal: { stat: "버닝비버 3일 연속 재미있는 게임 선정", desc: "기획부터 출시까지 혼자" },
   },
   en: {
     eyebrow: "Games",
@@ -37,7 +37,7 @@ const copy = {
     stack: { status: "In progress", desc: "One-button jumping, wall climbing and slams." },
     frog: { status: "Play on web", desc: "An AI party game ruled by a frog judge." },
     necro: { stat: "40K copies on Steam", desc: "KRAFTON Jungle team project" },
-    animal: { stat: "Burning Beaver pick, 3 days running", desc: "Solo, from design to release" },
+    animal: { stat: "Picked as a fun game at Burning Beaver, 3 days running", desc: "Solo, from design to release" },
   },
   zh: {
     eyebrow: "Games",
@@ -51,7 +51,7 @@ const copy = {
     stack: { status: "开发中", desc: "单键跳跃、爬墙、下砸。" },
     frog: { status: "网页可玩", desc: "由青蛙法官裁决的 AI 派对游戏。" },
     necro: { stat: "Steam 销量 4万份", desc: "KRAFTON Jungle 团队项目" },
-    animal: { stat: "Burning Beaver 连续 3 天入选", desc: "从策划到上线独立完成" },
+    animal: { stat: "Burning Beaver 连续 3 天入选有趣游戏", desc: "从策划到上线独立完成" },
   },
   ja: {
     eyebrow: "Games",
@@ -65,7 +65,7 @@ const copy = {
     stack: { status: "開発中", desc: "ワンボタンのジャンプ、壁登り、叩きつけ。" },
     frog: { status: "ブラウザでプレイ", desc: "カエルの裁判官が判定する AI パーティーゲーム。" },
     necro: { stat: "Steam で 4万本", desc: "KRAFTON Jungle のチームプロジェクト" },
-    animal: { stat: "Burning Beaver で 3日連続選出", desc: "企画からリリースまで 1 人で" },
+    animal: { stat: "Burning Beaver で 3日連続「面白いゲーム」に選定", desc: "企画からリリースまで 1 人で" },
   },
 };
 

@@ -27,7 +27,7 @@ const NODES = [
 
   { id: "itch", type: "game", x: 25, y: 86, label: "itch.io", img: "/story/itch.svg", imgBg: "#fff", stat: { ko: "게임 20개+", en: "20+ games", zh: "20+ 款游戏", ja: "ゲーム 20本+" }, href: "https://badarang.itch.io" },
   { id: "necro", type: "game", x: 44, y: 76, label: "Necro Rumble", img: shot(19), stat: { ko: "Steam 4만 장", en: "40K on Steam", zh: "Steam 4万份", ja: "Steam 4万本" }, href: "https://store.steampowered.com/app/2735950/Necro_Rumble/" },
-  { id: "animal", type: "game", x: 54, y: 50, label: "Animal Jumping!", img: shot(20), stat: { ko: "버닝비버 3일 연속 선정", en: "Burning Beaver pick, 3 days", zh: "Burning Beaver 连续 3 天入选", ja: "Burning Beaver 3日連続選出" } },
+  { id: "animal", type: "game", x: 54, y: 50, label: "Animal Jumping!", img: shot(20), stat: { ko: "버닝비버 3일 연속 재미있는 게임 선정", en: "Burning Beaver fun game pick, 3 days", zh: "Burning Beaver 连续 3 天入选有趣游戏", ja: "Burning Beaver 3日連続 面白いゲーム選定" } },
   { id: "heroll", type: "game", x: 66, y: 66, label: "Heroll", img: "/story/heroll.png", stat: { ko: "100만+ 다운로드", en: "1M+ downloads", zh: "100万+ 下载", ja: "100万+ ダウンロード" } },
   { id: "jjr", type: "game", x: 79, y: 50, label: "Jetpack Joyride Racing", img: "/story/jjr.png", stat: { ko: "글로벌 런칭 · 10만+", en: "Global launch · 100K+", zh: "全球上线 · 10万+", ja: "グローバルローンチ · 10万+" } },
   { id: "slam", type: "game", x: 69, y: 84, label: "Moai Wanna Slam", img: "/story/moai.png", stat: { ko: "출시됨", en: "Live", zh: "已上线", ja: "配信中" }, href: "https://a4room.com/#slam" },
