@@ -4,10 +4,10 @@ import Reveal from "./Reveal";
 
 // 만든 게임을 한 곳에 모았다. A4Room 게임은 스튜디오 사이트의 해당 게임으로 바로 보낸다.
 const a4 = [
-  { key: "troll", name: "Just a Game About Trolling", image: "/a4room/troll-capsule.jpg", href: "https://a4room.com/#g4" },
-  { key: "slam", name: "Moai Wanna Slam", image: "/a4room/slam.webp", href: "https://a4room.com/#g1" },
-  { key: "stack", name: "Moai Wanna Stack", image: "/a4room/stack.jpg", href: "https://a4room.com/#g2" },
-  { key: "frog", name: "Judgy Froggy", image: "/a4room/frog.jpg", href: "https://a4room.com/#g3" },
+  { key: "troll", name: "Just a Game About Trolling", image: "/a4room/troll-capsule.jpg", href: "https://a4room.com/#troll" },
+  { key: "slam", name: "Moai Wanna Slam", image: "/a4room/slam.webp", href: "https://a4room.com/#slam" },
+  { key: "stack", name: "Moai Wanna Stack", image: "/a4room/stack.jpg", href: "https://a4room.com/#stack" },
+  { key: "frog", name: "Judgy Froggy", image: "/a4room/frog.jpg", href: "https://a4room.com/#frog" },
 ];
 
 const copy = {

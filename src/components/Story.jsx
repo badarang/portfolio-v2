@@ -30,9 +30,9 @@ const NODES = [
   { id: "animal", type: "game", x: 54, y: 50, label: "Animal Jumping!", img: shot(20), stat: { ko: "버닝비버 3일 연속 선정", en: "Burning Beaver pick, 3 days", zh: "Burning Beaver 连续 3 天入选", ja: "Burning Beaver 3日連続選出" } },
   { id: "heroll", type: "game", x: 66, y: 66, label: "Heroll", img: "/story/heroll.png", stat: { ko: "100만+ 다운로드", en: "1M+ downloads", zh: "100万+ 下载", ja: "100万+ ダウンロード" } },
   { id: "jjr", type: "game", x: 79, y: 50, label: "Jetpack Joyride Racing", img: "/story/jjr.png", stat: { ko: "글로벌 런칭 · 10만+", en: "Global launch · 100K+", zh: "全球上线 · 10万+", ja: "グローバルローンチ · 10万+" } },
-  { id: "slam", type: "game", x: 69, y: 84, label: "Moai Wanna Slam", img: "/story/moai.png", stat: { ko: "출시됨", en: "Live", zh: "已上线", ja: "配信中" }, href: "https://a4room.com/#g1" },
-  { id: "frog", type: "game", x: 85, y: 90, label: "Judgy Froggy", img: "/a4room/frog.jpg", stat: { ko: "웹에서 플레이", en: "Play on web", zh: "网页可玩", ja: "ブラウザでプレイ" }, href: "https://a4room.com/#g3" },
-  { id: "troll", type: "game", x: 96, y: 82, label: "Trolling", img: "/a4room/troll-capsule.jpg", stat: { ko: "Steam 출시 예정", en: "Coming to Steam", zh: "即将登陆 Steam", ja: "Steam 配信予定" }, href: "https://a4room.com/#g4" },
+  { id: "slam", type: "game", x: 69, y: 84, label: "Moai Wanna Slam", img: "/story/moai.png", stat: { ko: "출시됨", en: "Live", zh: "已上线", ja: "配信中" }, href: "https://a4room.com/#slam" },
+  { id: "frog", type: "game", x: 85, y: 90, label: "Judgy Froggy", img: "/a4room/frog.jpg", stat: { ko: "웹에서 플레이", en: "Play on web", zh: "网页可玩", ja: "ブラウザでプレイ" }, href: "https://a4room.com/#frog" },
+  { id: "troll", type: "game", x: 96, y: 82, label: "Trolling", img: "/a4room/troll-capsule.jpg", stat: { ko: "Steam 출시 예정", en: "Coming to Steam", zh: "即将登陆 Steam", ja: "Steam 配信予定" }, href: "https://a4room.com/#troll" },
 
   { id: "jungle", type: "org", x: 40, y: 38, label: "KRAFTON Jungle", img: "/story/jungle.png", imgBg: "#fff" },
   { id: "sgm", type: "org", x: 50, y: 20, label: "Smilegate Membership", img: "/story/smilegate.png", imgBg: "#fff" },
