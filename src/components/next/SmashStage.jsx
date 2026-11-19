@@ -82,7 +82,7 @@ const SFX_NAMES = [
   "sheath_draw", "slash_cut", "split", "glint", "sheath_click", "rev_cock", "gunshot", "rev_spin", "shells",
   "fw_whistle", "fw_burst", "fw_crackle", "bazooka_fire", "missile_fly", "missile_hit", "head_pop", "fuse",
   "bomb_boom", "implode", "finisher_hit", "letter_pluck", "thud", "boing", "flip", "tada", "dash", "jump",
-  "hammer_swing", "hammer_hit", "kick_hit", "charge_up", "stone_crack",
+  "hammer_swing", "hammer_hit", "kick_hit", "charge_up", "stone_crack", "jet",
 ];
 const WALL_W = 30;
 const WALL_H = 138;
@@ -936,7 +936,7 @@ export default function SmashStage({ labels, onReveal }) {
       man.sq = 0.88;
       yield 0.25;
       st.charging = true;
-      play("charge_up", 0.45, 1.5);
+      play("charge_up", 0.6, 1.4);
       for (let i = 0; i < 9; i++) {
         gather(man.x - 6, Y(144), 5, [CYAN, CYAN, GOLD, PAPER]);
         jolt(man.x, Y(144), -0.5 - i * 0.1);
@@ -1101,7 +1101,7 @@ export default function SmashStage({ labels, onReveal }) {
       const x0 = man.x;
       const y0 = man.y;
       setPose(P.rise, "pop");
-      play("jump", 0.6, 0.7);
+      play("jet", 0.6);
       st.shake = Math.min(1, st.shake + 0.2);
       dust(x0, FLOOR - 1, 14, 90, 14);
       for (let t = 0; t < 0.42; t += 0.016) {
@@ -1224,7 +1224,7 @@ export default function SmashStage({ labels, onReveal }) {
       // 머리 위로 들고 기를 모은다. 글자가 점점 빨리 돌고, 주변 글자가 끌려온다.
       fps(10);
       st.charging = true;
-      play("charge_up", 0.55, 1.35);
+      play("charge_up", 0.7, 1.05);
       let spin = 0;
       for (let t = 0; t < 1.05; t += 0.016) {
         const k = t / 1.05;
@@ -1442,7 +1442,7 @@ export default function SmashStage({ labels, onReveal }) {
       setPose(P.charge);
       man.sq = 0.72;
       st.charging = true;
-      play("charge_up", 0.7, 1.45);
+      play("charge_up", 0.8, 1.1);
       play("implode", 0.5, 1.5, 0.3);
       for (let i = 0; i < 13; i++) {
         gather(man.x, FLOOR - 14, 7, [PINK, CYAN, LIME, PAPER]);
