@@ -77,8 +77,12 @@ const SPRING_D = [24, 22, 16, 22, 16, 24, 21, 24, 21, 22, 18];
 
 const MOVES = ["PUNCH RUSH", "ROUNDHOUSE", "HAMMER", "CROSS SLASH", "TWIN BAZOOKA", "REVOLVERS", "LETTER THROW", "HEAD BOMB", "FINISHER"];
 const SFX_NAMES = [
-  "punch1", "punch2", "punch3", "kick", "heavy", "rock1", "rock2", "debris", "shatter", "slash", "swish",
-  "gun", "gunbig", "boom", "launch", "tick", "bonk", "whoosh", "charge", "pop", "land",
+  "punch1", "punch2", "punch3", "kick", "heavy", "rock1", "rock2", "debris", "shatter",
+  "tick", "bonk", "land",
+  "sheath_draw", "slash_cut", "split", "glint", "sheath_click", "rev_cock", "gunshot", "rev_spin", "shells",
+  "fw_whistle", "fw_burst", "fw_crackle", "bazooka_fire", "missile_fly", "missile_hit", "head_pop", "fuse",
+  "bomb_boom", "implode", "finisher_hit", "letter_pluck", "thud", "boing", "flip", "tada", "dash", "jump",
+  "hammer_swing", "hammer_hit", "kick_hit", "charge_up", "stone_crack",
 ];
 const WALL_W = 30;
 const WALL_H = 138;
@@ -329,7 +333,7 @@ export default function SmashStage({ labels, onReveal }) {
           .catch(() => {});
       }
     };
-    const play = (name, vol = 1, rate = 1) => {
+    const play = (name, vol = 1, rate = 1, delay = 0) => {
       if (!soundRef.current || !audio.ctx) return;
       loadSfx();
       const buf = audio.buffers[name];
@@ -341,14 +345,14 @@ export default function SmashStage({ labels, onReveal }) {
         const g = audio.ctx.createGain();
         g.gain.value = vol;
         src.connect(g).connect(audio.master);
-        src.start();
+        src.start(audio.ctx.currentTime + delay);
       } catch {
         /* 오디오를 못 쓰는 환경은 조용히 넘어간다 */
       }
     };
     // 타격음: 세기에 따라 주먹, 발차기, 돌 깨지는 소리로 나뉜다. crack 은 총알이나 연타처럼 가벼운 타격.
     const sfx = (power, crack) => {
-      if (crack) play(pickOne(["rock1", "rock2"]), 0.5);
+      if (crack) play(pickOne(["rock1", "rock2", "stone_crack"]), 0.5);
       else if (power < 1.6) play(pickOne(["punch1", "punch2", "punch3"]), 0.8);
       else if (power < 3) play("kick", 0.9);
       else {
@@ -716,8 +720,8 @@ export default function SmashStage({ labels, onReveal }) {
       }
       jolt(cx, cy, 62);
       thump(cx, 12);
-      play("shatter", 1);
-      play("boom", 0.8);
+      play("finisher_hit", 1);
+      play("shatter", 0.7);
     };
 
     // ---------- 뼈대 계산 ----------
@@ -768,7 +772,7 @@ export default function SmashStage({ labels, onReveal }) {
       const keep = st.step;
       fps(30);
       setPose(dir > 0 ? P.run : P.skid, "pop");
-      play("whoosh", 0.45);
+      play("dash", 0.4);
       man.sq = 0.9;
       dust(x0, FLOOR - 1, 7, 70, 10);
       for (let t = 0; t < dur; t += 0.016) {
@@ -792,6 +796,8 @@ export default function SmashStage({ labels, onReveal }) {
       man.sq = 0.68;
       yield height > 40 ? 0.1 : 0.07;
       dust(x0, y0 - 1, 5, 60, 10);
+      play("jump", 0.35);
+      if (flip) play("flip", 0.5, 1, dur * 0.2);
       for (let t = 0; t < dur; t += 0.016) {
         const u = t / dur;
         const v = 2 * u - 1; // -1 치솟음 ... 0 정점 ... 1 낙하
@@ -866,6 +872,7 @@ export default function SmashStage({ labels, onReveal }) {
       yield 0.18;
       fps(30);
       setPose(P.air, "pop");
+      play("flip", 0.55, 1.2);
       man.sq = 1.25;
       for (let i = 0; i < 10; i++) {
         const u = i / 10;
@@ -877,6 +884,7 @@ export default function SmashStage({ labels, onReveal }) {
       man.y = FLOOR;
       man.x = HOME - 2 + reachAt(Y(142));
       setPose(P.kick, "pop");
+      play("kick_hit", 0.9);
       hit(14, Y(142), { stop: 0.1, boom: 0.14 });
       pixelRing(WALL_X, Y(142), CYAN, 14, 200);
       yield 0.14;
@@ -896,9 +904,11 @@ export default function SmashStage({ labels, onReveal }) {
       man.propT = 0;
       man.sq = 1.22;
       sparks(man.x + 2, Y(110), 10, [GOLD, PAPER], 0.5);
+      play("hammer_swing", 0.7, 1, 0.34);
       yield 0.52;
       fps(30);
       setPose(P.slam, "pop");
+      play("hammer_hit", 1);
       man.x = HOME - 9 + reachAt(Y(138));
       man.sq = 0.7;
       hit(20, Y(138), { stop: 0.13, invert: 1, boom: 0.2 });
@@ -926,7 +936,7 @@ export default function SmashStage({ labels, onReveal }) {
       man.sq = 0.88;
       yield 0.25;
       st.charging = true;
-      play("charge", 0.6, 0.8);
+      play("charge_up", 0.45, 1.5);
       for (let i = 0; i < 9; i++) {
         gather(man.x - 6, Y(144), 5, [CYAN, CYAN, GOLD, PAPER]);
         jolt(man.x, Y(144), -0.5 - i * 0.1);
@@ -935,6 +945,7 @@ export default function SmashStage({ labels, onReveal }) {
       }
       st.charging = false;
       sparks(man.x - 8, Y(146), 6, [PAPER, CYAN], 0.3);
+      play("sheath_draw", 0.8);
       yield 0.12;
 
       const home = man.x;
@@ -956,8 +967,8 @@ export default function SmashStage({ labels, onReveal }) {
         man.snapHead = true;
         man.prev = null;
         setPose(P.iaiEnd, "snap");
-        play("slash", 0.9);
-        play("swish", 0.7);
+        play("slash_cut", 0.9);
+        play("glint", 0.45);
         carveLine([[0, ya], [WALL_W, yb]]);
         fx.push({ type: "line", x1: WALL_X - 18, y1: ya + (ya - yb) * 0.3, x2: WALL_X + WALL_W + 18, y2: yb - (ya - yb) * 0.3, w: 1, life: 0.1 });
         for (let i = 0; i < 24; i++) {
@@ -980,11 +991,13 @@ export default function SmashStage({ labels, onReveal }) {
       yield 0.12;
       pass(far, home, Y(98), Y(152), 15, { stop: 0.13, invert: 1, boom: 0.2 });
       pixelRing(WALL_X + WALL_W / 2, Y(124), CYAN, 16, 230);
+      play("split", 0.8, 1, 0.08);
       yield 0.16;
 
       fps(12);
       yield 0.2;
       setPose(P.sheath);
+      play("sheath_click", 0.8, 1.6);
       yield 0.26;
       man.swordOut = false;
       sparks(man.x + 3, Y(146), 5, [GOLD, PAPER], 0.25);
@@ -1005,6 +1018,8 @@ export default function SmashStage({ labels, onReveal }) {
       setPose(P.aim);
       man.prop = "guns";
       man.propT = 0;
+      play("rev_spin", 0.55, 1.6);
+      play("rev_cock", 0.7, 1.3, 0.12);
       yield 0.34;
       for (let i = 0; i < 6; i++) {
         const last = i === 5;
@@ -1017,7 +1032,7 @@ export default function SmashStage({ labels, onReveal }) {
           fx.push({ type: "line", x1: from[0] + 7, y1: from[1] - 1, x2: ex, y2: y, w: last ? 2 : 1, life: 0.045 });
           fx.push({ type: "star", x: from[0] + 9, y: from[1] - 1, r: last ? 11 : 8, life: 0.05, rot: rand(0, 1) });
           sparks(from[0] + 8, from[1] - 1, 7, [GOLD, GOLD, PAPER], 0.7, 1);
-          play(last ? "gunbig" : "gun", last ? 1 : 0.85);
+          play("gunshot", last ? 1 : 0.8, last ? 0.82 : 1.05);
           dust(from[0] + 6, from[1] - 3, 3, 16, 26);
           parts.push({ k: "spark", x: from[0], y: from[1] - 2, px: from[0], py: from[1], vx: rand(-110, -50), vy: rand(-190, -110), c: GOLD, s: 2, life: 0.8, max: 0.8 });
           if (reach !== null) hit(last ? 7 : 6, y, { stop: last ? 0.08 : 0.05, boom: last ? 0.12 : 0 });
@@ -1044,6 +1059,7 @@ export default function SmashStage({ labels, onReveal }) {
         fps(12);
         yield last ? 0.3 : 0.13;
       }
+      play("shells", 0.5);
       man.prop = null;
       fps(15);
       setPose(P.idle);
@@ -1070,7 +1086,8 @@ export default function SmashStage({ labels, onReveal }) {
       missiles.push({ p0, p1, p2, p3, t: 0, dur: side > 0 ? rand(0.8, 1.0) : rand(1.05, 1.3), trail: [], done: false, c: ACC[k % 3], lastOne });
       fx.push({ type: "star", x: p0[0] + side * 3, y: p0[1], r: 9, n: 7, life: 0.05 });
       sparks(p0[0], p0[1], 5, [GOLD, PAPER], 0.5, side);
-      play("launch", 0.55);
+      play("bazooka_fire", 0.6);
+      play("missile_fly", 0.3, 1, 0.12);
     };
     // 이타노 서커스. 양손에 네모난 바주카를 들고 떠올라, 제각각 휘어 날아가는 미사일을 쏟아붓는다.
     function* itano() {
@@ -1084,6 +1101,7 @@ export default function SmashStage({ labels, onReveal }) {
       const x0 = man.x;
       const y0 = man.y;
       setPose(P.rise, "pop");
+      play("jump", 0.6, 0.7);
       st.shake = Math.min(1, st.shake + 0.2);
       dust(x0, FLOOR - 1, 14, 90, 14);
       for (let t = 0; t < 0.42; t += 0.016) {
@@ -1179,6 +1197,7 @@ export default function SmashStage({ labels, onReveal }) {
       }
       J.held = true;
       J.q = [];
+      play("letter_pluck", 0.8);
       for (let i = 0; i < 5; i++) {
         J.x = rand(-5, 5);
         J.y = rand(-4, 4);
@@ -1205,7 +1224,7 @@ export default function SmashStage({ labels, onReveal }) {
       // 머리 위로 들고 기를 모은다. 글자가 점점 빨리 돌고, 주변 글자가 끌려온다.
       fps(10);
       st.charging = true;
-      play("charge", 0.7, 0.7);
+      play("charge_up", 0.55, 1.35);
       let spin = 0;
       for (let t = 0; t < 1.05; t += 0.016) {
         const k = t / 1.05;
@@ -1239,8 +1258,7 @@ export default function SmashStage({ labels, onReveal }) {
       const fx0 = J.x;
       const fy0 = J.y;
       streak((J.cx + J.x) / KX, ty);
-      play("swish", 1);
-      play("whoosh", 0.8);
+      play("dash", 0.9, 0.8);
       for (let t = 0; t < 0.09; t += 0.016) {
         const u = t / 0.09;
         J.x = lerp(fx0, tx * KX - J.cx, u);
@@ -1254,6 +1272,7 @@ export default function SmashStage({ labels, onReveal }) {
       J.x = tx * KX - J.cx;
       J.y = ty * KY - J.cy;
       hit(22, ty, { stop: 0.13, invert: 1, boom: 0.22 });
+      play("thud", 1);
       shock(tx, ty, "163,230,53", 0, 6, 620);
       pixelRing(tx, ty, LIME, 22, 260);
       // 글자가 벽에 박혀 떨다가 튕겨서 돌아간다
@@ -1278,6 +1297,8 @@ export default function SmashStage({ labels, onReveal }) {
       yield 0.12;
       man.headless = true;
       man.prop = "head";
+      play("head_pop", 0.9);
+      play("fuse", 0.5, 1, 0.1);
       man.sq = 1.15;
       // 심지에 불이 붙는다
       for (let t = 0; t < 0.3; t += 0.016) {
@@ -1288,7 +1309,7 @@ export default function SmashStage({ labels, onReveal }) {
       }
       fps(30);
       setPose(P.throwEnd, "pop");
-      play("swish", 0.8);
+      play("dash", 0.6, 1.1);
       man.prop = null;
       man.sq = 0.85;
       const bx0 = man.j.hF[0];
@@ -1358,8 +1379,8 @@ export default function SmashStage({ labels, onReveal }) {
       missile.scale = 1;
       hit(20, ey - 6, { stop: 0.1, invert: 2, boom: 0.2 });
       blast(ex, ey - 4, 2.6, PINK);
-      play("boom", 1, 0.8);
-      play("debris", 0.7);
+      play("bomb_boom", 1);
+      play("debris", 0.6);
       glow(ex, ey - 4, 440, "255,190,110", 520);
       shock(ex, ey - 4, "255,255,255", 0, 7, 620);
       lens(ex, ey - 4, 5, 640);
@@ -1401,6 +1422,7 @@ export default function SmashStage({ labels, onReveal }) {
       }
       missile = null;
       man.headless = false;
+      play("head_pop", 0.7, 0.75);
       man.snapHead = true;
       man.sq = 0.6;
       man.sqv = 0;
@@ -1420,7 +1442,8 @@ export default function SmashStage({ labels, onReveal }) {
       setPose(P.charge);
       man.sq = 0.72;
       st.charging = true;
-      play("charge", 0.8, 0.6);
+      play("charge_up", 0.7, 1.45);
+      play("implode", 0.5, 1.5, 0.3);
       for (let i = 0; i < 13; i++) {
         gather(man.x, FLOOR - 14, 7, [PINK, CYAN, LIME, PAPER]);
         st.shake = Math.min(1, st.shake + 0.05 + i * 0.012);
@@ -1430,6 +1453,7 @@ export default function SmashStage({ labels, onReveal }) {
       st.charging = false;
       fps(30);
       setPose(P.flykick, "pop");
+      play("dash", 0.9, 0.7);
       man.sq = 1.25;
       const x0 = man.x;
       for (let i = 1; i <= 7; i++) {
@@ -1450,7 +1474,10 @@ export default function SmashStage({ labels, onReveal }) {
       yield 0.15;
     }
 
-    const firework = (x, top, c) => parts.push({ k: "rocket", x, y: FLOOR, y0: FLOOR, ty: top, c, s: 2, life: 0.4, max: 0.4 });
+    const firework = (x, top, c) => {
+      play("fw_whistle", 0.25, rand(1.9, 2.3));
+      parts.push({ k: "rocket", x, y: FLOOR, y0: FLOOR, ty: top, c, s: 2, life: 0.4, max: 0.4 });
+    };
 
     // 승리 연출: 폭죽, 연속 백덤블링, 이름 글자를 징검다리처럼 밟고 올라가 포즈.
     function* reveal() {
@@ -1481,7 +1508,7 @@ export default function SmashStage({ labels, onReveal }) {
           sparks(tx, topOf(J), 10, [ACC[i % 3], PAPER], 0.6);
           dust(tx, topOf(J), 5, 40, 8);
           for (const N of all) if (N !== J) N.vy += 120 / (1 + Math.abs(N.cx - J.cx) / 60);
-          play("land", 0.7);
+          play("boing", 0.8, 1 + i * 0.12);
           for (let t = 0; t < (lastOne ? 0.2 : 0.11); t += 0.016) {
             man.y = topOf(J);
             yield 0.016;
@@ -1490,6 +1517,7 @@ export default function SmashStage({ labels, onReveal }) {
         // 맨 앞 글자 위에서 포즈
         const top = steps[steps.length - 1];
         setPose(P.tada, "pop");
+        play("tada", 0.7);
         man.sq = 1.3;
         const px0 = (top.cx + 60) / KX;
         firework(px0, man.y - 46, GOLD);
@@ -1529,6 +1557,7 @@ export default function SmashStage({ labels, onReveal }) {
       thump(WALL_X + WALL_W / 2, 15);
       sweep(WALL_X + WALL_W / 2);
       play("heavy", 1, 0.8);
+      play("thud", 0.9, 0.7);
       play("debris", 0.6);
       man.sq = 1.3;
       man.y = FLOOR - 6;
@@ -1720,7 +1749,8 @@ export default function SmashStage({ labels, onReveal }) {
             sparks(p.x, p.ty, 34, [p.c, p.c, PAPER], 0.75);
             pixelRing(p.x, p.ty, p.c, 16, 150);
             jolt(p.x, p.ty, 2.5);
-            play("pop", 0.6);
+            play("fw_burst", 0.6, rand(0.9, 1.25));
+            play("fw_crackle", 0.3, rand(0.9, 1.2), 0.15);
           }
         } else if (p.k === "suck") {
           const u = 1 - p.life / p.max;
@@ -1756,7 +1786,7 @@ export default function SmashStage({ labels, onReveal }) {
           if (!wall.dead) {
             const ix = hit(ms.lastOne ? 13 : 8, ms.p3[1], { stop: ms.lastOne ? 0.09 : 0.035, boom: ms.lastOne ? 0.14 : 0 });
             blast(ix, ms.p3[1], ms.lastOne ? 1.5 : 1, ms.c);
-            play("boom", ms.lastOne ? 0.9 : 0.6, ms.lastOne ? 0.9 : 1.15);
+            play("missile_hit", ms.lastOne ? 1 : 0.65, ms.lastOne ? 0.85 : 1.1);
             pixelRing(ix, ms.p3[1], ms.c, 12, 170);
             sparks(ix, ms.p3[1], 8, [ms.c, GOLD, PAPER], 0.9, -1);
             glow(ix, ms.p3[1], ms.lastOne ? 260 : 150, "255,200,120", 280);
