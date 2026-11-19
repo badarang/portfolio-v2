@@ -82,7 +82,7 @@ const SFX_NAMES = [
   "sheath_draw", "slash_cut", "split", "glint", "sheath_click", "rev_cock", "gunshot", "rev_spin", "shells",
   "fw_whistle", "fw_burst", "fw_crackle", "bazooka_fire", "missile_fly", "missile_hit", "head_pop", "fuse",
   "bomb_boom", "implode", "finisher_hit", "letter_pluck", "thud", "boing", "flip", "tada", "dash", "jump",
-  "hammer_swing", "hammer_hit", "kick_hit", "charge_up", "stone_crack", "jet",
+  "hammer_swing", "hammer_hit", "kick_hit", "charge_up", "stone_crack", "jet", "dash_light",
 ];
 const WALL_W = 30;
 const WALL_H = 138;
@@ -772,7 +772,7 @@ export default function SmashStage({ labels, onReveal }) {
       const keep = st.step;
       fps(30);
       setPose(dir > 0 ? P.run : P.skid, "pop");
-      play("dash", 0.4);
+      play("dash_light", 0.3, 1.25);
       man.sq = 0.9;
       dust(x0, FLOOR - 1, 7, 70, 10);
       for (let t = 0; t < dur; t += 0.016) {
