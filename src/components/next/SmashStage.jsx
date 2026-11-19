@@ -1298,7 +1298,6 @@ export default function SmashStage({ labels, onReveal }) {
       man.headless = true;
       man.prop = "head";
       play("head_pop", 0.9);
-      play("fuse", 0.5, 1, 0.1);
       man.sq = 1.15;
       // 심지에 불이 붙는다
       for (let t = 0; t < 0.3; t += 0.016) {
@@ -1310,6 +1309,7 @@ export default function SmashStage({ labels, onReveal }) {
       fps(30);
       setPose(P.throwEnd, "pop");
       play("dash", 0.6, 1.1);
+      play("fuse", 0.5, 1.5, 0.05);
       man.prop = null;
       man.sq = 0.85;
       const bx0 = man.j.hF[0];
